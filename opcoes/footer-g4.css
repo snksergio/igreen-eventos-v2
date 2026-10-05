@@ -1,0 +1,849 @@
+/* ============================================================
+   Rodapé G4 — "Seu nome no crachá"
+   An open, deep-dark footer set on the site's 12-column grid. The
+   left eight columns carry the statement, one quiet field ("Como você
+   quer ser chamado?") and the info grid; the right four are the bay
+   where the iGreen Live credential hangs from a strap that comes down
+   from above the screen. Whatever is typed in the field is printed on
+   the credential live (footer-g4.js), which swings a little with every
+   letter. The room is static: a low aurora backlights the bay, the
+   hero's dot matrix gives it texture.
+   ============================================================ */
+
+.fg4-footer {
+  --fg4-ink: #F3F6EC;
+  --fg4-mute: rgba(243, 246, 236, 0.4);
+  --fg4-soft: rgba(243, 246, 236, 0.66);
+  --fg4-lime: #A8FF35;
+  --fg4-lime-soft: #D8FFA6;
+  --fg4-gap: 24px;
+  --fg4-w: min(clamp(1240px, 61vw, 1560px), 100vw - 48px);       /* content width */
+  --fg4-st: min(calc(var(--fg4-w) * 0.06), 8.4vh);              /* statement size */
+  --fg4-cw: min(calc(var(--fg4-w) * 0.252), 36.5vh);            /* credential width */
+  --fg4-fade: clamp(110px, 13vh, 190px);                        /* the strap comes out of the dark */
+  --fg4-dark: 72px;                                             /* hidden band under the top menu */
+  --fg4-x: clamp(0px, 100vw - 2033px, 640px);                   /* extra width once the grid grows past 1240 */
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  padding-top: clamp(124px, 15.4vh, 200px);
+  overflow: hidden;
+  isolation: isolate;
+  background: var(--bg);
+  color: var(--fg4-ink);
+}
+
+/* ============ the room ============ */
+
+.fg4-room {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  overflow: hidden;
+  pointer-events: none;
+  background: var(--bg); /* the grain blends with the page black, not with nothing */
+}
+.fg4-aurora {
+  position: absolute;
+  inset: 0;
+  transform-origin: 50% 100%;
+  will-change: transform, opacity;
+}
+/* the house aurora artwork, low on the floor; its ribbon climbs toward the bay */
+.fg4-ribbon {
+  position: absolute;
+  left: 0;
+  width: 110%;
+  bottom: -34%;
+  height: 78%;
+  object-fit: cover;
+  object-position: 50% 62%;
+  opacity: 0.34;
+  /* strongest low and to the right, under the bay; it thins out to the left */
+  -webkit-mask-image: radial-gradient(60% 95% at 74% 100%, #000 30%, rgba(0, 0, 0, 0.35) 65%, transparent 100%);
+  mask-image: radial-gradient(60% 95% at 74% 100%, #000 30%, rgba(0, 0, 0, 0.35) 65%, transparent 100%);
+}
+/* deep green body of the haze, heavier under the bay */
+.fg4-haze {
+  position: absolute;
+  left: 46%;
+  width: 76%;
+  bottom: -40%;
+  height: 90%;
+  background: radial-gradient(closest-side, rgba(10, 80, 30, 0.62), rgba(6, 46, 18, 0.32) 52%, rgba(4, 24, 10, 0) 100%);
+}
+/* where the haze meets the floor */
+.fg4-floor {
+  position: absolute;
+  left: 50%;
+  width: 62%;
+  bottom: -14%;
+  height: 26%;
+  background: radial-gradient(50% 50% at 50% 100%, rgba(216, 255, 166, 0.16), rgba(168, 255, 53, 0.05) 46%, rgba(168, 255, 53, 0) 76%);
+}
+/* a soft backlight behind the credential's resting place (placed by js) */
+.fg4-back {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: calc(var(--fg4-cw) * 2.5);
+  height: calc(var(--fg4-cw) * 3);
+  translate: -50% -50%;
+  background: radial-gradient(closest-side, rgba(150, 236, 70, 0.1), rgba(110, 200, 60, 0.035) 52%, rgba(110, 200, 60, 0) 100%);
+  opacity: 0;
+}
+/* the house dot matrix, exactly as in the hero's .rich-bg: a faint constant
+   grid, plus a blended copy that only lights up where the aurora shines */
+.fg4-dots-base,
+.fg4-dots {
+  position: absolute;
+  inset: 0;
+  background-image: radial-gradient(rgba(216, 255, 166, 0.5) 0.8px, transparent 1.25px);
+  background-size: 4.5px 4.5px;
+}
+.fg4-dots-base { opacity: 0.03; }
+.fg4-dots {
+  mix-blend-mode: overlay;
+  opacity: 0.72;
+}
+
+/* ============ content ============ */
+
+.fg4-wrap {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  flex: 1 1 auto;
+  flex-direction: column;
+  width: var(--fg4-w);
+  margin: 0 auto;
+}
+
+.fg4-head,
+.fg4-grid,
+.fg4-bar {
+  position: relative;
+  z-index: 2;
+  display: grid;
+  grid-template-columns: repeat(12, minmax(0, 1fr));
+  column-gap: var(--fg4-gap);
+}
+
+/* ---------- statement ---------- */
+
+.fg4-st {
+  grid-column: 1 / 9;
+  margin: 0;
+  font-family: var(--font-display);
+  font-weight: 500;
+  font-size: var(--fg4-st);
+  line-height: 1;
+  letter-spacing: -0.036em;
+  color: var(--fg4-ink);
+}
+/* each line is its own mask: room above for accents, below for descenders */
+.fg4-l {
+  display: block;
+  overflow: hidden;
+  padding: 0.08em 0 0.1em;
+  margin: -0.08em 0 -0.1em;
+  white-space: nowrap;
+}
+.fg4-li { display: block; }
+.fg4-l-mute { color: var(--fg4-mute); }
+
+/* ---------- the field ---------- */
+
+.fg4-ask {
+  grid-column: 1 / 6;
+  margin-top: clamp(34px, 4.4vh, 72px);
+}
+.fg4-k {
+  display: block;
+  margin: 0 0 4px;
+  font-size: calc(15px + var(--fg4-x) * 0.005);
+  line-height: 1.2;
+  letter-spacing: -0.005em;
+  color: rgba(243, 246, 236, 0.5);
+  cursor: text;
+}
+.fg4-field {
+  position: relative;
+}
+/* the resting hairline and, over it, a lime line drawn while focused */
+.fg4-field::before,
+.fg4-field::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 1px;
+  pointer-events: none;
+}
+.fg4-field::before {
+  background: rgba(243, 246, 236, 0.16);
+  transform-origin: 0 50%;
+  transition: background-color 0.4s ease;
+}
+.fg4-field::after {
+  background: linear-gradient(90deg, var(--fg4-lime), var(--fg4-lime-soft));
+  transform: scaleX(0);
+  transform-origin: 0 50%;
+  transition: transform 0.9s cubic-bezier(0.19, 1, 0.22, 1);
+}
+.fg4-field:hover::before { background: rgba(243, 246, 236, 0.3); }
+.fg4-field:focus-within::after { transform: scaleX(1); }
+
+.fg4-input {
+  display: block;
+  width: 100%;
+  height: calc(var(--fg4-st) * 0.84);
+  margin: 0;
+  padding: 0;
+  border: 0;
+  border-radius: 0;
+  outline: 0;
+  background: none;
+  font-family: var(--font-display);
+  font-weight: 500;
+  font-size: calc(var(--fg4-st) * 0.46);
+  letter-spacing: -0.026em;
+  color: var(--fg4-ink);
+  caret-color: var(--fg4-lime);
+  -webkit-appearance: none;
+  appearance: none;
+}
+.fg4-input::placeholder {
+  color: rgba(243, 246, 236, 0.22);
+  opacity: 1;
+  transition: color 0.4s ease;
+}
+.fg4-input:focus::placeholder { color: rgba(243, 246, 236, 0.14); }
+.fg4-input::selection { background: rgba(168, 255, 53, 0.28); }
+
+
+/* ---------- calls to action ---------- */
+
+.fg4-cta {
+  grid-column: 1 / 9;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-top: clamp(26px, 3.6vh, 44px);
+}
+/* minimum gap under the head; on tall screens the free height is shared
+   equally above the grid and above the bar (auto margins) */
+.fg4-head { margin-bottom: clamp(42px, 5.4vh, 100px); }
+.fg4-mag { will-change: transform; }
+.fg4-ghost {
+  /* the site's ghost button without the backdrop blur */
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
+}
+
+/* ---------- info grid ---------- */
+
+.fg4-grid {
+  position: relative;
+  margin-top: auto;
+  padding-top: clamp(26px, 3.4vh, 40px);
+}
+/* the hairline stops at the bay: the credential owns the right third */
+.fg4-rule {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: calc((var(--fg4-w) - var(--fg4-gap) * 11) / 12 * 8 + var(--fg4-gap) * 7);
+  height: 1px;
+  background: rgba(243, 246, 236, 0.1);
+  transform-origin: 0 50%;
+}
+.fg4-col { grid-row: 1; min-width: 0; }
+.fg4-stop { grid-column: 1 / 4; }
+.fg4-event { grid-column: 4 / 6; }
+.fg4-contact { grid-column: 6 / 9; }
+.fg4-bay { grid-column: 9 / 13; grid-row: 1; }
+
+.fg4-h {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  margin: 0 0 20px;
+  font-size: calc(14px + var(--fg4-x) * 0.005);
+  line-height: 1;
+  color: var(--fg4-mute);
+}
+.fg4-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--fg4-lime);
+  box-shadow: 0 0 8px rgba(168, 255, 53, 0.6);
+}
+.fg4-city {
+  margin: 0;
+  font-family: var(--font-display);
+  font-weight: 500;
+  font-size: calc(34px + var(--fg4-x) * 0.016);
+  line-height: 1;
+  letter-spacing: -0.03em;
+  color: var(--fg4-ink);
+}
+.fg4-when {
+  margin: 14px 0 0;
+  font-size: calc(16px + var(--fg4-x) * 0.006);
+  line-height: 1.4;
+  color: rgba(243, 246, 236, 0.78);
+}
+.fg4-venue {
+  margin: 2px 0 0;
+  font-size: calc(15px + var(--fg4-x) * 0.006);
+  line-height: 1.4;
+  color: var(--fg4-mute);
+}
+.fg4-more {
+  margin-top: 20px;
+  font-size: calc(15px + var(--fg4-x) * 0.006);
+  color: var(--fg4-lime-soft);
+}
+
+.fg4-list,
+.fg4-social { list-style: none; margin: 0; padding: 0; }
+.fg4-list li + li { margin-top: 10px; }
+.fg4-list a,
+.fg4-social a {
+  font-size: calc(16px + var(--fg4-x) * 0.006);
+  line-height: 1.25;
+  color: var(--fg4-soft);
+}
+.fg4-mail {
+  font-size: calc(20px + var(--fg4-x) * 0.008);
+  line-height: 1.2;
+  letter-spacing: -0.015em;
+  color: var(--fg4-ink);
+}
+.fg4-phone {
+  margin-top: 12px;
+  font-size: calc(16px + var(--fg4-x) * 0.006);
+  color: var(--fg4-soft);
+}
+.fg4-addr {
+  margin: 10px 0 0;
+  font-size: calc(15px + var(--fg4-x) * 0.006);
+  line-height: 1.4;
+  color: var(--fg4-mute);
+}
+.fg4-social {
+  display: grid;
+  grid-template-columns: max-content max-content;
+  gap: 11px 28px;
+  margin-top: 22px;
+}
+
+/* underline that draws in from the left and leaves to the right */
+.fg4-u {
+  position: relative;
+  display: inline-block;
+  transition: color 0.3s ease;
+}
+.fg4-u::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: -3px;
+  height: 1px;
+  background: currentColor;
+  transform: scaleX(0);
+  transform-origin: 100% 50%;
+  transition: transform 0.55s cubic-bezier(0.2, 0.7, 0.2, 1);
+}
+.fg4-u:hover::after,
+.fg4-u:focus-visible::after {
+  transform: scaleX(1);
+  transform-origin: 0 50%;
+}
+.fg4-list a:hover,
+.fg4-social a:hover,
+.fg4-phone:hover,
+.fg4-legal a:hover { color: var(--fg4-ink); }
+.fg4-mail::after { bottom: -4px; }
+.fg4-mail, .fg4-phone, .fg4-more { display: table; } /* own line, underline as wide as the text */
+
+/* ---------- bottom bar ---------- */
+
+.fg4-bar {
+  position: relative;
+  align-items: center;
+  margin-top: auto;
+  padding: 18px 0 clamp(20px, 2.4vh, 34px);
+  border-top: 1px solid rgba(243, 246, 236, 0.1);
+  font-size: calc(14px + var(--fg4-x) * 0.005);
+  line-height: 1.2;
+  color: rgba(243, 246, 236, 0.5);
+}
+/* breathing room above the bar, kept even when the footer grows */
+.fg4-grid { margin-bottom: clamp(38px, 4.4vh, 88px); }
+.fg4-bar p { margin: 0; }
+.fg4-copy { grid-column: 1 / 4; color: rgba(243, 246, 236, 0.72); }
+.fg4-made { grid-column: 4 / 6; }
+.fg4-legal {
+  grid-column: 6 / 11;
+  display: flex;
+  gap: 24px;
+  white-space: nowrap;
+}
+.fg4-legal a { color: rgba(243, 246, 236, 0.5); }
+.fg4-up {
+  grid-column: 12;
+  justify-self: end;
+  display: grid;
+  place-items: center;
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  box-shadow: inset 0 0 0 1px rgba(243, 246, 236, 0.18);
+  color: var(--fg4-ink);
+  transition: background-color 0.35s ease, color 0.35s ease, box-shadow 0.35s ease;
+}
+.fg4-up svg {
+  width: 16px;
+  height: 16px;
+  transition: transform 0.5s cubic-bezier(0.2, 0.7, 0.2, 1);
+}
+.fg4-up:hover {
+  background: var(--fg4-lime);
+  color: #041007;
+  box-shadow: inset 0 0 0 1px var(--fg4-lime);
+}
+.fg4-up:hover svg { transform: translateY(-2px); }
+
+/* ============================================================
+   The lanyard stage: the whole footer, clipped, with a soft fade at
+   the top so the strap (and the card, when it drops or is thrown up)
+   comes out of the dark instead of from a hard edge
+   ============================================================ */
+
+.fg4-stage {
+  position: absolute;
+  inset: 0;
+  z-index: 3;
+  overflow: hidden;
+  pointer-events: none;
+  -webkit-mask-image: linear-gradient(to bottom, transparent var(--fg4-dark), rgba(0, 0, 0, 0.4) calc(var(--fg4-dark) + var(--fg4-fade) * 0.45), #000 calc(var(--fg4-dark) + var(--fg4-fade)));
+  mask-image: linear-gradient(to bottom, transparent var(--fg4-dark), rgba(0, 0, 0, 0.4) calc(var(--fg4-dark) + var(--fg4-fade) * 0.45), #000 calc(var(--fg4-dark) + var(--fg4-fade)));
+}
+.fg4-strap {
+  /* above the card: the clip runs over its top edge into the slot */
+  position: absolute;
+  z-index: 2;
+  left: 0;
+  top: 0;
+  display: block;
+}
+.fg4-cue {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 1px;
+  height: 1px;
+}
+
+/* ---------- the credential ---------- */
+
+.fg4-card {
+  position: absolute;
+  z-index: 1;
+  left: 0;
+  top: 0;
+  width: var(--fg4-cw);
+  aspect-ratio: 54 / 86; /* a vertical CR80 badge */
+  font-size: calc(var(--fg4-cw) / 17.5);
+  transform-origin: 50% 0;
+  pointer-events: auto;
+  cursor: grab;
+  touch-action: none;
+  -webkit-user-select: none;
+  user-select: none;
+  will-change: transform;
+  /* parked above the room until the script drops it */
+  transform: translate3d(-200vw, -200vh, 0);
+}
+.fg4-card.is-drag { cursor: grabbing; }
+
+.fg4-face {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  padding: 0.875em 0.875em 0;
+  border-radius: 1.1em;
+  overflow: hidden;
+  /* matte black PVC: a deep green-black with a faint top light */
+  background:
+    radial-gradient(110% 46% at 50% 0%, rgba(168, 255, 53, 0.07), rgba(168, 255, 53, 0) 72%),
+    linear-gradient(172deg, #0B1A10 0%, #07120B 44%, #050D08 100%);
+  box-shadow:
+    inset 0 0 0 1px rgba(243, 246, 236, 0.07),
+    0 2.2em 4em -1em rgba(0, 0, 0, 0.8),
+    0 0.5em 1.2em rgba(0, 0, 0, 0.45);
+}
+/* matte texture printed into the plastic (static, moves with the card) */
+.fg4-face::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  border-radius: inherit;
+  pointer-events: none;
+  background: url('../assets/img/footer-shared/grain-256.png') repeat 0 0 / 180px 180px;
+  mix-blend-mode: soft-light;
+  opacity: 0.22;
+}
+.fg4-face > * { position: relative; z-index: 1; }
+/* lime foil edge: bright where the light falls (top left), a glint low right */
+.fg4-face::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: 6;
+  border-radius: inherit;
+  padding: 1px;
+  pointer-events: none;
+  background: linear-gradient(158deg,
+    rgba(216, 255, 166, 0.75) 0%,
+    rgba(168, 255, 53, 0.32) 14%,
+    rgba(168, 255, 53, 0.06) 36%,
+    rgba(168, 255, 53, 0.03) 62%,
+    rgba(168, 255, 53, 0.22) 88%,
+    rgba(216, 255, 166, 0.45) 100%);
+  -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor;
+  mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+  mask-composite: exclude;
+}
+
+/* punched slot where the clip goes through */
+.fg4-hole {
+  position: absolute;
+  left: 50%;
+  top: 0.62em;
+  width: 2.5em;
+  height: 0.52em;
+  translate: -50% 0;
+  border-radius: 999px;
+  background: #010402;
+  box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.9), 0 1px 0 rgba(243, 246, 236, 0.08);
+}
+
+.fg4-card-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: 1.3em;
+}
+.fg4-card-logo {
+  display: block;
+  height: 1.08em;
+  width: auto;
+}
+.fg4-card-ed {
+  font-size: 0.8125em;
+  font-weight: 500;
+  letter-spacing: -0.01em;
+  color: var(--fg4-ink);
+}
+.fg4-card-ed i {
+  font-style: normal;
+  color: var(--fg4-mute);
+}
+
+.fg4-photo {
+  flex: 1 1 auto;
+  min-height: 0;
+  margin-top: 0.75em;
+  border-radius: 0.6em;
+  overflow: hidden;
+  background: #0C2414;
+}
+.fg4-photo img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: 50% 22%;
+  pointer-events: none;
+}
+/* the photo melts into the card at the bottom */
+.fg4-photo::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  box-shadow: inset 0 0 0 1px rgba(243, 246, 236, 0.08);
+  background: linear-gradient(180deg, rgba(6, 17, 10, 0) 58%, rgba(6, 17, 10, 0.6) 100%);
+}
+
+/* holographic security seal on the photo corner */
+.fg4-seal {
+  position: absolute;
+  right: 0.55em;
+  bottom: 0.55em;
+  z-index: 2;
+  display: grid;
+  place-items: center;
+  width: 1.75em;
+  height: 1.75em;
+  border-radius: 50%;
+  overflow: hidden;
+  color: #06180D;
+  box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.25), 0 2px 6px rgba(0, 0, 0, 0.4);
+}
+.fg4-seal-foil {
+  position: absolute;
+  inset: -40%;
+  background: conic-gradient(from 0deg, #A8FF35, #E9FFC4, #6EE7A0, #CFFF8A, #9BF0C8, #F4FFD8, #A8FF35);
+  will-change: transform;
+}
+.fg4-seal svg {
+  position: relative;
+  width: 0.85em;
+  height: 0.85em;
+}
+
+/* ---------- the printed name ---------- */
+
+.fg4-id { margin-top: 0.9em; }
+.fg4-name {
+  height: 1em;
+  margin: 0;
+  font-family: var(--font-display);
+  font-weight: 500;
+  font-size: 2.05em;
+  line-height: 1;
+  letter-spacing: -0.034em;
+  white-space: pre;
+  color: var(--fg4-ink);
+}
+.fg4-name-in {
+  display: inline-block;
+  vertical-align: baseline;
+}
+/* a freshly printed letter: it lands as a soft lime bloom that cools into
+   the ink. Two copies of the glyph cross-fade (opacity only): the bloom,
+   with its glow painted once, and the ink letter itself */
+.fg4-ink { position: relative; }
+.fg4-ink-a,
+.fg4-ink-b {
+  animation-duration: 0.85s;
+  animation-timing-function: cubic-bezier(0.2, 0.7, 0.2, 1);
+  animation-fill-mode: both;
+  animation-delay: var(--fg4-d, 0s);
+}
+.fg4-ink-a { animation-name: fg4-ink-a; }
+.fg4-ink-b {
+  position: absolute;
+  left: 0;
+  top: 0;
+  line-height: normal; /* same baseline as the inline letter under it */
+  color: var(--fg4-lime-soft);
+  text-shadow: 0 0 0.2em rgba(168, 255, 53, 0.9), 0 0 0.05em rgba(216, 255, 166, 0.7);
+  pointer-events: none;
+  animation-name: fg4-ink-b;
+}
+@keyframes fg4-ink-a {
+  0%   { opacity: 0; }
+  30%  { opacity: 0.12; }
+  100% { opacity: 1; }
+}
+@keyframes fg4-ink-b {
+  0%   { opacity: 0; }
+  18%  { opacity: 0.95; }
+  100% { opacity: 0; }
+}
+/* the print head: a lime nib at the end of the name while typing */
+.fg4-nib {
+  display: inline-block;
+  position: relative;
+  width: 0;
+  height: 0.72em;
+  vertical-align: baseline;
+}
+.fg4-nib::after {
+  content: '';
+  position: absolute;
+  left: 0.06em;
+  bottom: -0.04em;
+  width: 0.055em;
+  height: 0.8em;
+  border-radius: 0.03em;
+  background: var(--fg4-lime);
+  box-shadow: 0 0 0.25em rgba(168, 255, 53, 0.7);
+  opacity: 0;
+  transition: opacity 0.5s ease;
+}
+.fg4-name.is-typing .fg4-nib::after {
+  opacity: 1;
+  transition-duration: 0.12s;
+}
+
+.fg4-meta {
+  margin: 0.6em 0 0;
+  font-size: 0.78em;
+  line-height: 1.3;
+  letter-spacing: -0.005em;
+  color: var(--fg4-mute);
+}
+.fg4-meta span {
+  display: block;
+  color: rgba(243, 246, 236, 0.86);
+}
+
+.fg4-card-foot {
+  display: flex;
+  align-items: flex-end;
+  gap: 0.85em;
+  margin-top: 0.85em;
+  padding-bottom: 0.85em;
+}
+.fg4-qr {
+  flex: 0 0 auto;
+  width: 3.4em;
+  height: 3.4em;
+  padding: 0.28em;
+  border-radius: 0.4em;
+  background: #EEF5E4;
+  color: #06110A;
+  display: block;
+}
+.fg4-facts {
+  display: grid;
+  gap: 0.42em;
+  margin: 0;
+  font-size: 0.72em;
+  line-height: 1.25;
+}
+.fg4-facts div { display: block; }
+.fg4-facts dt { color: var(--fg4-mute); }
+.fg4-facts dd {
+  margin: 0;
+  color: rgba(243, 246, 236, 0.88);
+}
+
+/* the lime strip: the badge's access colour */
+.fg4-strip {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin: 0 -0.875em;
+  height: 1.75em;
+  padding: 0 0.875em;
+  background: var(--fg4-lime);
+  color: #06180D;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+}
+.fg4-strip span { font-size: 0.8125em; }
+.fg4-strip-n {
+  font-weight: 500;
+  opacity: 0.6;
+  font-variant-numeric: tabular-nums;
+}
+
+/* holographic sheen: a wide iridescent band slid by the script with the
+   card's swing and twist (transform + opacity only) */
+.fg4-holo {
+  position: absolute;
+  inset: 0;
+  z-index: 5;
+  overflow: hidden;
+  border-radius: inherit;
+  pointer-events: none;
+  mix-blend-mode: screen;
+}
+.fg4-holo-in {
+  position: absolute;
+  top: -20%;
+  bottom: -20%;
+  left: 0;
+  width: 300%;
+  opacity: 0.1;
+  background: linear-gradient(105deg,
+    rgba(168, 255, 53, 0) 34%,
+    rgba(168, 255, 53, 0.3) 41%,
+    rgba(238, 255, 214, 0.55) 45%,
+    rgba(110, 231, 160, 0.4) 48.5%,
+    rgba(216, 255, 166, 0.52) 52%,
+    rgba(168, 255, 53, 0.2) 57%,
+    rgba(168, 255, 53, 0) 64%);
+  transform: translate3d(-40%, 0, 0);
+  will-change: transform, opacity;
+}
+
+/* ============ starting states (only with JS + motion) ============ */
+
+.fg4-js .fg4-li { transform: translateY(110%); }
+.fg4-js .fg4-rv { opacity: 0; }
+.fg4-js .fg4-rule { transform: scaleX(0); }
+.fg4-js .fg4-field::before { transform: scaleX(0); }
+.fg4-js .fg4-field.is-drawn::before {
+  transform: scaleX(1);
+  transition: transform 1.6s cubic-bezier(0.7, 0, 0.2, 1), background-color 0.4s ease;
+}
+.fg4-js .fg4-aurora { opacity: 0; }
+
+/* ============ calm static version below 900px ============ */
+
+@media (max-width: 900px) {
+  .fg4-footer {
+    --fg4-w: calc(100vw - 40px);
+    --fg4-st: clamp(38px, 8.6vw, 60px);
+    --fg4-cw: min(300px, 72vw);
+    padding-top: 112px;
+  }
+  .fg4-wrap { display: contents; }
+  .fg4-head, .fg4-grid, .fg4-bar { width: var(--fg4-w); margin-left: auto; margin-right: auto; }
+  .fg4-head { order: 1; }
+  .fg4-stage { order: 2; }
+  .fg4-grid { order: 3; }
+  .fg4-bar { order: 4; margin-top: 0; }
+  .fg4-st { grid-column: 1 / -1; }
+  .fg4-l { white-space: normal; }
+  .fg4-ask, .fg4-cta { grid-column: 1 / -1; }
+  .fg4-input { height: 52px; font-size: 26px; }
+  .fg4-cta { flex-wrap: wrap; }
+  .fg4-stage {
+    position: relative;
+    inset: auto;
+    padding: 56px 0 8px;
+    -webkit-mask-image: none;
+    mask-image: none;
+  }
+  .fg4-strap, .fg4-cue { display: none; }
+  .fg4-card {
+    position: relative;
+    margin: 0 auto;
+    transform: none;
+    cursor: default;
+  }
+  .fg4-rule { width: 100%; }
+  .fg4-grid { row-gap: 44px; }
+  .fg4-col { grid-row: auto; }
+  .fg4-stop { grid-column: 1 / -1; }
+  .fg4-event { grid-column: 1 / -1; }
+  .fg4-contact { grid-column: 1 / -1; }
+  .fg4-bay { display: none; }
+  .fg4-bar { row-gap: 12px; }
+  .fg4-copy, .fg4-made { grid-column: span 6; }
+  .fg4-legal { grid-column: 1 / 11; flex-wrap: wrap; gap: 8px 18px; }
+  .fg4-up { grid-column: 11 / 13; grid-row: 2; }
+  .fg4-back { display: none; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .fg4-ink-a { animation: none; }
+  .fg4-ink-b { display: none; }
+  .fg4-u::after, .fg4-up svg, .fg4-field::after { transition: none; }
+}

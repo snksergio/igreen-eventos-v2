@@ -1,0 +1,374 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Opções — Edições que marcaram história</title>
+  <link rel="icon" href="../assets/img/igreen-logo.svg">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Instrument+Sans:wdth,wght@75..100,400..700&display=swap">
+  <link rel="stylesheet" href="../css/portalv2.css">
+  <style>
+    .hub {
+      min-height: 100vh;
+      max-width: 1240px;
+      margin: 0 auto;
+      padding: 140px 24px 96px;
+    }
+    .hub h1 {
+      margin-top: 20px;
+      font-weight: 500;
+      font-size: clamp(40px, 5vw, 64px);
+      line-height: 1.05;
+      letter-spacing: -0.03em;
+    }
+    .hub h1 span { color: rgba(243, 246, 236, 0.4); }
+    .hub-sub {
+      margin-top: 18px;
+      max-width: 56ch;
+      font-size: 17px;
+      line-height: 1.55;
+      color: rgba(243, 246, 236, 0.6);
+    }
+    .hub-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 20px;
+      margin-top: 56px;
+    }
+    .hub-card {
+      position: relative;
+      display: block;
+      padding: 12px 12px 24px;
+      border-radius: 16px;
+      overflow: hidden;
+      background:
+        radial-gradient(62% 30% at 50% 100%, rgba(196, 250, 120, 0.14) 0%, transparent 80%),
+        rgba(7, 16, 10, 0.58);
+      border: 1px solid rgba(255, 255, 255, 0.07);
+      transition: transform 0.35s ease, border-color 0.35s ease;
+    }
+    .hub-card:hover { transform: translateY(-4px); border-color: rgba(216, 255, 166, 0.3); }
+    .hub-card img {
+      display: block;
+      width: 100%;
+      aspect-ratio: 16 / 10;
+      object-fit: cover;
+      border-radius: 8px;
+    }
+    .hub-card p, .hub-card h2 { margin-left: 12px; margin-right: 12px; }
+    .hub-tag {
+      margin-top: 18px;
+      font-size: 13px;
+      color: #D8FFA6;
+    }
+    .hub-card h2 {
+      margin-top: 8px;
+      font-weight: 500;
+      font-size: 24px;
+      letter-spacing: -0.015em;
+    }
+    .hub-next { margin-top: 120px; }
+    .hub-h2 {
+      margin-top: 20px;
+      font-weight: 500;
+      font-size: clamp(36px, 4.2vw, 56px);
+      line-height: 1.05;
+      letter-spacing: -0.03em;
+    }
+    .hub-h2 span { color: rgba(243, 246, 236, 0.4); }
+    .hub-card .hub-desc {
+      margin-top: 8px;
+      font-size: 14.5px;
+      line-height: 1.6;
+      color: rgba(243, 246, 236, 0.55);
+    }
+  </style>
+</head>
+<body>
+  <main class="hub">
+    <p class="kicker">4 propostas para a seção de edições</p>
+    <h1>Edições que<br><span>marcaram história</span></h1>
+    <p class="hub-sub">Cada opção é uma página com a seção completa. Role devagar dentro dela: toda a animação acompanha a rolagem, para frente e para trás.</p>
+
+    <div class="hub-grid">
+      <a class="hub-card" href="edicoes-a.html">
+        <img src="../assets/img/past/moment-16.jpg" alt="">
+        <p class="hub-tag">Opção A</p>
+        <h2>Câmera no mosaico</h2>
+        <p class="hub-desc">Uma câmera dá zoom em cada edição dentro de um mosaico de momentos do evento, com legenda sendo digitada. No fim, o mosaico encolhe e as três edições se alinham sob a frase de destaque.</p>
+      </a>
+      <a class="hub-card" href="edicoes-b.html">
+        <img src="../assets/img/past/moment-17.jpg" alt="">
+        <p class="hub-tag">Opção B</p>
+        <h2>Estrada de telas</h2>
+        <p class="hub-desc">Um corredor 3D de telas com cenas reais, e o nome de cada cidade pintado no chão como uma estrada. Cada edição é uma tela que cresce até ocupar a tela, e você atravessa para a próxima.</p>
+      </a>
+      <a class="hub-card" href="edicoes-c.html">
+        <img src="../assets/img/past/moment-19.jpg" alt="">
+        <p class="hub-tag">Opção C</p>
+        <h2>Órbita</h2>
+        <p class="hub-desc">Cards giram num tambor enquanto palavras trocam no centro, depois se abrem num anel que gira destacando cada edição, e terminam com palavras de efeito e a frase final.</p>
+      </a>
+      <a class="hub-card" href="edicoes-d.html">
+        <img src="../assets/img/past/moment-22.jpg" alt="">
+        <p class="hub-tag">Opção D</p>
+        <h2>Mural vivo</h2>
+        <p class="hub-desc">Momentos do evento voam do fundo em volta do título e pousam num mural 3D em diagonal, com fotos, números e depoimentos em movimento. Cada edição sobe do mural em perspectiva, e no fim tudo implode na frase de impacto.</p>
+      </a>
+    </div>
+
+    <p class="kicker hub-next">Footer · variações do crachá</p>
+    <h2 class="hub-h2">O crachá, sem caixa<br><span>a G4 está no site</span></h2>
+    <p class="hub-sub">Variações da G pedidas no retorno: abertas e de ponta a ponta, como a A e a D. A G4 foi a escolhida e já está no index, com a textura de pontinhos da hero no fundo.</p>
+
+    <div class="hub-grid" id="hub-cracha">
+      <a class="hub-card" href="footer-g4.html">
+        <img src="thumbs/footer-g4.jpg" alt="" loading="lazy">
+        <p class="hub-tag">G4 · no site</p>
+        <h2>Seu nome no crachá</h2>
+        <p class="hub-desc">"A próxima história pode ter o seu nome." O nome digitado é impresso no crachá na hora, letra por letra, e ele balança a cada tecla. Grade precisa como a da A.</p>
+      </a>
+      <a class="hub-card" href="footer-g1.html">
+        <img src="thumbs/footer-g1.jpg" alt="" loading="lazy">
+        <p class="hub-tag">G1</p>
+        <h2>Crachá na aurora</h2>
+        <p class="hub-desc">A aurora da D, mais baixa, com o brilho atrás do crachá como contraluz. Frase da B no alto, menu, tour e contato embaixo.</p>
+      </a>
+      <a class="hub-card" href="footer-g2.html">
+        <img src="thumbs/footer-g2.jpg" alt="" loading="lazy">
+        <p class="hub-tag">G2</p>
+        <h2>Crachá no bloco lima</h2>
+        <p class="hub-desc">A estrutura da A: o cordão fica preso na borda da folha escura, que sobe e puxa o crachá; ele termina balançando sobre a faixa lima, na frente do "ao vivo".</p>
+      </a>
+      <a class="hub-card" href="footer-g3.html">
+        <img src="thumbs/footer-g3.jpg" alt="" loading="lazy">
+        <p class="hub-tag">G3</p>
+        <h2>Holofote</h2>
+        <p class="hub-desc">Palco escuro: um único refletor acende de cima, o crachá cai dentro da luz e o facho acompanha o balanço como um canhão seguidor.</p>
+      </a>
+      <a class="hub-card" href="footer-g5.html">
+        <img src="thumbs/footer-g5.jpg" alt="" loading="lazy">
+        <p class="hub-tag">G5</p>
+        <h2>Crachá no centro</h2>
+        <p class="hub-desc">Composição simétrica: "Te vejo | ao vivo." se abre em volta do crachá pendurado no eixo central, com os links espelhados dos dois lados.</p>
+      </a>
+    </div>
+
+    <p class="kicker hub-next">Footer · 8 propostas</p>
+    <h2 class="hub-h2">Oito footers<br><span>para fechar o site</span></h2>
+    <p class="hub-sub">Cada página começa no FAQ, como no site, para dar para sentir a passagem. Role devagar até o fim: quase tudo acompanha a rolagem.</p>
+
+    <div class="hub-grid">
+      <a class="hub-card" href="footer-a.html">
+        <img src="thumbs/footer-a.jpg" alt="" loading="lazy">
+        <p class="hub-tag">A</p>
+        <h2>Bloco lima</h2>
+        <p class="hub-desc">A área escura sobe como uma folha e descobre uma faixa lima de ponta a ponta. As letras de "ao vivo" sobem uma a uma com a rolagem e terminam gigantes, cortadas pela borda.</p>
+      </a>
+      <a class="hub-card" href="footer-b.html">
+        <img src="thumbs/footer-b.jpg" alt="" loading="lazy">
+        <p class="hub-tag">B</p>
+        <h2>Logo gigante</h2>
+        <p class="hub-desc">O logo igreen ocupa a largura toda e acende da esquerda para a direita; a lâmpada do "g" acende por último e depois a luz segue o cursor. Tem um seletor para comparar com a frase "iGreen Live".</p>
+      </a>
+      <a class="hub-card" href="footer-c.html">
+        <img src="thumbs/footer-c.jpg" alt="" loading="lazy">
+        <p class="hub-tag">C</p>
+        <h2>Palavra perfurada</h2>
+        <p class="hub-desc">"AO VIVO" vazado no painel mostra o palco por trás, com parallax. Depois a câmera atravessa o I e a foto toma a tela, com a chamada final por cima.</p>
+      </a>
+      <a class="hub-card" href="footer-d.html">
+        <img src="thumbs/footer-d.jpg" alt="" loading="lazy">
+        <p class="hub-tag">D</p>
+        <h2>Aurora viva</h2>
+        <p class="hub-desc">Sem foto: uma névoa verde de palco sobe do chão e segue de leve o cursor. A frase entra em foco linha a linha, com menu grande, as datas do tour e um relógio de Goiânia.</p>
+      </a>
+      <a class="hub-card" href="footer-e.html">
+        <img src="thumbs/footer-e.jpg" alt="" loading="lazy">
+        <p class="hub-tag">E</p>
+        <h2>Gaveta</h2>
+        <p class="hub-desc">O FAQ vira uma folha que encolhe, arredonda os cantos e sobe, descobrindo um ambiente verde-sálvia que estava por baixo, com "iGreen Live" gigante e apagado no chão.</p>
+      </a>
+      <a class="hub-card" href="footer-f.html">
+        <img src="thumbs/footer-f.jpg" alt="" loading="lazy">
+        <p class="hub-tag">F</p>
+        <h2>Letreiro</h2>
+        <p class="hub-desc">Um card escuro com chamada, formulário e o letreiro gigante "Garanta seu lugar", que acelera e inclina com a rolagem e fica lima no hover. Um brilho verde vaza por baixo do card.</p>
+      </a>
+      <a class="hub-card" href="footer-g.html">
+        <img src="thumbs/footer-g.jpg" alt="" loading="lazy">
+        <p class="hub-tag">G</p>
+        <h2>Crachá</h2>
+        <p class="hub-desc">Uma credencial do iGreen Live cai pendurada num cordão e balança com física de verdade. Dá para agarrar, arremessar e ver o brilho holográfico mudar com a inclinação.</p>
+      </a>
+      <a class="hub-card" href="footer-h.html">
+        <img src="thumbs/footer-h.jpg" alt="" loading="lazy">
+        <p class="hub-tag">H</p>
+        <h2>Telão de LED</h2>
+        <p class="hub-desc">Um telão de LED de ponta a ponta liga com uma varredura e passa as próximas paradas do tour. O cursor funciona como um refletor sobre os pontos.</p>
+      </a>
+    </div>
+
+    <p class="kicker hub-next">Selos das seções</p>
+    <h2 class="hub-h2">Selos, rodada 3<br><span>a partir da 09</span></h2>
+    <p class="hub-sub">A 09 (borda de energia), quatro variações com o ícone saindo do selo e quatro ideias fora da caixa. A rodada 2 continua em <a href="badges-rodada2.html">badges-rodada2.html</a>.</p>
+
+    <div class="hub-grid">
+      <a class="hub-card" href="badges.html">
+        <img src="thumbs/badges.jpg" alt="" loading="lazy">
+        <p class="hub-tag">09 + 8 propostas</p>
+        <h2>Selos das seções</h2>
+        <p class="hub-desc">Ícone emergindo, relevo, objeto 3D em vidro e holofote — o ícone sai da pílula com a base cortada. E fora da caixa: plugado, neon, trilha até o título e enxame.</p>
+      </a>
+    </div>
+
+    <p class="kicker hub-next">Rodada mais recente</p>
+    <h2 class="hub-h2">As escolhidas,<br><span>em novas versões</span></h2>
+    <p class="hub-sub">Cópias das propostas que você destacou, com os ajustes pedidos. As originais continuam intactas mais abaixo.</p>
+
+    <div class="hub-grid">
+      <a class="hub-card" href="section-hero-c-radial.html">
+        <img src="thumbs/section-hero-c-radial.jpg" alt="" loading="lazy">
+        <p class="hub-tag">C + C2</p>
+        <h2>Carga radial</h2>
+        <p class="hub-desc">O meio-termo entre a C e a C2: cards da C2, texto entre os dois tamanhos e véu escuro maior. A transformação é um círculo que nasce no vídeo do título e cresce pela parede.</p>
+      </a>
+      <a class="hub-card" href="section-hero-f2-tela.html">
+        <img src="thumbs/section-hero-f2-tela.jpg" alt="" loading="lazy">
+        <p class="hub-tag">F2</p>
+        <h2>Tela, com respiro</h2>
+        <p class="hub-desc">A F2 sem a imagem borrada no fundo e com mais espaço acima e abaixo do título.</p>
+      </a>
+      <a class="hub-card" href="section-hero-f2-soltos.html">
+        <img src="thumbs/section-hero-f2-soltos.jpg" alt="" loading="lazy">
+        <p class="hub-tag">F2</p>
+        <h2>Cards soltos</h2>
+        <p class="hub-desc">A mesma ideia da F2, mas com os cards soltos e em escada no lugar da tela fechada, sem fundo borrado e com o título respirando.</p>
+      </a>
+      <a class="hub-card" href="section-hero-e-sequencia.html">
+        <img src="thumbs/section-hero-e-sequencia.jpg" alt="" loading="lazy">
+        <p class="hub-tag">E + seção seguinte</p>
+        <h2>Correnteza em sequência</h2>
+        <p class="hub-desc">A hero E emendada na seção "Trabalho não é só renda…": as vidas se reúnem, voam para as mídias da seção e a frase se preenche, numa rolagem contínua.</p>
+      </a>
+      <a class="hub-card" href="section-hero-b-index.html">
+        <img src="thumbs/section-hero-b-index.jpg" alt="" loading="lazy">
+        <p class="hub-tag">B + hero atual</p>
+        <h2>O vale sobe</h2>
+        <p class="hub-desc">A hero atual do site com a ignição e o hover da B. Na rolagem, as colunas do vale sobem e viram um mural completo com a frase no centro.</p>
+      </a>
+    </div>
+
+    <p class="kicker hub-next">17 propostas para a hero</p>
+    <h2 class="hub-h2">O antes e depois<br><span>de cada história</span></h2>
+    <p class="hub-sub">Jeitos diferentes de contar a transformação: as histórias começam paradas e apagadas, e ganham cor e movimento quando a energia chega até elas.</p>
+
+    <div class="hub-grid">
+      <a class="hub-card" href="hero-b.html">
+        <img src="thumbs/hero-b.jpg" alt="" loading="lazy">
+        <p class="hub-tag">Hero B</p>
+        <h2>Ignição</h2>
+        <p class="hub-desc">Cards em profundidade em volta do título. "Vidas de verdade" acende em lima e transforma tudo em cor de uma vez; depois a cena fica calma.</p>
+      </a>
+      <a class="hub-card" href="hero-c.html">
+        <img src="thumbs/hero-c.jpg" alt="" loading="lazy">
+        <p class="hub-tag">Hero C</p>
+        <h2>Carga — original</h2>
+        <p class="hub-desc">A primeira versão restaurada: parede de colunas em preto e branco, a linha de carga para em 32% e a rolagem completa a carga.</p>
+      </a>
+      <a class="hub-card" href="hero-c2.html">
+        <img src="thumbs/hero-c2.jpg" alt="" loading="lazy">
+        <p class="hub-tag">Hero C2</p>
+        <h2>Carga completa</h2>
+        <p class="hub-desc">A parede original com cards um pouco menores. A carga sobe até 100% na entrada e cada card reage quando a luz passa por ele.</p>
+      </a>
+      <a class="hub-card" href="hero-c3.html">
+        <img src="thumbs/hero-c3.jpg" alt="" loading="lazy">
+        <p class="hub-tag">Hero C3</p>
+        <h2>Arquibancada</h2>
+        <p class="hub-desc">Uma arena de vidas em arcos ao redor do título. Uma "ola" colore tudo enquanto o selo conta até +2.000.</p>
+      </a>
+      <a class="hub-card" href="hero-d.html">
+        <img src="thumbs/hero-d.jpg" alt="" loading="lazy">
+        <p class="hub-tag">Hero D</p>
+        <h2>Retrato</h2>
+        <p class="hub-desc">A licenciada à direita com um anel de telas curvas girando em volta dela. Agora sem nenhuma tela piscando.</p>
+      </a>
+      <a class="hub-card" href="hero-d2.html">
+        <img src="thumbs/hero-d2.jpg" alt="" loading="lazy">
+        <p class="hub-tag">Hero D2</p>
+        <h2>Retrato ao centro</h2>
+        <p class="hub-desc">Composição de cartaz: a frase no alto, ela no centro e uma constelação de telas curvas em três profundidades.</p>
+      </a>
+      <a class="hub-card" href="hero-d3.html">
+        <img src="thumbs/hero-d3.jpg" alt="" loading="lazy">
+        <p class="hub-tag">Hero D3</p>
+        <h2>Órbita</h2>
+        <p class="hub-desc">Ela grande à esquerda, olhando para o texto; uma órbita larga de telas atravessa a tela e envolve os dois.</p>
+      </a>
+      <a class="hub-card" href="hero-d4.html">
+        <img src="thumbs/hero-d4.jpg" alt="" loading="lazy">
+        <p class="hub-tag">Hero D4</p>
+        <h2>Dupla exposição</h2>
+        <p class="hub-desc">A silhueta dela é uma janela cheia de histórias. A luz sobe por dentro dela, e a rolagem entra no mosaico até a frase final.</p>
+      </a>
+      <a class="hub-card" href="hero-e.html">
+        <img src="thumbs/hero-e.jpg" alt="" loading="lazy">
+        <p class="hub-tag">Hero E</p>
+        <h2>Correnteza</h2>
+        <p class="hub-desc">Refeita: texto à esquerda e três colunas de vídeos correndo à direita. Uma luz diagonal colore tudo de uma vez.</p>
+      </a>
+      <a class="hub-card" href="hero-f.html">
+        <img src="thumbs/hero-f.jpg" alt="" loading="lazy">
+        <p class="hub-tag">Hero F</p>
+        <h2>Tela</h2>
+        <p class="hub-desc">Uma tela de cinema inclinada com um mosaico de 13 vidas; uma frente de luz curva passa do cinza para a cor.</p>
+      </a>
+      <a class="hub-card" href="hero-f2.html">
+        <img src="thumbs/hero-f2.jpg" alt="" loading="lazy">
+        <p class="hub-tag">Hero F2</p>
+        <h2>Tela de cards</h2>
+        <p class="hub-desc">A mesma tela feita de 13 cards separados, no padrão da hero atual. Na rolagem ela fica de frente e termina numa frase.</p>
+      </a>
+      <a class="hub-card" href="hero-f3.html">
+        <img src="thumbs/hero-f3.jpg" alt="" loading="lazy">
+        <p class="hub-tag">Hero F3</p>
+        <h2>Plateia</h2>
+        <p class="hub-desc">22 celulares erguidos numa plateia, cada um com uma vida. A arena acende uma vez e a câmera sobe até a frase.</p>
+      </a>
+      <a class="hub-card" href="hero-g.html">
+        <img src="thumbs/hero-g.jpg" alt="" loading="lazy">
+        <p class="hub-tag">Hero G</p>
+        <h2>Mosaico de vidas</h2>
+        <p class="hub-desc">O número 2.000 feito de 453 pessoas. O mouse é uma lupa e a rolagem mergulha no ponto final do número.</p>
+      </a>
+      <a class="hub-card" href="hero-g2.html">
+        <img src="thumbs/hero-g2.jpg" alt="" loading="lazy">
+        <p class="hub-tag">Hero G2</p>
+        <h2>Frase única</h2>
+        <p class="hub-desc">O +2.000 feito de pessoas vira uma palavra no meio da frase, com o texto numa coluna só.</p>
+      </a>
+      <a class="hub-card" href="hero-g3.html">
+        <img src="thumbs/hero-g3.jpg" alt="" loading="lazy">
+        <p class="hub-tag">Hero G3</p>
+        <h2>A multidão</h2>
+        <p class="hub-desc">Na rolagem, o número vira uma multidão que se abre como cortina para os vídeos e a frase final.</p>
+      </a>
+      <a class="hub-card" href="hero-g4.html">
+        <img src="thumbs/hero-g4.jpg" alt="" loading="lazy">
+        <p class="hub-tag">Hero G4</p>
+        <h2>Lâmpada</h2>
+        <p class="hub-desc">A lâmpada em "G" do logo feita de 343 pessoas. Ela liga uma vez e, na rolagem, espalha raios de pessoas.</p>
+      </a>
+      <a class="hub-card" href="hero-h.html">
+        <img src="thumbs/hero-h.jpg" alt="" loading="lazy">
+        <p class="hub-tag">Hero H</p>
+        <h2>Painel de embarque</h2>
+        <p class="hub-desc">Um painel de aeroporto com 35 rostos que vira do cinza para a cor. Na rolagem, as letras formam "Próxima parada: Goiânia".</p>
+      </a>
+    </div>
+  </main>
+</body>
+</html>

@@ -1,0 +1,521 @@
+/* ============================================================
+   Hero B — Ignição
+   O clipe dentro da frase é o gerador: a cada batida ele emite uma
+   onda elíptica que atravessa as três órbitas de vídeos. Quem a onda
+   escolhe acende (luz → cor → movimento); o resto só recebe o brilho
+   da borda. Por quadro só mudam transform e opacity; o cinza é uma
+   foto pré-tratada (assets/img/hero-b/*-g.jpg) por cima do vídeo
+   pausado, então acender é apenas apagar essa foto.
+   ============================================================ */
+
+:root {
+  --hb-lime: #A8FF35;
+  --hb-lime-soft: #D8FFA6;
+  --hb-ink: #F3F6EC;
+  --hb-base: #06110A;
+}
+
+/* ============ Base (vale para todos os modos) ============ */
+
+.hb {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  isolation: isolate;
+}
+
+/* texto: mesmo conteúdo, um pouco mais de presença */
+.hb-copy {
+  position: relative;
+  z-index: 3;
+}
+/* véu escuro só atrás do texto: a onda e o mesh nunca disputam a leitura */
+.hb-copy::before {
+  content: '';
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  z-index: -1;
+  width: calc(100% + 280px);
+  max-width: 1360px;
+  height: calc(100% + 220px);
+  transform: translate(-50%, -50%);
+  background: radial-gradient(closest-side, rgba(1, 7, 2, 0.62) 0%, rgba(1, 7, 2, 0.4) 46%, rgba(1, 7, 2, 0.12) 76%, rgba(1, 7, 2, 0) 100%);
+  pointer-events: none;
+}
+
+.hb .title-clip {
+  position: relative;
+  overflow: visible;
+  background: transparent;
+  box-shadow: none;
+}
+.hb .title-clip video {
+  position: relative;
+  z-index: 1;
+  border-radius: 999px;
+  background: #0E2A17;
+  box-shadow: 0 0 0 1px rgba(243, 246, 236, 0.16), 0 12px 32px rgba(0, 0, 0, 0.35);
+}
+/* o gerador: um halo lima que pulsa a cada onda (só opacity/transform) */
+.hb-halo {
+  position: absolute;
+  left: -46%;
+  right: -46%;
+  top: -90%;
+  bottom: -90%;
+  z-index: 0;
+  border-radius: 50%;
+  background: radial-gradient(closest-side, rgba(168, 255, 53, 0.42) 0%, rgba(168, 255, 53, 0.16) 42%, rgba(168, 255, 53, 0.05) 68%, rgba(168, 255, 53, 0) 100%);
+  opacity: 0.32;
+  pointer-events: none;
+}
+/* núcleo de luz que ocupa a pílula enquanto ela abre */
+.hb-core {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  border-radius: 999px;
+  background: radial-gradient(closest-side, #F3FFE2 0%, var(--hb-lime-soft) 40%, rgba(168, 255, 53, 0.9) 100%);
+  box-shadow: 0 0 0 1px rgba(216, 255, 166, 0.5);
+  opacity: 0;
+  pointer-events: none;
+}
+/* aro fino lima na pílula: ela é a fonte de energia da cena */
+.hb .title-clip::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: 3;
+  border-radius: 999px;
+  box-shadow: inset 0 0 0 1px rgba(216, 255, 166, 0.28);
+  pointer-events: none;
+}
+
+/* ============ "vidas de verdade" acende ============
+   Três camadas do mesmo texto: a base apagada (a do site), a lima que
+   é revelada por uma cortina com borda suave (dois transforms opostos)
+   e a "quente", quase branca, que só pisca no clímax. O brilho
+   (text-shadow) é estático; anima-se só transform e opacity. */
+
+.hb-copy > * {
+  position: relative;
+  z-index: 1;
+}
+.hb-vline { position: relative; }
+.hb-lime {
+  position: absolute;
+  top: -0.3em;
+  bottom: -0.3em;
+  left: -0.5em;
+  right: -1.8em;
+  overflow: hidden;
+  opacity: 0;
+  -webkit-mask-image: linear-gradient(90deg, #000 0, #000 calc(100% - 1.3em), transparent 100%);
+  mask-image: linear-gradient(90deg, #000 0, #000 calc(100% - 1.3em), transparent 100%);
+  pointer-events: none;
+}
+.hb-lime > span {
+  position: absolute;
+  left: 0.5em;
+  top: 0.3em;
+  white-space: nowrap;
+  color: var(--hb-lime);
+  text-shadow: 0 0 0.2em rgba(168, 255, 53, 0.42), 0 0 0.62em rgba(168, 255, 53, 0.2);
+}
+.hb-hot {
+  position: absolute;
+  left: 0;
+  top: 0;
+  white-space: nowrap;
+  color: #F7FFEA;
+  text-shadow: 0 0 0.12em rgba(216, 255, 166, 0.95), 0 0 0.4em rgba(168, 255, 53, 0.75), 0 0 1.1em rgba(168, 255, 53, 0.4);
+  opacity: 0;
+  pointer-events: none;
+}
+/* a luz que percorre as letras na frente da cortina */
+.hb-edge {
+  position: absolute;
+  left: 0;
+  top: -0.32em;
+  width: 0.9em;
+  height: 1.66em;
+  border-radius: 50%;
+  background: radial-gradient(closest-side, rgba(255, 255, 255, 0.95) 0%, rgba(216, 255, 166, 0.62) 32%, rgba(168, 255, 53, 0.16) 66%, rgba(168, 255, 53, 0) 100%);
+  opacity: 0;
+  pointer-events: none;
+}
+
+/* a explosão de luz que sai da frase (posicionada pelo JS sobre ela) */
+.hb-burst,
+.hb-streak {
+  position: absolute;
+  left: 0;
+  top: 0;
+  z-index: 0;
+  border-radius: 50%;
+  opacity: 0;
+  pointer-events: none;
+}
+.hb-burst {
+  width: var(--hb-bw, 900px);
+  height: var(--hb-bh, 420px);
+  background: radial-gradient(closest-side, rgba(226, 255, 186, 0.62) 0%, rgba(168, 255, 53, 0.3) 28%, rgba(168, 255, 53, 0.1) 58%, rgba(168, 255, 53, 0) 100%);
+}
+/* risco anamórfico: uma linha de luz horizontal que atravessa a tela */
+.hb-streak {
+  width: var(--hb-kw, 1800px);
+  height: var(--hb-kh, 22px);
+  background: radial-gradient(closest-side, rgba(255, 255, 255, 0.9) 0%, rgba(216, 255, 166, 0.55) 26%, rgba(168, 255, 53, 0.14) 60%, rgba(168, 255, 53, 0) 100%);
+}
+
+/* ============ Cards ============ */
+
+.hb-tile {
+  position: relative;
+  margin: 0;
+}
+.hb-float {
+  position: absolute;
+  inset: 0;
+}
+.hb-card {
+  position: absolute;
+  inset: 0;
+  border-radius: 15px;
+  overflow: hidden;
+  background: var(--hb-base);
+  box-shadow: inset 0 0 0 1px rgba(243, 246, 236, 0.08), 0 28px 60px -24px rgba(0, 0, 0, 0.7);
+  transition: transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.hb-card video,
+.hb-cover,
+.hb-gray {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  pointer-events: none;
+}
+/* capa colorida (o pôster) por cima do vídeo: troca de clipe suave,
+   sem piscar — o vídeo começa por trás dela e ela dissolve */
+.hb-cover {
+  z-index: 1;
+  transition: opacity 1.3s cubic-bezier(0.45, 0, 0.25, 1);
+}
+/* "antes": a foto cinza por cima de tudo */
+.hb-gray {
+  z-index: 1;
+  transition: opacity 1.5s cubic-bezier(0.45, 0, 0.25, 1);
+}
+/* escurecimento por profundidade (estático; menor quando aceso) */
+.hb-shade {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  background: #010702;
+  opacity: var(--hb-dim, 0.2);
+  transition: opacity 1.5s cubic-bezier(0.45, 0, 0.25, 1);
+  pointer-events: none;
+}
+/* a luz que atravessa o card quando a onda chega (só transform/opacity) */
+.hb-sweep {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  z-index: 3;
+  width: var(--hb-sw, 400px);
+  height: var(--hb-sw, 400px);
+  margin: calc(var(--hb-sw, 400px) / -2) 0 0 calc(var(--hb-sw, 400px) / -2);
+  background: linear-gradient(90deg,
+    rgba(216, 255, 166, 0) 34%,
+    rgba(216, 255, 166, 0.16) 43%,
+    rgba(243, 255, 226, 0.62) 49.2%,
+    rgba(255, 255, 255, 0.78) 50%,
+    rgba(216, 255, 166, 0.34) 52%,
+    rgba(168, 255, 53, 0.08) 58%,
+    rgba(168, 255, 53, 0) 66%);
+  opacity: 0;
+  pointer-events: none;
+}
+/* aro lima: acende rápido quando a onda toca o card */
+.hb-rim {
+  position: absolute;
+  inset: 0;
+  z-index: 4;
+  border-radius: inherit;
+  box-shadow: inset 0 0 0 1px rgba(216, 255, 166, 0.9), inset 0 0 26px rgba(168, 255, 53, 0.32);
+  opacity: 0;
+  pointer-events: none;
+}
+/* anel de sobreposição premium (padrão dos cards do site) */
+.hb-card::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: 5;
+  border-radius: inherit;
+  padding: 1px;
+  pointer-events: none;
+  mix-blend-mode: overlay;
+  background: linear-gradient(to top, rgba(255, 255, 255, 0.7) 0%, rgba(255, 255, 255, 0.24) 22%, rgba(255, 255, 255, 0.08) 40%, rgba(255, 255, 255, 0.03) 100%);
+  -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor;
+  mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+  mask-composite: exclude;
+}
+/* luz lima que se acumula atrás de um card aceso */
+.hb-glow {
+  position: absolute;
+  inset: -22% -26%;
+  border-radius: 50%;
+  background: radial-gradient(closest-side, rgba(168, 255, 53, 0.3) 0%, rgba(168, 255, 53, 0.12) 46%, rgba(168, 255, 53, 0.03) 74%, rgba(168, 255, 53, 0) 100%);
+  opacity: 0;
+  transition: opacity 1.6s cubic-bezier(0.45, 0, 0.25, 1);
+  pointer-events: none;
+}
+/* anel local do hover */
+.hb-ping {
+  position: absolute;
+  inset: 0;
+  border-radius: 16px;
+  box-shadow: 0 0 0 1px rgba(216, 255, 166, 0.75), 0 0 22px rgba(168, 255, 53, 0.3);
+  opacity: 0;
+  pointer-events: none;
+}
+
+/* aceso: a foto cinza some, o véu de profundidade afina, a luz aparece */
+.hb-lit .hb-gray,
+.hb-still .hb-gray {
+  opacity: 0;
+  transition: opacity 0.9s cubic-bezier(0.3, 0.6, 0.2, 1);
+}
+.hb-lit .hb-shade,
+.hb-still .hb-shade {
+  opacity: calc(var(--hb-dim, 0.2) * 0.3);
+  transition-duration: 0.9s;
+}
+.hb-lit .hb-cover {
+  opacity: 0;
+  transition-duration: 0.6s;
+}
+.hb-lit .hb-glow {
+  opacity: 0.6;
+  transition-duration: 1s;
+}
+/* em cor, parado (depois da transformação): só um resto de luz */
+.hb-still .hb-glow {
+  opacity: 0.16;
+  transition-duration: 1.4s;
+}
+.hb-hover .hb-card { transform: scale(1.04); }
+
+/* a onda do gerador */
+.hb-wave {
+  display: none;
+}
+
+/* ============ Seção seguinte ============ */
+
+.hb-next {
+  position: relative;
+  z-index: 5;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 90vh;
+  padding: 18vh 24px 12vh;
+  background: #010702;
+}
+.hb-next-line {
+  max-width: 900px;
+  text-align: center;
+  font-family: var(--font-display);
+  font-weight: 500;
+  font-size: clamp(34px, 4.2vw, 64px);
+  line-height: 1.1;
+  letter-spacing: -0.032em;
+  color: var(--hb-ink);
+}
+.hb-next-line span { color: rgba(243, 246, 236, 0.4); }
+
+/* ============ Modo estático (sem JS, < 900px) ============ */
+
+.hb {
+  padding-top: 124px;
+}
+.hb-stage {
+  position: relative;
+  z-index: 2;
+  order: 2;
+  width: 100%;
+  margin-top: 56px;
+}
+.hb-world,
+.hb-orbit {
+  display: contents;
+}
+.hb-tiles {
+  display: flex;
+  justify-content: center;
+  gap: 12px;
+  padding: 0 16px 72px;
+}
+.hb-tiles .hb-tile {
+  flex: 0 1 220px;
+  aspect-ratio: 4 / 5;
+}
+.hb-tiles .hb-tile:nth-child(n + 5) { display: none; }
+.hb-tiles .hb-gray,
+.hb-tiles .hb-shade { display: none; }
+
+@media (max-width: 620px) {
+  .hb-tiles .hb-tile:nth-child(n + 4) { display: none; }
+}
+
+/* ============ Modo 3D (JS ativo, tela ≥ 900px) ============ */
+
+.hb-3d .hb-scroller {
+  position: relative;
+  height: 170vh;
+}
+.hb-3d .hb {
+  position: sticky;
+  top: 0;
+  height: 100vh;
+  min-height: 680px;
+  padding: 0;
+  justify-content: center;
+}
+/* a seção seguinte sobe por cima enquanto o hero faz a saída; a frase
+   chega perto do centro da tela no fim da passagem */
+.hb-3d .hb-next {
+  margin-top: -70vh;
+  min-height: 160vh;
+  align-items: flex-start;
+  padding: 18vh 24px 0;
+  background: linear-gradient(to bottom, rgba(1, 7, 2, 0) 0, rgba(1, 7, 2, 0.72) 9vh, #010702 20vh);
+}
+/* na saída a energia se espalha: todos os cards ganham cor enquanto
+   as órbitas se abrem (uma classe, transição de opacity no compositor) */
+.hb-exiting .hb-tile .hb-gray {
+  opacity: 0;
+  transition: opacity 0.9s cubic-bezier(0.3, 0.6, 0.2, 1);
+}
+.hb-exiting .hb-tile .hb-shade { opacity: calc(var(--hb-dim, 0.2) * 0.3); transition-duration: 0.9s; }
+
+.hb-3d .hb-copy {
+  margin-top: 52px;
+}
+.hb-3d .hb::after { height: 9vh; }
+
+.hb-3d .hb-stage {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  order: 0;
+  margin: 0;
+  perspective: var(--hb-p, 1300px);
+  perspective-origin: var(--hb-ox, 50%) var(--hb-oy, 50%);
+  pointer-events: none;
+}
+.hb-3d .hb-world,
+.hb-3d .hb-orbit {
+  display: block;
+  position: absolute;
+  inset: 0;
+  transform-style: preserve-3d;
+}
+.hb-3d .hb-spin {
+  position: absolute;
+  inset: 0;
+  transform-style: preserve-3d;
+}
+.hb-3d .hb-world,
+.hb-3d .hb-orbit,
+.hb-3d .hb-spin { transform-origin: var(--hb-ox, 50%) var(--hb-oy, 50%); }
+.hb-3d .hb-tiles { display: none; }
+
+.hb-3d .hb-tile {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: var(--w, 160px);
+  height: var(--h, 200px);
+  pointer-events: auto;
+}
+.hb-3d .hb-tile.hb-off { display: none; }
+.hb-3d .hb-wave {
+  display: block;
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: var(--hb-ww, 1000px);
+  height: var(--hb-wh, 640px);
+  border-radius: 50%;
+  opacity: 0;
+  pointer-events: none;
+  /* anel com rastro: borda lima nítida, brilho morrendo para dentro */
+  background: radial-gradient(closest-side,
+    rgba(168, 255, 53, 0) 0%,
+    rgba(168, 255, 53, 0) 74%,
+    rgba(168, 255, 53, 0.022) 86%,
+    rgba(168, 255, 53, 0.07) 93.5%,
+    rgba(216, 255, 166, 0.26) 97.2%,
+    rgba(243, 255, 226, 0.72) 98.7%,
+    rgba(168, 255, 53, 0.18) 99.4%,
+    rgba(168, 255, 53, 0) 100%);
+  will-change: transform, opacity;
+}
+.hb-3d .hb-wave--echo {
+  background: radial-gradient(closest-side,
+    rgba(168, 255, 53, 0) 0%,
+    rgba(168, 255, 53, 0) 84%,
+    rgba(168, 255, 53, 0.05) 94%,
+    rgba(216, 255, 166, 0.36) 98.6%,
+    rgba(168, 255, 53, 0) 100%);
+}
+
+/* fundo e loops CSS param quando o hero não está à vista */
+.hb-paused .rich-bg .band { animation-play-state: paused; }
+
+/* tipografia: o título tem o mesmo tamanho da frase da seção seguinte
+   ("Trabalho não é só renda…"); sub e botões acompanham */
+.hb-3d .title {
+  margin-top: 22px;
+  font-size: clamp(34px, 4.2vw, 64px);
+  line-height: 1.06;
+  letter-spacing: -0.032em;
+}
+.hb-3d .sub {
+  margin-top: 20px;
+  max-width: 52ch;
+  font-size: clamp(15.5px, 1.15vw, 17.5px);
+}
+.hb-3d .actions { margin-top: 28px; }
+.hb-3d .next-stop { margin-top: 18px; font-size: 13.5px; }
+@media (min-width: 2300px) and (min-height: 1300px) {
+  .hb-3d .title,
+  .hb-next-line { font-size: 76px; }
+  .hb-3d .title { margin-top: 26px; }
+  .hb-3d .sub { font-size: 20px; margin-top: 24px; }
+  .hb-3d .hero-badge { height: 44px; font-size: 16px; padding: 0 18px 0 6px; }
+  .hb-3d .hero-badge .avatars img { width: 32px; height: 32px; }
+  .hb-3d .actions { margin-top: 32px; }
+  .hb-3d .actions .btn-primary,
+  .hb-3d .actions .btn-ghost { height: 56px; font-size: 17.5px; }
+  .hb-3d .actions .btn-ghost { padding: 0 30px; }
+  .hb-3d .actions .btn-primary:has(.chip) { padding: 0 7px 0 28px; }
+  .hb-3d .actions .chip { width: 42px; height: 42px; }
+  .hb-3d .next-stop { font-size: 15.5px; margin-top: 22px; }
+}
+
+/* ============ Movimento reduzido: estático, colorido, calmo ============ */
+
+.hb-rm .hb-gray { display: none; }
+.hb-rm .hb-shade { opacity: calc(var(--hb-dim, 0.2) * 0.4); }
+.hb-rm .hb-scroller { height: auto; }
+.hb-rm .hb { position: relative; }
+.hb-rm .hb-next { margin-top: 0; padding-top: 18vh; background: #010702; }

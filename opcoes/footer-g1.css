@@ -1,0 +1,782 @@
+/* ============================================================
+   Rodapé G1 — "Crachá na aurora"
+   One open, full-bleed closing screen. The room is the living aurora
+   of footer D, kept low and textured with grain; its strongest light
+   stands BEHIND the credential, so the card reads as a dark silhouette
+   with a lit rim. The credential hangs from above the screen on the
+   right, in the last three columns of the grid; everything typographic
+   lives in the first nine (statement, actions, menu, tour, contact).
+   Light layers are pre-blurred gradients moved by transform only;
+   their CSS loops run only while the footer is on screen (.fg1-live).
+   The lanyard physics lives in footer-g1.js.
+   ============================================================ */
+
+.fg1-foot {
+  --fg1-w: min(clamp(1240px, 64vw, 1640px), 100vw - 64px);                /* content width */
+  --fg1-g: 24px;                                                         /* column gap */
+  --fg1-col: calc((var(--fg1-w) - 11 * var(--fg1-g)) / 12);
+  --fg1-cw: calc(var(--fg1-col) * 3 + var(--fg1-g) * 2);                 /* the card: columns 10-12 */
+  --fg1-tw: calc(var(--fg1-col) * 9 + var(--fg1-g) * 8);                 /* the type: columns 1-9 */
+  --fg1-st: min(12.4vh, calc(var(--fg1-tw) / 7.2));                      /* statement size */
+  --fg1-mn: min(clamp(30px, min(2.75vw, 4.5vh), 62px), calc(var(--fg1-cw) / 6.3)); /* menu size */
+  --fg1-sm: clamp(14px, calc(0.12vw + 12.3px), 15.5px);                  /* small text */
+  --fg1-text: #F3F6EC;
+  --fg1-mute: rgba(243, 246, 236, 0.4);
+  --fg1-lime: #A8FF35;
+  --fg1-lime-soft: #D8FFA6;
+  --fg1-cy: 62%;                                                         /* card centre at rest (set by the script) */
+  position: relative;
+  display: flex;
+  min-height: 100vh;
+  padding: clamp(118px, 14.5vh, 196px) 0 clamp(20px, 3vh, 40px);
+  isolation: isolate;
+  background: var(--bg);
+  color: var(--fg1-text);
+}
+
+/* ============ the room ============ */
+
+.fg1-room {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  overflow: hidden;
+  pointer-events: none;
+  background: linear-gradient(to bottom, #010702 0%, #010803 46%, #020C06 100%);
+}
+.fg1-rise {
+  position: absolute;
+  inset: 0;
+  transform-origin: 50% 100%;
+  will-change: transform, opacity;
+}
+.fg1-l {
+  position: absolute;
+  display: block;
+  will-change: transform;
+  animation-play-state: paused;
+  animation-timing-function: cubic-bezier(0.45, 0, 0.55, 1);
+  animation-iteration-count: infinite;
+  animation-direction: alternate;
+}
+.fg1-live .fg1-l { animation-play-state: running; }
+
+/* deep green body of the haze, low across the whole floor (dim) */
+.fg1-body {
+  left: -15%;
+  width: 130%;
+  bottom: -60%;
+  height: 84%;
+  background: radial-gradient(closest-side, rgba(8, 70, 27, 0.72), rgba(6, 46, 18, 0.38) 52%, rgba(4, 26, 10, 0) 100%);
+  transform-origin: 50% 100%;
+  animation-name: fg1-body;
+  animation-duration: 21s;
+}
+@keyframes fg1-body {
+  0%   { transform: translate3d(-2%, 3%, 0) scale(0.98, 0.94); }
+  100% { transform: translate3d(2%, -2%, 0) scale(1.05, 1.06); }
+}
+
+/* the house aurora artwork, kept to the right half and below the type */
+.fg1-ribbon {
+  left: 4%;
+  width: 116%;
+  bottom: -50%;
+  height: 82%;
+  object-fit: cover;
+  object-position: 50% 62%;
+  opacity: 0.42;
+  -webkit-mask-image: radial-gradient(60% 62% at 62% 74%, #000 26%, rgba(0, 0, 0, 0.45) 54%, transparent 80%);
+  mask-image: radial-gradient(60% 62% at 62% 74%, #000 26%, rgba(0, 0, 0, 0.45) 54%, transparent 80%);
+  transform-origin: 50% 100%;
+  animation-name: fg1-ribbon;
+  animation-duration: 27s;
+}
+@keyframes fg1-ribbon {
+  0%   { transform: translate3d(-4%, 3%, 0) scale(1.02, 0.92); }
+  100% { transform: translate3d(3%, -2%, 0) scale(1.08, 1.08); }
+}
+
+/* the backlight: stands in the credential's column, behind the card.
+   It wakes up (opacity, one-shot) when the card lands in it. */
+.fg1-backlight {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: calc(50% + var(--fg1-w) / 2 - var(--fg1-cw) / 2);
+  width: 0;
+  opacity: 0.45;
+  transition: opacity 2.6s cubic-bezier(0.25, 0.1, 0.25, 1);
+}
+.fg1-lit .fg1-backlight { opacity: 1; }
+
+/* a tall plume rising from the floor through the card */
+.fg1-plume {
+  left: calc(var(--fg1-cw) * -1.6);
+  width: calc(var(--fg1-cw) * 3.2);
+  bottom: -46%;
+  height: 128%;
+  background: radial-gradient(closest-side, rgba(168, 255, 53, 0.4), rgba(118, 224, 50, 0.17) 40%, rgba(70, 180, 50, 0.05) 70%, rgba(70, 180, 50, 0) 100%);
+  transform-origin: 50% 100%;
+  animation-name: fg1-plume;
+  animation-duration: 17s;
+}
+@keyframes fg1-plume {
+  0%   { transform: translate3d(-5%, 3%, 0) rotate(-4deg) scale(0.95, 0.92); }
+  100% { transform: translate3d(5%, -2%, 0) rotate(3deg) scale(1.05, 1.06); }
+}
+
+/* the hot spot right behind the card's lower half: this is what
+   spills around the silhouette */
+.fg1-core {
+  left: calc(var(--fg1-cw) * -0.95);
+  width: calc(var(--fg1-cw) * 1.9);
+  top: calc(var(--fg1-cy) - var(--fg1-cw) * 0.95);
+  height: calc(var(--fg1-cw) * 2.3);
+  background: radial-gradient(closest-side, rgba(206, 255, 128, 0.5), rgba(168, 255, 53, 0.22) 42%, rgba(120, 220, 50, 0.06) 72%, rgba(120, 220, 50, 0) 100%);
+  animation-name: fg1-core;
+  animation-duration: 11s;
+}
+@keyframes fg1-core {
+  0%   { transform: scale(0.94, 0.96); opacity: 0.8; }
+  100% { transform: scale(1.06, 1.05); opacity: 1; }
+}
+
+/* a low ember on the left floor, kept below the type */
+.fg1-ember {
+  left: -16%;
+  width: 66%;
+  bottom: -36%;
+  height: 60%;
+  background: radial-gradient(closest-side, rgba(118, 224, 50, 0.2), rgba(70, 170, 40, 0.07) 52%, rgba(70, 170, 40, 0) 100%);
+  transform-origin: 30% 100%;
+  animation-name: fg1-ember;
+  animation-duration: 19s;
+  animation-delay: -7s;
+}
+@keyframes fg1-ember {
+  0%   { transform: translate3d(-4%, 4%, 0) scale(0.94, 0.9); }
+  100% { transform: translate3d(5%, -1%, 0) scale(1.06, 1.08); }
+}
+
+/* the floor light, weighted to the right */
+.fg1-floor {
+  left: -10%;
+  width: 120%;
+  bottom: -15%;
+  height: 28%;
+  background: radial-gradient(50% 50% at 68% 100%, rgba(216, 255, 166, 0.24), rgba(168, 255, 53, 0.08) 46%, rgba(168, 255, 53, 0) 78%);
+  transform-origin: 68% 100%;
+  animation-name: fg1-floor;
+  animation-duration: 13s;
+}
+@keyframes fg1-floor {
+  0%   { transform: scale(0.96, 0.9); opacity: 0.7; }
+  100% { transform: scale(1.06, 1.1); opacity: 1; }
+}
+
+/* film grain: texture in the light, invisible on the black (static) */
+.fg1-grain {
+  position: absolute;
+  inset: 0;
+  background: url("../assets/img/footer-shared/grain-256.png") repeat 0 0 / 256px 256px;
+  mix-blend-mode: overlay;
+  opacity: 0.16;
+}
+
+/* the hand-over: the top of the room is always the page's own black */
+.fg1-veil {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+  height: 46%;
+  background: linear-gradient(to bottom, #010702 0%, rgba(1, 7, 2, 0.88) 42%, rgba(1, 7, 2, 0) 100%);
+}
+
+/* ============ content ============ */
+
+.fg1-in {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  width: var(--fg1-w);
+  margin: 0 auto;
+}
+
+/* statement + actions in the first nine columns */
+.fg1-head {
+  display: grid;
+  grid-template-columns: repeat(12, minmax(0, 1fr));
+  column-gap: var(--fg1-g);
+}
+.fg1-st {
+  grid-column: 1 / 10;
+  grid-row: 1;
+  margin: 0;
+  font-family: var(--font-display);
+  font-weight: 500;
+  font-size: var(--fg1-st);
+  line-height: 0.94;
+  letter-spacing: -0.045em;
+  color: var(--fg1-text);
+}
+/* each line is its own mask: room above for the accent, below for descenders */
+.fg1-l1 {
+  display: block;
+  overflow: hidden;
+  padding: 0.07em 0 0.12em;
+  margin: -0.07em 0 -0.12em;
+}
+.fg1-li { display: block; }
+.fg1-mute { color: var(--fg1-mute); }
+
+.fg1-actions {
+  grid-column: 1 / 10;
+  grid-row: 2;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-top: clamp(30px, 4.4vh, 56px);
+}
+.fg1-mag {
+  transition: transform 0.7s cubic-bezier(0.2, 0.7, 0.2, 1), background-color 0.25s ease;
+  will-change: transform;
+}
+.fg1-ghost {
+  /* the site's ghost pill, without a backdrop blur over the light */
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
+}
+.fg1-slot {
+  grid-column: 10 / 13;
+  grid-row: 1 / 3;
+  pointer-events: none;
+}
+
+/* the middle row: menu · tour · contact on columns 1 / 4 / 7 */
+.fg1-row {
+  position: relative;
+  display: grid;
+  grid-template-columns: repeat(12, minmax(0, 1fr));
+  column-gap: var(--fg1-g);
+  margin-top: clamp(48px, calc(14vh - 70px), 150px);
+  margin-bottom: clamp(36px, 5vh, 64px); /* the least air above the bar */
+  padding-top: clamp(26px, 3.4vh, 48px);
+}
+.fg1-rule {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: var(--fg1-tw);
+  height: 1px;
+  background: rgba(243, 246, 236, 0.1);
+  transform-origin: 0 50%;
+}
+.fg1-menu {
+  grid-column: 1 / 4;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+.fg1-tour-col { grid-column: 4 / 7; }
+.fg1-contact { grid-column: 7 / 10; }
+
+.fg1-menu-a {
+  position: relative;
+  display: block;
+  font-family: var(--font-display);
+  font-weight: 500;
+  font-size: var(--fg1-mn);
+  line-height: 1.1;
+  letter-spacing: -0.032em;
+  color: var(--fg1-text);
+  transition: opacity 0.5s ease;
+}
+/* the dot that slides in before the hovered item */
+.fg1-menu-a::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 50%;
+  width: 0.2em;
+  height: 0.2em;
+  margin-top: -0.1em;
+  border-radius: 50%;
+  background: var(--fg1-lime);
+  box-shadow: 0 0 12px rgba(168, 255, 53, 0.7);
+  transform: scale(0);
+  transition: transform 0.6s cubic-bezier(0.19, 1, 0.22, 1);
+}
+.fg1-roll {
+  display: block;
+  height: 1.1em;
+  overflow: hidden;
+  transition: transform 0.7s cubic-bezier(0.19, 1, 0.22, 1);
+}
+.fg1-roll span {
+  display: block;
+  transition: transform 0.7s cubic-bezier(0.19, 1, 0.22, 1);
+}
+.fg1-roll span + span { color: var(--fg1-lime-soft); }
+.fg1-menu-a:hover .fg1-roll { transform: translateX(0.5em); }
+.fg1-menu-a:hover .fg1-roll span { transform: translateY(-100%); }
+.fg1-menu-a:hover::before { transform: scale(1); }
+.fg1-menu:has(.fg1-menu-a:hover) .fg1-menu-a:not(:hover) { opacity: 0.32; }
+
+.fg1-h {
+  margin: 0 0 18px;
+  font-family: var(--font-display);
+  font-weight: 400;
+  font-size: var(--fg1-sm);
+  line-height: 1;
+  color: var(--fg1-mute);
+}
+.fg1-tour {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+}
+.fg1-tour li {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 7px 0 8px;
+  border-bottom: 1px solid rgba(243, 246, 236, 0.08);
+  font-size: clamp(15px, calc(0.2vw + 12.1px), 17px);
+  line-height: 1.3;
+  color: rgba(243, 246, 236, 0.72);
+}
+.fg1-tour li:first-child { padding-top: 0; }
+.fg1-tour li span + span {
+  font-variant-numeric: tabular-nums;
+  color: rgba(243, 246, 236, 0.42);
+}
+.fg1-tour li.is-next span:first-child {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  color: var(--fg1-text);
+}
+.fg1-tour li.is-next span:first-child::before {
+  content: '';
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--fg1-lime);
+  box-shadow: 0 0 8px rgba(168, 255, 53, 0.6);
+}
+.fg1-tour li.is-next span + span { color: var(--fg1-lime-soft); }
+
+/* text links: a hairline draws in from the left, leaves to the right */
+.fg1-u {
+  position: relative;
+  display: inline-block;
+  color: rgba(243, 246, 236, 0.72);
+  transition: color 0.35s ease;
+}
+.fg1-u::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: -2px;
+  height: 1px;
+  background: currentColor;
+  transform: scaleX(0);
+  transform-origin: right center;
+  transition: transform 0.55s cubic-bezier(0.19, 1, 0.22, 1);
+}
+.fg1-u:hover,
+.fg1-u:focus-visible { color: var(--fg1-text); }
+.fg1-u:hover::after,
+.fg1-u:focus-visible::after {
+  transform: scaleX(1);
+  transform-origin: left center;
+}
+
+.fg1-contact {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+.fg1-mail {
+  font-size: clamp(17px, calc(0.25vw + 13.4px), 20px);
+  letter-spacing: -0.01em;
+  color: var(--fg1-text);
+}
+.fg1-phone {
+  margin-top: 10px;
+  font-size: clamp(15px, calc(0.2vw + 12.1px), 17px);
+}
+.fg1-addr {
+  margin: 10px 0 0;
+  font-size: var(--fg1-sm);
+  color: rgba(243, 246, 236, 0.42);
+}
+.fg1-social {
+  list-style: none;
+  margin: 24px 0 0;
+  padding: 0;
+  display: grid;
+  grid-template-columns: auto auto;
+  gap: 8px 28px;
+  font-size: clamp(15px, calc(0.2vw + 12.1px), 17px);
+}
+
+/* bottom bar: copy · made · legal · clock on columns 1 / 4 / 7 / 10 */
+.fg1-bar {
+  display: grid;
+  grid-template-columns: repeat(12, minmax(0, 1fr));
+  column-gap: var(--fg1-g);
+  align-items: center;
+  margin-top: auto;
+  padding-top: 20px;
+  border-top: 1px solid rgba(243, 246, 236, 0.12);
+  font-size: var(--fg1-sm);
+  line-height: 1.2;
+  color: rgba(243, 246, 236, 0.64);
+}
+.fg1-bar p { margin: 0; }
+.fg1-copy { grid-column: 1 / 7; white-space: nowrap; }
+.fg1-copy span {
+  margin-left: 16px;
+  padding-left: 16px;
+  border-left: 1px solid rgba(243, 246, 236, 0.16);
+}
+.fg1-legal {
+  grid-column: 7 / 10;
+  display: flex;
+  gap: 28px;
+  white-space: nowrap;
+}
+.fg1-legal .fg1-u { color: rgba(243, 246, 236, 0.64); }
+.fg1-legal .fg1-u:hover { color: var(--fg1-text); }
+.fg1-clock {
+  grid-column: 10 / 13;
+  justify-self: end;
+  display: inline-flex;
+  align-items: baseline;
+  gap: 10px;
+}
+.fg1-clock-city { color: rgba(243, 246, 236, 0.5); }
+.fg1-clock-t {
+  min-width: 8ch;
+  font-variant-numeric: tabular-nums;
+  letter-spacing: 0.01em;
+  color: var(--fg1-text);
+}
+
+/* ============================================================
+   The lanyard stage
+   ============================================================ */
+
+.fg1-stage {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  pointer-events: none;
+}
+.fg1-strap {
+  /* above the card: the clip runs over its top edge into the slot */
+  position: absolute;
+  z-index: 2;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+
+/* ---------- the credential ---------- */
+
+.fg1-card {
+  position: absolute;
+  z-index: 1;
+  left: 0;
+  top: 0;
+  width: var(--fg1-cw);
+  aspect-ratio: 54 / 86; /* a vertical CR80 badge */
+  font-size: calc(var(--fg1-cw) / 17.5);
+  transform-origin: 50% 0;
+  pointer-events: auto;
+  cursor: grab;
+  touch-action: none;
+  -webkit-user-select: none;
+  user-select: none;
+  will-change: transform;
+  /* parked out of sight until the script hangs it */
+  transform: translate3d(-200vw, -200vh, 0);
+}
+.fg1-card.is-drag { cursor: grabbing; }
+
+/* the backlight caught around the silhouette: a glow that hugs the
+   card's shape, stronger at the bottom where the light comes from.
+   Rasterised once with the card layer; only its opacity changes. */
+.fg1-halo {
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  border-radius: 1.1em;
+  opacity: 0;
+  box-shadow:
+    0 0 0.5em 0 rgba(216, 255, 166, 0.16),
+    0 0.22em 0.34em 0 rgba(226, 255, 184, 0.52),
+    0 0.55em 1.3em 0.04em rgba(190, 255, 100, 0.36),
+    0 1.4em 3.6em 0.3em rgba(168, 255, 53, 0.22),
+    0 2.8em 8em 1.2em rgba(130, 235, 50, 0.13);
+  will-change: opacity;
+}
+
+.fg1-face {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  padding: 0.875em 0.875em 0;
+  border-radius: 1.1em;
+  overflow: hidden;
+  isolation: isolate;
+  /* matte black PVC: a near-black body, a soft top light, fine grain */
+  background:
+    radial-gradient(120% 60% at 50% 0%, rgba(243, 246, 236, 0.035), rgba(243, 246, 236, 0) 60%),
+    linear-gradient(172deg, #0B140E 0%, #070E0A 48%, #050A07 100%);
+  box-shadow: 0 1.2em 2.6em -0.8em rgba(0, 0, 0, 0.6);
+}
+.fg1-face::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  background: url("../assets/img/footer-shared/grain-256.png") repeat 0 0 / 96px 96px;
+  mix-blend-mode: soft-light;
+  opacity: 0.32;
+}
+/* lime foil edge: brightest along the sides and the bottom, where the
+   backlight wraps around the card */
+.fg1-face::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: 6;
+  border-radius: inherit;
+  padding: 1px;
+  pointer-events: none;
+  background: linear-gradient(to bottom,
+    rgba(232, 255, 200, 0.42) 0%,
+    rgba(216, 255, 166, 0.14) 16%,
+    rgba(168, 255, 53, 0.1) 46%,
+    rgba(168, 255, 53, 0.34) 78%,
+    rgba(216, 255, 166, 0.7) 100%);
+  -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor;
+  mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+  mask-composite: exclude;
+}
+
+/* punched slot where the clip goes through */
+.fg1-hole {
+  position: absolute;
+  left: 50%;
+  top: 0.62em;
+  width: 2.5em;
+  height: 0.52em;
+  translate: -50% 0;
+  border-radius: 999px;
+  background: #010402;
+  box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.9), 0 1px 0 rgba(243, 246, 236, 0.08);
+}
+
+.fg1-card-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: 1.3em;
+}
+.fg1-card-logo {
+  display: block;
+  height: 1.12em;
+  width: auto;
+}
+.fg1-card-ed {
+  font-size: 0.8125em;
+  font-weight: 500;
+  letter-spacing: -0.01em;
+  color: var(--fg1-text);
+}
+.fg1-card-ed i {
+  font-style: normal;
+  color: var(--fg1-mute);
+}
+
+.fg1-photo {
+  position: relative;
+  flex: 1 1 auto;
+  min-height: 0;
+  margin-top: 0.75em;
+  border-radius: 0.6em;
+  overflow: hidden;
+  background: #0C2414;
+}
+.fg1-photo img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: 50% 22%;
+  pointer-events: none;
+}
+.fg1-photo::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  box-shadow: inset 0 0 0 1px rgba(243, 246, 236, 0.08);
+  background: linear-gradient(180deg, rgba(6, 17, 10, 0) 58%, rgba(6, 17, 10, 0.5) 100%);
+}
+
+.fg1-id { margin-top: 0.85em; }
+.fg1-name {
+  margin: 0;
+  font-family: var(--font-display);
+  font-weight: 500;
+  font-size: 1.95em;
+  line-height: 1;
+  letter-spacing: -0.035em;
+  color: var(--fg1-text);
+}
+.fg1-meta {
+  margin: 0.55em 0 0;
+  font-size: 0.78em;
+  line-height: 1.38;
+  letter-spacing: -0.005em;
+  color: var(--fg1-mute);
+}
+.fg1-meta span { color: rgba(243, 246, 236, 0.86); }
+
+.fg1-card-foot {
+  display: flex;
+  align-items: flex-end;
+  gap: 0.85em;
+  margin-top: 0.85em;
+  padding-bottom: 0.85em;
+}
+.fg1-qr {
+  flex: 0 0 auto;
+  display: block;
+  width: 3.5em;
+  height: 3.5em;
+  padding: 0.28em;
+  border-radius: 0.4em;
+  background: #EEF5E4;
+  color: #06110A;
+}
+.fg1-facts {
+  display: grid;
+  gap: 0.4em;
+  margin: 0;
+  font-size: 0.72em;
+  line-height: 1.25;
+}
+.fg1-facts div { display: block; }
+.fg1-facts dt { color: var(--fg1-mute); }
+.fg1-facts dd {
+  margin: 0;
+  color: rgba(243, 246, 236, 0.88);
+}
+
+/* the lime strip: the badge's access colour */
+.fg1-strip {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin: 0 -0.875em;
+  height: 1.75em;
+  padding: 0 0.875em;
+  background: var(--fg1-lime);
+  color: #06180D;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+}
+.fg1-strip span { font-size: 0.8125em; }
+.fg1-strip-n {
+  font-weight: 500;
+  opacity: 0.6;
+  font-variant-numeric: tabular-nums;
+}
+
+/* holographic sheen: a wide iridescent band slid by the script with the
+   card's swing and twist (transform + opacity only) */
+.fg1-holo {
+  position: absolute;
+  inset: 0;
+  z-index: 5;
+  overflow: hidden;
+  border-radius: inherit;
+  pointer-events: none;
+  mix-blend-mode: screen;
+}
+.fg1-holo-in {
+  position: absolute;
+  top: -20%;
+  bottom: -20%;
+  left: 0;
+  width: 300%;
+  opacity: 0.1;
+  background: linear-gradient(105deg,
+    rgba(168, 255, 53, 0) 34%,
+    rgba(168, 255, 53, 0.3) 41%,
+    rgba(238, 255, 214, 0.55) 45%,
+    rgba(110, 231, 160, 0.4) 48.5%,
+    rgba(216, 255, 166, 0.52) 52%,
+    rgba(168, 255, 53, 0.2) 57%,
+    rgba(168, 255, 53, 0) 64%);
+  transform: translate3d(-40%, 0, 0);
+  will-change: transform, opacity;
+}
+
+/* ---------- starting states (only with motion) ---------- */
+
+.fg1-motion .fg1-li { transform: translateY(110%); }
+.fg1-motion .fg1-rv { opacity: 0; }
+.fg1-motion .fg1-rule { transform: scaleX(0); }
+
+/* ---------- static version: reduced motion, narrow screens ---------- */
+
+.fg1-static .fg1-l { animation: none; }
+.fg1-static .fg1-backlight { opacity: 1; transition: none; }
+
+@media (prefers-reduced-motion: reduce) {
+  .fg1-u::after, .fg1-roll, .fg1-roll span, .fg1-menu-a::before, .fg1-mag { transition: none; }
+}
+
+@media (max-width: 899px) {
+  .fg1-foot {
+    --fg1-w: calc(100vw - 40px);
+    --fg1-st: calc((100vw - 40px) / 7.2);
+    --fg1-mn: 32px;
+    padding-top: 116px;
+  }
+  .fg1-st, .fg1-actions { grid-column: 1 / -1; }
+  .fg1-actions { flex-wrap: wrap; }
+  .fg1-slot, .fg1-stage, .fg1-backlight { display: none; }
+  .fg1-rule { width: 100%; }
+  .fg1-row { grid-template-columns: 1fr 1fr; row-gap: 44px; }
+  .fg1-menu { grid-column: 1 / -1; }
+  .fg1-tour-col { grid-column: 1 / 2; }
+  .fg1-contact { grid-column: 2 / 3; }
+  .fg1-bar {
+    grid-template-columns: 1fr;
+    justify-items: start;
+    row-gap: 12px;
+    margin-top: 48px;
+  }
+  .fg1-copy, .fg1-legal, .fg1-clock { grid-column: 1 / -1; }
+  .fg1-clock { justify-self: start; }
+  .fg1-legal { flex-wrap: wrap; gap: 10px 22px; }
+}

@@ -1,0 +1,28 @@
+/* Opção D: só os blocos que simulam as seções vizinhas nesta página de
+   demonstração. A seção em si vive em ../css/edicoes.css e ../js/edicoes.js
+   (os mesmos arquivos do site). */
+
+/* ---------- blocos de demonstração (antes / depois da seção) ---------- */
+
+.od-demo {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 18px;
+  min-height: 70vh;
+  padding: 0 24px 9vh;
+  font-size: 14px;
+  letter-spacing: -0.005em;
+  color: rgba(243, 246, 236, 0.38);
+}
+.od-demo-line {
+  width: 1px;
+  height: 72px;
+  background: linear-gradient(to bottom, rgba(243, 246, 236, 0.4), rgba(243, 246, 236, 0));
+}
+.od-demo--tail {
+  min-height: 80vh;
+  justify-content: center;
+  padding-bottom: 0;
+}

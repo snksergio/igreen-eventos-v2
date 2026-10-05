@@ -1,0 +1,661 @@
+/* ============================================================
+   Opção C — Órbita
+   Seção "Edições que marcaram história" contada como uma sequência:
+   fichário de cards → órbita → três capítulos → fechamento.
+   Tudo com prefixo oc- para não colidir com o site.
+   ============================================================ */
+
+/* ---------- blocos de moldura do protótipo ---------- */
+
+.oc-lead {
+  min-height: 70vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 18px;
+  padding: 0 24px 12vh;
+  text-align: center;
+}
+.oc-lead p {
+  font-size: 14px;
+  letter-spacing: 0;
+  color: rgba(243, 246, 236, 0.42);
+}
+.oc-lead-line {
+  width: 1px;
+  height: 72px;
+  background: linear-gradient(to bottom, rgba(243, 246, 236, 0.35), rgba(243, 246, 236, 0));
+}
+.oc-trail {
+  min-height: 80vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0 24px;
+}
+.oc-trail p {
+  font-size: 14px;
+  color: rgba(243, 246, 236, 0.36);
+}
+
+/* ---------- seção e palco ---------- */
+
+.oc {
+  position: relative;
+  height: 650vh;
+  background: var(--bg);
+  /* valores reais vêm do JS (centro visual abaixo do menu, raio da órbita) */
+  --oc-cy: 50vh;
+  --oc-r: 300px;
+  --oc-fs: clamp(24px, 2.5vw, 38px);                        /* frase pequena */
+  --oc-fh: clamp(36px, calc(var(--oc-r) * 0.156), 66px);    /* título */
+  --oc-ffx: clamp(56px, 8.4vw, 128px);                      /* palavras de efeito */
+  --oc-ft: clamp(38px, 4.6vw, 72px);                        /* frase final */
+}
+
+.oc-stage {
+  position: sticky;
+  top: 0;
+  height: 100vh;
+  height: 100svh;
+  overflow: hidden;
+}
+.oc-frame {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  background: var(--bg);
+  transform-origin: 50% 45%;
+}
+
+/* ---------- campo verde do fechamento ---------- */
+
+.oc-bg {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  opacity: 0;
+  overflow: hidden;
+  pointer-events: none;
+  background:
+    radial-gradient(120% 85% at 50% 108%, #0E4A1E 0%, #082C13 34%, #04170A 64%, #020B04 100%);
+}
+.oc-bg > * { position: absolute; }
+.oc-bg-aurora {
+  left: -8%;
+  top: -6%;
+  width: 116%;
+  height: 112%;
+  object-fit: cover;
+  object-position: center 40%;
+  opacity: 0.34;
+  filter: brightness(0.62) saturate(0.9);
+  transform: scaleX(-1) rotate(-4deg);
+}
+.oc-bg-wash {
+  inset: 0;
+  background:
+    radial-gradient(55% 34% at 50% 104%, rgba(140, 230, 60, 0.20) 0%, rgba(70, 140, 30, 0.07) 55%, transparent 76%),
+    radial-gradient(70% 50% at 50% 46%, rgba(1, 7, 2, 0) 0%, rgba(1, 7, 2, 0.35) 100%);
+}
+.oc-bg-dots-base,
+.oc-bg-dots {
+  inset: 0;
+  background-image: radial-gradient(rgba(216, 255, 166, 0.5) 0.8px, transparent 1.25px);
+  background-size: 4.5px 4.5px;
+}
+.oc-bg-dots-base { opacity: 0.03; }
+.oc-bg-dots { mix-blend-mode: overlay; opacity: 0.6; }
+
+/* escurecimento suave sob o texto central */
+.oc-scrim {
+  position: absolute;
+  left: 50%;
+  top: var(--oc-cy);
+  width: min(1100px, 130vw);
+  height: min(640px, 80vh);
+  transform: translate(-50%, -50%);
+  z-index: 3;
+  opacity: 0;
+  pointer-events: none;
+  background: radial-gradient(closest-side, rgba(1, 9, 3, 0.62) 0%, rgba(1, 9, 3, 0.38) 45%, rgba(1, 9, 3, 0) 100%);
+}
+
+.oc-dark {
+  position: absolute;
+  inset: 0;
+  z-index: 20;
+  background: #010702;
+  opacity: 0;
+  pointer-events: none;
+}
+
+/* ---------- cards ---------- */
+
+.oc-cards {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  pointer-events: none;
+}
+.oc-world {
+  position: absolute;
+  left: 50%;
+  top: var(--oc-cy);
+  width: 0;
+  height: 0;
+}
+/* o tamanho natural é o das pilhas (o maior em tela): na órbita o card
+   só é reduzido, então a imagem continua nítida */
+.oc-card {
+  position: absolute;
+  left: 0;
+  top: 0;
+  opacity: 0;
+  will-change: transform, opacity;
+  -webkit-backface-visibility: hidden;
+  backface-visibility: hidden;
+  --oc-cr: calc(var(--w, 280px) * 0.072);
+}
+.oc-card-in {
+  position: absolute;
+  inset: 0;
+  border-radius: var(--oc-cr);
+  overflow: hidden;
+  background: #0C2414;
+  box-shadow: 0 22px 44px rgba(0, 0, 0, 0.38);
+}
+.oc-card--m .oc-card-in img,
+.oc-card--m .oc-card-in video {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+/* leve lavagem da marca + filete */
+.oc-card--m .oc-card-in::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  border-radius: inherit;
+  background: linear-gradient(180deg, rgba(120, 200, 60, 0.06) 0%, rgba(6, 24, 13, 0) 45%, rgba(4, 16, 8, 0.32) 100%);
+  box-shadow: inset 0 0 0 1px rgba(243, 246, 236, 0.07);
+  pointer-events: none;
+}
+/* a borda em overlay dos cards do site: forte embaixo, some antes do topo */
+.oc-card-in::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  border-radius: inherit;
+  padding: 1.5px;
+  pointer-events: none;
+  mix-blend-mode: overlay;
+  background: linear-gradient(to top,
+    rgba(255, 255, 255, 0.78) 0%,
+    rgba(255, 255, 255, 0.26) 22%,
+    rgba(255, 255, 255, 0.08) 40%,
+    transparent 56%);
+  -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor;
+  mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+  mask-composite: exclude;
+}
+/* profundidade: os cards do fundo das pilhas escurecem */
+.oc-shade {
+  position: absolute;
+  inset: 0;
+  z-index: 3;
+  border-radius: inherit;
+  background: #010702;
+  opacity: 0;
+  pointer-events: none;
+}
+
+/* card de edição: receita do .past-card (corpo escuro, brilho verde que
+   sobe da base, matriz de pontos e borda em overlay) */
+.oc-card--ed .oc-card-in {
+  display: flex;
+  flex-direction: column;
+  padding: 5.4%;
+  background:
+    radial-gradient(70% 36% at 50% 100%, rgba(196, 250, 120, 0.2) 0%, rgba(160, 231, 75, 0.08) 50%, transparent 80%),
+    linear-gradient(to top, rgba(160, 231, 75, 0.12) 0%, rgba(139, 196, 62, 0.05) 38%, rgba(129, 178, 58, 0) 68%),
+    linear-gradient(180deg, rgba(160, 231, 75, 0.04) 0%, rgba(160, 231, 75, 0) 42%),
+    #07130B;
+}
+.oc-card--ed .oc-card-in::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  border-radius: inherit;
+  pointer-events: none;
+  background-image: radial-gradient(rgba(216, 255, 166, 0.42) 0.7px, transparent 1.2px);
+  background-size: 5px 5px;
+  mix-blend-mode: overlay;
+  opacity: 0.35;
+  -webkit-mask-image: linear-gradient(to top, #000 12%, transparent 60%);
+  mask-image: linear-gradient(to top, #000 12%, transparent 60%);
+}
+.oc-ed-photo {
+  position: relative;
+  z-index: 1;
+  flex: none;
+  aspect-ratio: 16 / 10;
+  border-radius: calc(var(--oc-cr) * 0.55);
+}
+.oc-ed-photo img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  border-radius: inherit;
+}
+.oc-ed-glow {
+  filter: blur(18px) saturate(1.3);
+  transform: translateY(9%) scale(1.02);
+  opacity: 0.55;
+}
+.oc-ed-meta {
+  position: relative;
+  z-index: 1;
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 1.5%;
+  font-size: calc(var(--w, 280px) * 0.05);
+  line-height: 1;
+}
+.oc-ed-tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6em;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: rgba(216, 255, 166, 0.78);
+}
+.oc-ed-tag::before {
+  content: '';
+  width: 0.42em;
+  height: 0.42em;
+  border-radius: 50%;
+  background: #A8FF35;
+  box-shadow: 0 0 0.6em rgba(168, 255, 53, 0.6);
+}
+.oc-ed-no {
+  font-variant-numeric: tabular-nums;
+  letter-spacing: 0.06em;
+  color: rgba(243, 246, 236, 0.42);
+}
+/* destaque às 12 horas: borda lima + halo */
+.oc-hi {
+  position: absolute;
+  inset: 0;
+  z-index: 4;
+  border-radius: var(--oc-cr);
+  padding: 2px;
+  opacity: 0;
+  pointer-events: none;
+  background: linear-gradient(to top, #A8FF35 0%, rgba(168, 255, 53, 0.55) 30%, rgba(216, 255, 166, 0.22) 65%, rgba(216, 255, 166, 0.12) 100%);
+  -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor;
+  mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+  mask-composite: exclude;
+}
+.oc-halo {
+  position: absolute;
+  inset: -26% -18%;
+  z-index: -1;
+  opacity: 0;
+  pointer-events: none;
+  background: radial-gradient(closest-side, rgba(168, 255, 53, 0.2) 0%, rgba(168, 255, 53, 0.07) 52%, rgba(168, 255, 53, 0) 100%);
+}
+
+/* ---------- tipografia cinética ---------- */
+
+.oc-word,
+.oc-t {
+  position: absolute;
+  left: 50%;
+  top: var(--oc-cy);
+  z-index: 5;
+  transform: translate(-50%, -50%);
+}
+.oc-word {
+  white-space: nowrap;
+  font-family: var(--font-display);
+  font-weight: 500;
+  line-height: 1.1;
+  letter-spacing: -0.03em;
+  color: var(--text-hi);
+  visibility: hidden;
+  pointer-events: none;
+}
+.oc-word--s { font-size: var(--oc-fs); letter-spacing: -0.022em; }
+.oc-hw { font-size: calc(var(--oc-fh) * 1.45); }
+.oc-word--fx {
+  font-size: var(--oc-ffx);
+  letter-spacing: -0.045em;
+  line-height: 1.02;
+}
+.oc-word--mute { color: rgba(243, 246, 236, 0.4); }
+
+/* cada palavra tem a sua própria janela com bordas suaves */
+.oc-kw-w {
+  display: inline-block;
+  padding: 0.16em 0.05em 0.2em;
+  vertical-align: top;
+  -webkit-mask-image: linear-gradient(to bottom, transparent 0, #000 0.16em, #000 calc(100% - 0.2em), transparent 100%);
+  mask-image: linear-gradient(to bottom, transparent 0, #000 0.16em, #000 calc(100% - 0.2em), transparent 100%);
+}
+.oc-ch { display: inline-block; }
+
+.oc-sr {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  padding: 0;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+/* linhas com máscara (overflow + yPercent) */
+.oc-ln {
+  display: inline-block;
+  overflow: hidden;
+  padding: 0.1em 0.04em 0.14em;
+  margin: -0.1em -0.04em -0.14em;
+  vertical-align: top;
+}
+.oc-li { display: inline-block; }
+.oc-ln--mute { color: rgba(243, 246, 236, 0.4); }
+
+.oc-t {
+  text-align: center;
+  width: max-content;
+  max-width: calc(100% - 32px);
+  pointer-events: none;
+}
+
+/* título da seção */
+.oc-head { display: flex; flex-direction: column; align-items: center; }
+.oc-head .kicker { opacity: 0; }
+.oc-h2 {
+  margin-top: 22px;
+  font-family: var(--font-display);
+  font-weight: 500;
+  font-size: var(--oc-fh);
+  line-height: 1.08;
+  letter-spacing: -0.03em;
+  color: #F5F9F0;
+}
+/* a palavra "história" do título é desenhada pela palavra que viaja até
+   aqui; o texto real continua no título para leitores de tela */
+.oc-h-hist { color: transparent; }
+
+/* capítulos */
+.oc-ed { width: min(calc(var(--oc-r) * 1.32), 470px); }
+.oc-ed-top {
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  font-size: 12.5px;
+  line-height: 1;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: rgba(216, 255, 166, 0.74);
+  opacity: 0;
+}
+.oc-ed-top i {
+  width: 26px;
+  height: 1px;
+  background: rgba(216, 255, 166, 0.34);
+}
+.oc-ed-n {
+  font-variant-numeric: tabular-nums;
+  letter-spacing: 0.06em;
+  color: #A8FF35;
+}
+.oc-ed-title {
+  margin-top: 18px;
+  font-family: var(--font-display);
+  font-weight: 500;
+  font-size: clamp(30px, calc(var(--oc-r) * 0.132), 50px);
+  line-height: 1.06;
+  letter-spacing: -0.03em;
+  color: #F5F9F0;
+}
+.oc-ed-desc {
+  margin: 16px auto 0;
+  max-width: 34ch;
+  font-size: 15.5px;
+  line-height: 1.58;
+  letter-spacing: 0;
+  color: rgba(243, 246, 236, 0.58);
+  text-wrap: pretty;
+  opacity: 0;
+}
+
+/* indicador 01 / 03 */
+.oc-hud {
+  position: absolute;
+  left: 5vw;
+  bottom: 44px;
+  z-index: 5;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-size: 13px;
+  line-height: 1;
+  letter-spacing: 0.04em;
+  font-variant-numeric: tabular-nums;
+  color: rgba(243, 246, 236, 0.45);
+  opacity: 0;
+  pointer-events: none;
+}
+.oc-hud-label {
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  font-size: 11.5px;
+}
+.oc-hud-n {
+  display: inline-block;
+  height: 1.25em;
+  overflow: hidden;
+  color: #F3F6EC;
+}
+.oc-hud-roll {
+  display: flex;
+  flex-direction: column;
+  line-height: 1.25em;
+}
+.oc-hud-bar {
+  position: relative;
+  width: 96px;
+  height: 1px;
+  margin-left: 6px;
+  overflow: hidden;
+  background: rgba(243, 246, 236, 0.16);
+}
+.oc-hud-bar i {
+  position: absolute;
+  inset: 0;
+  background: #A8FF35;
+  box-shadow: 0 0 8px rgba(168, 255, 53, 0.6);
+  transform-origin: left center;
+  transform: scaleX(0);
+}
+
+/* fechamento */
+.oc-final { display: flex; flex-direction: column; align-items: center; }
+.oc-final-title {
+  font-family: var(--font-display);
+  font-weight: 500;
+  font-size: var(--oc-ft);
+  line-height: 1.06;
+  letter-spacing: -0.035em;
+  color: #F5F9F0;
+}
+.oc-final-cta {
+  margin-top: 40px;
+  opacity: 0;
+}
+.oc.is-final .oc-final-cta { pointer-events: auto; }
+
+/* ---------- celular ---------- */
+
+@media (max-width: 810px) {
+  .oc {
+    --oc-fs: clamp(21px, 6.2vw, 28px);
+    --oc-fh: clamp(31px, 9.2vw, 42px);
+    --oc-ffx: clamp(46px, 13.4vw, 64px);
+    --oc-ft: clamp(29px, 8.4vw, 40px);
+  }
+  .oc-card-in { box-shadow: 0 14px 30px rgba(0, 0, 0, 0.34); }
+  .oc-h2 { margin-top: 18px; }
+  .oc-ed { width: min(100% - 40px, 360px); }
+  .oc-ed-title { font-size: clamp(27px, 7.6vw, 34px); }
+  .oc-ed-desc { font-size: 15px; max-width: 30ch; }
+  .oc-hud {
+    left: 0;
+    right: 0;
+    bottom: auto;
+    top: calc(var(--oc-cy) + 150px);
+    justify-content: center;
+  }
+  .oc-final-cta { margin-top: 30px; }
+  .oc-scrim { width: 150vw; height: 70vh; }
+}
+
+/* ---------- versão estática (movimento reduzido / sem JS) ---------- */
+
+.oc-static { display: none; }
+.oc:not(.is-ready) { height: auto; }
+.oc:not(.is-ready) .oc-stage { display: none; }
+.oc:not(.is-ready) .oc-static { display: block; }
+
+@media (prefers-reduced-motion: reduce) {
+  .oc { height: auto; }
+  .oc-stage { display: none; }
+  .oc-static { display: block; }
+}
+
+.oc-static {
+  max-width: 1240px;
+  margin: 0 auto;
+  padding: 120px 24px 160px;
+}
+.oc-static-head { text-align: center; margin-bottom: 72px; }
+.oc-static-head h2 {
+  margin-top: 20px;
+  font-family: var(--font-display);
+  font-weight: 500;
+  font-size: clamp(44px, 5vw, 72px);
+  line-height: 1.08;
+  letter-spacing: -0.03em;
+  color: #F5F9F0;
+}
+.oc-static-head h2 span { color: rgba(243, 246, 236, 0.4); }
+.oc-static-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 24px;
+}
+.oc-scard {
+  position: relative;
+  padding: 12px 12px 26px;
+  border-radius: 16px;
+  overflow: hidden;
+  background:
+    radial-gradient(62% 30% at 50% 100%, rgba(196, 250, 120, 0.14) 0%, rgba(160, 231, 75, 0.06) 50%, transparent 80%),
+    linear-gradient(to top, rgba(160, 231, 75, 0.09) 0%, rgba(139, 196, 62, 0.04) 38%, rgba(129, 178, 58, 0) 68%),
+    rgba(7, 16, 10, 0.9);
+  box-shadow: inset 0 0 0 1px rgba(243, 246, 236, 0.06), 0 24px 48px rgba(0, 0, 0, 0.32);
+}
+.oc-scard > :not(.oc-scard-photo) { margin-left: 12px; margin-right: 12px; }
+.oc-scard-photo { aspect-ratio: 16 / 10; margin-bottom: 20px; }
+.oc-scard-photo img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  border-radius: 8px;
+}
+.oc-scard-tag {
+  display: inline-flex;
+  padding: 6px 11px;
+  border-radius: 4px;
+  border: 1px solid rgba(216, 255, 166, 0.13);
+  background: rgba(216, 255, 166, 0.035);
+  font-size: 11.5px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: rgba(216, 255, 166, 0.72);
+}
+.oc-scard h3 {
+  margin-top: 16px;
+  font-weight: 500;
+  font-size: 24px;
+  letter-spacing: -0.01em;
+  color: #F5F9F0;
+}
+.oc-scard p {
+  margin-top: 10px;
+  font-size: 14.5px;
+  line-height: 1.6;
+  color: rgba(255, 255, 255, 0.5);
+}
+.oc-scard-date {
+  display: block;
+  margin-top: 16px;
+  font-size: 12px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.35);
+}
+.oc-static-strip {
+  display: grid;
+  grid-template-columns: repeat(6, minmax(0, 1fr));
+  gap: 12px;
+  margin-top: 24px;
+}
+.oc-static-strip img {
+  width: 100%;
+  aspect-ratio: 4 / 3;
+  object-fit: cover;
+  display: block;
+  border-radius: 12px;
+}
+.oc-static-cta {
+  margin-top: 96px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 32px;
+  text-align: center;
+}
+.oc-static-final {
+  font-weight: 500;
+  font-size: clamp(34px, 4.4vw, 64px);
+  line-height: 1.08;
+  letter-spacing: -0.03em;
+  color: #F5F9F0;
+}
+.oc-static-final span { display: block; color: rgba(243, 246, 236, 0.4); }
+
+@media (max-width: 1100px) {
+  .oc-static-grid { grid-template-columns: 1fr; max-width: 480px; margin: 0 auto; }
+  .oc-static-strip { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+}

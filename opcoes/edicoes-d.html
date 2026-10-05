@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Opção D — Mural vivo</title>
+  <link rel="icon" href="../assets/img/igreen-logo.svg">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Instrument+Sans:wdth,wght@75..100,400..700&display=swap">
+  <link rel="stylesheet" href="../css/portalv2.css">
+  <link rel="stylesheet" href="../css/edicoes.css">
+  <link rel="stylesheet" href="edicoes-d.css">
+</head>
+<body class="tone-green">
+
+  <!-- Menu fixo do topo (mesmo markup do site) -->
+  <header class="topnav">
+    <a class="topnav-logo" href="../index.html"><img src="../assets/img/igreen-logo.svg" alt="iGreen"></a>
+    <nav class="topnav-links" aria-label="Menu fixo">
+      <a href="../index.html">Início</a>
+      <a href="../index.html">Palestrantes</a>
+      <a href="../index.html#agenda">Agenda</a>
+      <a href="../index.html">FAQ</a>
+    </nav>
+    <div class="topnav-actions">
+      <a class="topnav-login" href="#">
+        <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><circle cx="12" cy="8" r="3.4" stroke="currentColor" stroke-width="1.5"/><path d="M5.2 19.4c.9-3.6 3.4-5.4 6.8-5.4s5.9 1.8 6.8 5.4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+        Entrar
+      </a>
+      <a class="topnav-cta" href="#">Cadastre-se</a>
+    </div>
+  </header>
+
+  <!-- Simula a chegada vinda da seção anterior -->
+  <div class="od-demo od-demo--lead">
+    <p>Role para ver a seção</p>
+    <span class="od-demo-line" aria-hidden="true"></span>
+  </div>
+
+  <!-- ============================================================
+       Edições que marcaram história — mural vivo
+       Um palco fixo dentro de uma seção alta. Uma linha do tempo única,
+       presa à rolagem, conta a história: os cards saem do ponto de fuga
+       (warp), pousam num mural inclinado que respira, cada edição se
+       levanta do mural como um painel, e no fim tudo implode de volta
+       para o centro, deixando a frase final.
+       Sem JS, com movimento reduzido ou em telas pequenas: layout
+       estático e calmo (.od-static).
+       ============================================================ -->
+  <section class="od" id="edicoes" aria-label="Edições que marcaram história" data-base="../" data-debug>
+
+    <div class="od-stage">
+      <div class="od-frame">
+
+        <!-- campo de fundo: aurora sussurrada, luz do ponto de fuga e malha de pontos -->
+        <div class="od-bg" aria-hidden="true">
+          <img class="od-bg-aurora" src="../assets/img/aurora-base.webp" alt="">
+          <span class="od-bg-core"></span>
+          <span class="od-bg-dots"></span>
+          <span class="od-bg-veil"></span>
+        </div>
+
+        <!-- mundo 3D: o mural inclinado e o fluxo do warp (montados pelo JS) -->
+        <div class="od-world" aria-hidden="true">
+          <div class="od-plane"></div>
+          <div class="od-stream"></div>
+        </div>
+
+        <!-- camadas de luz e profundidade -->
+        <div class="od-dof od-dof--tilt" aria-hidden="true"></div>
+        <div class="od-dof od-dof--core" aria-hidden="true"></div>
+        <div class="od-dim" aria-hidden="true"></div>
+        <div class="od-edges" aria-hidden="true"></div>
+        <div class="od-scrim od-scrim--center" aria-hidden="true"></div>
+        <div class="od-scrim od-scrim--left" aria-hidden="true"></div>
+        <div class="od-afterglow" aria-hidden="true"></div>
+
+        <!-- abertura: título fixo no centro enquanto o warp acontece -->
+        <header class="od-head">
+          <div class="od-head-in">
+          <div class="od-m"><p class="kicker od-l">3 edições desde 2024</p></div>
+          <h2 class="od-head-title">
+            <span class="od-m"><span class="od-l">Edições que</span></span>
+            <span class="od-m"><span class="od-l od-muted">marcaram história</span></span>
+          </h2>
+          <p class="od-head-sub od-split">Cada parada nos ensinou algo novo — essa é a história que construímos até aqui.</p>
+          </div>
+        </header>
+
+        <!-- painéis de destaque: um por edição, levantam do mural -->
+        <div class="od-feats" aria-hidden="true">
+          <figure class="od-feat" data-ch="0">
+            <div class="od-feat-media">
+              <img class="od-feat-glow" src="../assets/img/past/glow-moment-01.jpg" alt="">
+              <div class="od-feat-clip"><img class="od-feat-img" src="../assets/img/past/moment-01.jpg" alt=""></div>
+            <span class="od-feat-shade"></span>
+            </div>
+            <figcaption class="od-feat-cap"><span>Recife · PE</span><span>Março de 2024</span></figcaption>
+          </figure>
+          <figure class="od-feat" data-ch="1">
+            <div class="od-feat-media">
+              <img class="od-feat-glow" src="../assets/img/past/glow-stage-speaker.jpg" alt="">
+              <div class="od-feat-clip"><video class="od-feat-img" data-src="../assets/video/past/stage-speaker.mp4" poster="../assets/video/past/stage-speaker.jpg" muted loop playsinline preload="none"></video></div>
+            <span class="od-feat-shade"></span>
+            </div>
+            <figcaption class="od-feat-cap"><span>Curitiba · PR</span><span>Setembro de 2024</span></figcaption>
+          </figure>
+          <figure class="od-feat" data-ch="2">
+            <div class="od-feat-media">
+              <img class="od-feat-glow" src="../assets/img/past/glow-arena-audience.jpg" alt="">
+              <div class="od-feat-clip"><video class="od-feat-img" data-src="../assets/video/past/arena-audience.mp4" poster="../assets/video/past/arena-audience.jpg" muted loop playsinline preload="none"></video></div>
+            <span class="od-feat-shade"></span>
+            </div>
+            <figcaption class="od-feat-cap"><span>São Paulo · SP</span><span>Agosto de 2025</span></figcaption>
+          </figure>
+        </div>
+
+        <!-- textos das edições (lidos por leitores de tela na ordem) -->
+        <div class="od-chs">
+          <article class="od-ch" data-ch="0">
+            <p class="od-ch-label"><span class="od-m"><span class="od-l"><b>01</b><i aria-hidden="true"></i>Recife, 2024</span></span></p>
+            <h3 class="od-ch-title"><span class="od-m"><span class="od-l">A primeira</span></span> <span class="od-m"><span class="od-l">caravana</span></span></h3>
+            <p class="od-ch-desc od-split">Onde o tour nasceu — uma van, seis palestrantes e um litoral de histórias que se transformou em um movimento.</p>
+            <p class="od-ch-meta"><span class="od-m"><span class="od-l"><span>Quando</span>Março de 2024</span></span></p>
+          </article>
+          <article class="od-ch" data-ch="1">
+            <p class="od-ch-label"><span class="od-m"><span class="od-l"><b>02</b><i aria-hidden="true"></i>Curitiba, 2024</span></span></p>
+            <h3 class="od-ch-title"><span class="od-m"><span class="od-l">As turmas</span></span> <span class="od-m"><span class="od-l">práticas</span></span></h3>
+            <p class="od-ch-desc od-split">A edição mão na massa: casos reais no telão, turmas menores e o método que hoje conduz o tour inteiro pelo país.</p>
+            <p class="od-ch-meta"><span class="od-m"><span class="od-l"><span>Quando</span>Setembro de 2024</span></span></p>
+          </article>
+          <article class="od-ch" data-ch="2">
+            <p class="od-ch-label"><span class="od-m"><span class="od-l"><b>03</b><i aria-hidden="true"></i>São Paulo, 2025</span></span></p>
+            <h3 class="od-ch-title"><span class="od-m"><span class="od-l">A edição</span></span> <span class="od-m"><span class="od-l">arena</span></span></h3>
+            <p class="od-ch-desc od-split">Doze mil pessoas sob o mesmo teto — nosso maior palco, o público mais vibrante e um encerramento que bateu recordes.</p>
+            <p class="od-ch-meta"><span class="od-m"><span class="od-l"><span>Quando</span>Agosto de 2025</span></span></p>
+          </article>
+        </div>
+
+        <!-- indicador de capítulo: 01 / 03 com a linha de progresso -->
+        <div class="od-prog" aria-hidden="true">
+          <span class="od-prog-n"><span class="od-prog-roll"><span>01</span><span>02</span><span>03</span></span></span>
+          <span class="od-prog-of">/ 03</span>
+          <span class="od-prog-bar"><i></i></span>
+        </div>
+
+        <!-- desfecho -->
+        <div class="od-final">
+          <p class="od-final-t">
+            <span class="od-m"><span class="od-l">Doze mil pessoas</span></span>
+            <span class="od-m"><span class="od-l">já viveram isso.</span></span>
+            <span class="od-m"><span class="od-l od-muted">Falta você.</span></span>
+          </p>
+          <div class="od-final-cta">
+            <a class="btn-primary" href="../index.html#agenda">Garantir meu lugar<span class="chip chip-dark"><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M7 17L17 7M9 7h8v8" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></span></a>
+            <p class="od-final-next">Próxima parada do tour: <b>Goiânia, 16 de agosto</b></p>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- Versão estática: sem JS, movimento reduzido ou telas pequenas -->
+    <div class="od-static">
+      <div class="od-static-head">
+        <p class="kicker">3 edições desde 2024</p>
+        <h2>Edições que<br><span>marcaram história</span></h2>
+        <p class="od-static-sub">Cada parada nos ensinou algo novo — essa é a história que construímos até aqui.</p>
+      </div>
+      <div class="past-grid od-static-grid">
+        <article class="past-card">
+          <div class="past-photo"><img src="../assets/img/past/moment-01.jpg" alt="Equipe entrando no palco da primeira edição, em Recife" loading="lazy"></div>
+          <span class="past-tag">Recife · 2024</span>
+          <h3>A primeira caravana</h3>
+          <p>Onde o tour nasceu — uma van, seis palestrantes e um litoral de histórias que se transformou em um movimento.</p>
+          <span class="past-date">Março de 2024</span>
+        </article>
+        <article class="past-card">
+          <div class="past-photo"><img src="../assets/img/past/moment-11.jpg" alt="Palestrante diante dos telões com dados, em Curitiba" loading="lazy"></div>
+          <span class="past-tag">Curitiba · 2024</span>
+          <h3>As turmas práticas</h3>
+          <p>A edição mão na massa: casos reais no telão, turmas menores e o método que hoje conduz o tour inteiro pelo país.</p>
+          <span class="past-date">Setembro de 2024</span>
+        </article>
+        <article class="past-card">
+          <div class="past-photo"><img src="../assets/img/past/moment-17.jpg" alt="Arena lotada sob luzes verdes, em São Paulo" loading="lazy"></div>
+          <span class="past-tag">São Paulo · 2025</span>
+          <h3>A edição arena</h3>
+          <p>Doze mil pessoas sob o mesmo teto — nosso maior palco, o público mais vibrante e um encerramento que bateu recordes.</p>
+          <span class="past-date">Agosto de 2025</span>
+        </article>
+      </div>
+      <div class="od-static-row">
+        <div class="od-static-stat"><p class="od-static-n"><span>+</span>12K</p><p>Ingressos vendidos</p></div>
+        <div class="od-static-stat"><p class="od-static-n">98<span>%</span></p><p>Voltariam de novo</p></div>
+        <div class="od-static-stat"><p class="od-static-n">4,9</p><p>Nota média em 3 mil avaliações</p></div>
+        <figure class="od-static-quote">
+          <blockquote>“Fui ao evento por curiosidade e saí com um plano que sigo até hoje.”</blockquote>
+          <figcaption>Marina Castro, Goiânia</figcaption>
+        </figure>
+      </div>
+      <div class="od-static-final">
+        <p>Doze mil pessoas já viveram isso.<br><span>Falta você.</span></p>
+        <a class="btn-primary" href="../index.html#agenda">Garantir meu lugar<span class="chip chip-dark"><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M7 17L17 7M9 7h8v8" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></span></a>
+      </div>
+    </div>
+
+  </section>
+
+  <!-- Simula a seção seguinte -->
+  <div class="od-demo od-demo--tail">
+    <p>Fim da seção (opção D)</p>
+  </div>
+
+  <script src="../assets/vendor/gsap.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.13.0/ScrollTrigger.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.13.0/SplitText.min.js"></script>
+  <script src="../js/edicoes.js"></script>
+</body>
+</html>

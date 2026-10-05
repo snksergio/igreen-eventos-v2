@@ -1,0 +1,453 @@
+/* ============================================================
+   Rodapé C — "Palavra perfurada"
+   A sticky 100vh stage inside a tall track. Layers, back to front:
+   photo (transform only) → vector panel with the word cut out
+   (inline SVG mask, crisp at any size) → the panel's HTML content
+   (flies with the panel) → the closing scene over the full photo.
+   Geometry (word size, card rect, zoom point) is measured in
+   footer-c.js; everything here is the static look.
+   ============================================================ */
+
+.fc-foot {
+  --fc-top: 96px;                          /* card sits just under the fixed nav */
+  --fc-in: clamp(12px, 1.1vw, 28px);       /* side / bottom inset of the card */
+  --fc-r: clamp(20px, 1.8vw, 34px);        /* card radius */
+  --fc-pin: 160vh;                         /* scroll room for the fly-through */
+  --fc-w: clamp(1240px, 64vw, 1640px);     /* content width: the site's 1240, a little wider on very large screens */
+  --fc-text: #F3F6EC;
+  --fc-mute: rgba(243, 246, 236, 0.4);
+  position: relative;
+  background: var(--bg);
+}
+
+.fc-track {
+  position: relative;
+  height: calc(100vh + var(--fc-pin));
+}
+.fc-stage {
+  position: sticky;
+  top: 0;
+  height: 100vh;
+  overflow: hidden;
+  background: var(--bg);
+}
+
+/* ---------- photo (behind the panel) ---------- */
+
+.fc-photo {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  transform: scale(1.3);
+  will-change: transform;
+}
+.fc-photo-img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: 50% 50%;
+}
+/* the house lights: dims the photo until the panel has arrived */
+.fc-photo-dim {
+  position: absolute;
+  inset: 0;
+  background: #030A05;
+  opacity: 0.72;
+  will-change: opacity;
+}
+
+/* ---------- vector panel with the word cut out ---------- */
+
+.fc-veil {
+  position: absolute;
+  left: 0;
+  top: 0;
+  z-index: 2;
+  width: 100%;
+  height: 100%;
+  display: block;
+  overflow: hidden;
+  visibility: hidden; /* until the font is in and the word is measured */
+}
+.fc-ready .fc-veil { visibility: visible; }
+.fc-word {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-stretch: 75%;
+  letter-spacing: -0.012em;
+  text-rendering: geometricPrecision;
+}
+
+/* ---------- panel content ---------- */
+
+.fc-plane {
+  position: absolute;
+  inset: 0;
+  z-index: 3;
+  transform-origin: 0 0;
+  will-change: transform, opacity;
+  pointer-events: none;
+}
+.fc-card {
+  position: absolute;
+  top: var(--fc-top);
+  left: var(--fc-in);
+  right: var(--fc-in);
+  bottom: var(--fc-in);
+  border-radius: var(--fc-r);
+}
+.fc-card a,
+.fc-card [role="button"] { pointer-events: auto; }
+
+/* hairline + the house "overlay ring" (lit from below) */
+.fc-ring {
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  box-shadow: inset 0 0 0 1px rgba(243, 246, 236, 0.07);
+  pointer-events: none;
+}
+.fc-ring::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  padding: 1px;
+  background: linear-gradient(to top, rgba(216, 255, 166, 0.3) 0%, rgba(216, 255, 166, 0.1) 24%, rgba(243, 246, 236, 0.04) 46%, rgba(243, 246, 236, 0.02) 100%);
+  -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor;
+  mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+  mask-composite: exclude;
+}
+
+.fc-grid {
+  position: relative;
+  display: grid;
+  grid-template-columns: minmax(0, 5fr) minmax(0, 7fr);
+  column-gap: clamp(48px, 4vw, 96px);
+  align-items: start;
+  width: min(var(--fc-w), 100% - 64px);
+  margin: 0 auto;
+  padding: clamp(40px, 6.4vh, 76px) 0 0; /* static: js adds room for the word below */
+}
+
+.fc-lead {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+.fc-kicker { margin-bottom: 26px; }
+.fc-title {
+  max-width: 13.5em;
+  font-family: var(--font-display);
+  font-weight: 500;
+  font-size: clamp(36px, calc(1.2vw + 27px), 58px);
+  line-height: 1.04;
+  letter-spacing: -0.03em;
+  color: var(--fc-text);
+  text-wrap: balance;
+}
+.fc-title span { color: var(--fc-mute); }
+.fc-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 32px;
+}
+
+.fc-cols {
+  display: grid;
+  grid-template-columns: minmax(0, 0.8fr) minmax(0, 1.15fr) minmax(0, 1.15fr);
+  column-gap: clamp(32px, 2.6vw, 64px);
+  padding-top: 6px;
+}
+.fc-h {
+  margin-bottom: 18px;
+  font-family: var(--font-display);
+  font-weight: 400;
+  font-size: clamp(14px, calc(0.12vw + 12.3px), 15.5px);
+  letter-spacing: 0;
+  color: var(--fc-mute);
+}
+.fc-links {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 11px;
+}
+
+/* links: a hairline draws in from the left, leaves to the right */
+.fc-link {
+  position: relative;
+  display: inline-block;
+  font-size: clamp(15.5px, calc(0.2vw + 12.6px), 17.5px);
+  line-height: 1.35;
+  letter-spacing: -0.005em;
+  color: rgba(243, 246, 236, 0.74);
+  transition: color 0.35s ease;
+}
+.fc-link::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: -2px;
+  height: 1px;
+  background: currentColor;
+  transform: scaleX(0);
+  transform-origin: right center;
+  transition: transform 0.55s cubic-bezier(0.19, 1, 0.22, 1);
+}
+.fc-link:hover { color: var(--fc-text); }
+.fc-link:hover::after {
+  transform: scaleX(1);
+  transform-origin: left center;
+}
+
+.fc-tour {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+}
+.fc-tour li {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 6px 0 7px;
+  border-bottom: 1px solid rgba(243, 246, 236, 0.07);
+  font-size: clamp(15px, calc(0.2vw + 12.1px), 17px);
+  line-height: 1.3;
+  color: rgba(243, 246, 236, 0.7);
+}
+.fc-tour li:first-child { padding-top: 0; }
+.fc-tour li span + span {
+  font-variant-numeric: tabular-nums;
+  color: rgba(243, 246, 236, 0.4);
+}
+.fc-tour li.is-next span:first-child {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  color: var(--fc-text);
+}
+.fc-tour li.is-next span:first-child::before {
+  content: '';
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: #A8FF35;
+  box-shadow: 0 0 8px rgba(168, 255, 53, 0.6);
+}
+.fc-tour li.is-next span + span { color: #D8FFA6; }
+
+.fc-mail { color: var(--fc-text); }
+.fc-phone { margin-top: 10px; }
+.fc-addr {
+  margin-top: 14px;
+  font-size: 14.5px;
+  line-height: 1.5;
+  color: rgba(243, 246, 236, 0.4);
+}
+.fc-social {
+  display: flex;
+  gap: 8px;
+  margin-top: 22px;
+}
+.fc-social a {
+  display: grid;
+  place-items: center;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  border: 1px solid rgba(243, 246, 236, 0.12);
+  color: rgba(243, 246, 236, 0.75);
+  transition: border-color 0.3s ease, color 0.3s ease, background-color 0.3s ease, transform 0.45s cubic-bezier(0.19, 1, 0.22, 1);
+}
+.fc-social a:hover {
+  border-color: rgba(168, 255, 53, 0.45);
+  background: rgba(168, 255, 53, 0.08);
+  color: #A8FF35;
+  transform: translateY(-2px);
+}
+.fc-social svg { width: 16px; height: 16px; }
+
+/* ---------- closing scene ---------- */
+
+.fc-end {
+  position: absolute;
+  inset: 0;
+  z-index: 4;
+  pointer-events: none;
+}
+.fc-end-photo { display: none; }
+.fc-scrim {
+  position: absolute;
+  inset: 0;
+  background:
+    linear-gradient(to bottom, rgba(1, 7, 2, 0.72) 0%, rgba(1, 7, 2, 0.32) 30%, rgba(1, 7, 2, 0) 50%),
+    linear-gradient(to top, rgba(1, 7, 2, 0.9) 0%, rgba(1, 7, 2, 0.55) 13%, rgba(1, 7, 2, 0) 34%);
+  opacity: 0;
+}
+.fc-end-in {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: clamp(124px, 16.5vh, 220px);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 0 24px;
+  text-align: center;
+}
+.fc-end-title {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  font-family: var(--font-display);
+  font-weight: 500;
+  font-size: clamp(56px, 6.1vw, 124px);
+  line-height: 1;
+  letter-spacing: -0.04em;
+  color: var(--fc-text);
+}
+.fc-el {
+  display: block;
+  overflow: hidden;
+  padding: 0 0.04em 0.09em; /* descender room inside the line mask */
+  margin-bottom: -0.09em;
+}
+.fc-el-in { display: block; }
+.fc-mute { color: rgba(243, 246, 236, 0.5); }
+.fc-end-actions {
+  display: flex;
+  gap: 10px;
+  margin-top: clamp(28px, 4vh, 44px);
+  pointer-events: auto;
+}
+.fc-end-meta {
+  display: inline-flex;
+  align-items: center;
+  gap: 9px;
+  margin-top: 22px;
+  font-size: 14px;
+  color: rgba(243, 246, 236, 0.62);
+}
+.fc-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: #A8FF35;
+  box-shadow: 0 0 8px rgba(168, 255, 53, 0.65);
+}
+
+.fc-bar {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  padding: 0 24px clamp(22px, 3.4vh, 36px);
+}
+.fc-bar-in {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 24px;
+  max-width: var(--fc-w);
+  margin: 0 auto;
+  padding-top: 22px;
+  border-top: 1px solid rgba(243, 246, 236, 0.12);
+  pointer-events: auto;
+}
+.fc-bar-brand {
+  display: flex;
+  align-items: center;
+  gap: 18px;
+  font-size: 14px;
+  color: rgba(243, 246, 236, 0.62);
+}
+.fc-bar-brand img {
+  display: block;
+  width: auto;
+  height: 20px;
+}
+.fc-bar-legal {
+  display: flex;
+  gap: 28px;
+}
+.fc-bar-legal .fc-link { font-size: 14px; color: rgba(243, 246, 236, 0.62); }
+.fc-bar-legal .fc-link:hover { color: var(--fc-text); }
+
+/* closing scene starts hidden; footer-c.js scrubs it in */
+html:not(.fc-static) .fc-end-in,
+html:not(.fc-static) .fc-bar { visibility: hidden; }
+
+/* ============================================================
+   Static version — reduced motion and narrow screens.
+   The panel sits in the flow with the word still cut out, and the
+   arena follows as its own full-bleed block.
+   ============================================================ */
+
+.fc-static .fc-track { height: auto; }
+/* styles.css turns every change into a 0.01ms transition under reduced
+   motion; the grid is measured right after js sets its padding */
+.fc-static .fc-grid { transition: none !important; }
+.fc-static .fc-stage {
+  position: relative;
+  height: auto;
+}
+.fc-static .fc-photo {
+  inset: auto 0 auto 0;
+  transform: none;
+}
+.fc-static .fc-photo-img { object-position: 50% 62%; }
+.fc-static .fc-photo-dim { opacity: 0; }
+.fc-static .fc-plane {
+  position: relative;
+  inset: auto;
+  transform: none;
+}
+.fc-static .fc-card {
+  position: relative;
+  top: auto;
+  left: auto;
+  right: auto;
+  bottom: auto;
+  margin: 24px var(--fc-in) var(--fc-in);
+}
+.fc-static .fc-end {
+  position: relative;
+  inset: auto;
+  height: 100vh;
+  min-height: 620px;
+  max-height: 1100px;
+  overflow: hidden;
+}
+.fc-static .fc-end-photo {
+  display: block;
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+.fc-static .fc-scrim { opacity: 1; }
+
+@media (max-width: 899px) {
+  .fc-grid {
+    grid-template-columns: 1fr;
+    row-gap: 48px;
+    width: calc(100% - 40px);
+    padding-top: 40px;
+  }
+  .fc-cols {
+    grid-template-columns: 1fr 1fr;
+    row-gap: 40px;
+  }
+  .fc-cols .fc-col:last-child { grid-column: 1 / -1; }
+  .fc-end-actions { flex-direction: column; align-items: center; }
+  .fc-bar-in { flex-direction: column; align-items: flex-start; }
+  .fc-bar-legal { flex-wrap: wrap; gap: 14px 22px; }
+}

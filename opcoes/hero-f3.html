@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Opção F3 — Plateia</title>
+  <link rel="icon" href="../assets/img/igreen-logo.svg">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Instrument+Sans:wdth,wght@75..100,400..700&display=swap">
+  <link rel="stylesheet" href="../css/portalv2.css">
+  <link rel="stylesheet" href="hero-f3.css">
+  <script>
+    /* com JS e movimento, a plateia nasce apagada e a entrada a acende;
+       com movimento reduzido ou em telas estreitas, a versão estática */
+    document.documentElement.classList.add('hf3-js');
+    if (matchMedia('(prefers-reduced-motion: reduce), (max-width: 899px)').matches) {
+      document.documentElement.classList.add('hf3-static');
+    }
+    /* rede de segurança: se o script não rodar, mostra tudo aceso */
+    setTimeout(function () { document.documentElement.classList.add('hf3-go'); }, 4000);
+  </script>
+</head>
+<body class="tone-green">
+
+  <!-- Menu fixo do topo (mesmo markup do site) -->
+  <header class="topnav">
+    <a class="topnav-logo" href="../index.html"><img src="../assets/img/igreen-logo.svg" alt="iGreen"></a>
+    <nav class="topnav-links" aria-label="Menu fixo">
+      <a href="../index.html">Início</a>
+      <a href="../index.html">Palestrantes</a>
+      <a href="../index.html#agenda">Agenda</a>
+      <a href="../index.html">FAQ</a>
+    </nav>
+    <div class="topnav-actions">
+      <a class="topnav-login" href="#">
+        <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><circle cx="12" cy="8" r="3.4" stroke="currentColor" stroke-width="1.5"/><path d="M5.2 19.4c.9-3.6 3.4-5.4 6.8-5.4s5.9 1.8 6.8 5.4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+        Entrar
+      </a>
+      <a class="topnav-cta" href="#">Cadastre-se</a>
+    </div>
+  </header>
+
+  <!-- ============================================================
+       Opção F3 — Plateia
+       A tela da opção F vira a tela de cada um: uma plateia do iGreen
+       Live erguendo o celular, e em cada celular o vídeo de um
+       licenciado. Na chegada, as telas estão apagadas — fotogramas
+       cinza, sem brilho ("antes"). Então a arena acende: do centro
+       para fora, tela por tela, como acontece num show, cada celular
+       liga em cor e vida e derrama luz no ar ("depois"). Acontece uma
+       vez; depois a plateia fica viva e calma, com alguns vídeos
+       tocando por vez. O cursor faz um celular subir e tocar. Na
+       rolagem, a câmera sobe da plateia para o palco: os celulares
+       descem em camadas e a frase "Cada tela acesa, uma vida
+       transformada." fecha o hero.
+       ============================================================ -->
+  <main class="hf3-hero" id="topo">
+    <div class="hf3-scene">
+
+      <!-- Fundo animado do site (estilos em portalv2.css) -->
+      <div class="rich-bg" aria-hidden="true">
+        <img class="aurora-base" src="../assets/img/aurora-base.webp" alt="">
+        <span class="wash"></span>
+        <span class="band band-l1"></span>
+        <span class="band band-l2"></span>
+        <span class="band band-d1"></span>
+        <span class="band band-d2"></span>
+        <span class="dots-base"></span>
+        <span class="dots"></span>
+      </div>
+
+      <!-- a luz que as telas acesas derramam no ar da arena -->
+      <div class="hf3-haze" aria-hidden="true"></div>
+
+      <!-- a plateia: quatro camadas de profundidade (montadas pelo JS) -->
+      <div class="hf3-crowd" role="group" aria-label="Licenciados iGreen em vídeo, nas telas da plateia">
+        <div class="hf3-row" data-row="high"></div>
+        <div class="hf3-row" data-row="back"></div>
+        <div class="hf3-row" data-row="mid"></div>
+        <div class="hf3-row" data-row="front"></div>
+      </div>
+
+      <!-- Hero copy (mesmo conteúdo do site) -->
+      <div class="hf3-copy">
+        <div class="hero-copy">
+          <div class="hero-badge">
+            <span class="avatars" aria-hidden="true">
+              <img src="../speakers/pedro-cut.png" alt="">
+              <img src="../speakers/carla-cut.png" alt="">
+              <img src="../speakers/ana-cut.png" alt="">
+              <img src="../speakers/bruno-cut.png" alt="">
+            </span>
+            <span><b>+2.000</b> vidas transformadas</span>
+          </div>
+
+          <h1 class="title">
+            <span class="line">Renda recorrente</span>
+            <span class="line">que <span class="title-clip" aria-hidden="true"><video src="../assets/video/cards/sel-musgo3.mp4" poster="../assets/video/cards/sel-musgo3.jpg" muted loop autoplay playsinline></video></span> transforma</span>
+            <span class="line line-muted">vidas de verdade</span>
+          </h1>
+
+          <p class="sub">Conheça as histórias de quem virou licenciado iGreen e construiu renda com energia por assinatura, telecom e seguros, todo mês.</p>
+
+          <div class="actions">
+            <a class="btn-primary" href="#">
+              Seja licenciado
+              <span class="chip chip-dark">
+                <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                  <path d="M7 17L17 7M9 7h8v8" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+              </span>
+            </a>
+            <a class="btn-ghost" href="#">Ver histórias</a>
+          </div>
+
+          <a class="next-stop" href="../index.html#agenda">Próxima parada do tour: <b>Goiânia, 16 de agosto</b></a>
+        </div>
+      </div>
+
+      <!-- fechamento: a câmera sobe para o palco -->
+      <p class="hf3-phrase" aria-hidden="true">
+        <span class="hf3-phrase-l">Cada tela acesa,</span>
+        <span class="hf3-phrase-l hf3-phrase-m">uma vida transformada.</span>
+      </p>
+
+    </div>
+  </main>
+
+  <!-- Simula a seção seguinte, para julgar a saída do hero -->
+  <section class="hf3-next" aria-label="Seção seguinte">
+    <p class="hf3-next-t"><span>Trabalho não é só renda.</span> <span class="hf3-next-m">Ele muda a sua história.</span></p>
+    <p class="hf3-next-note">Seção seguinte (opção F3)</p>
+  </section>
+
+  <script src="../assets/vendor/gsap.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.13.0/ScrollTrigger.min.js"></script>
+  <script src="hero-f3.js"></script>
+</body>
+</html>

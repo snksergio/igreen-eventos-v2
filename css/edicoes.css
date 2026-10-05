@@ -1,0 +1,987 @@
+/* ============================================================
+   Edições que marcaram história — mural vivo
+   Palco fixo (sticky) dentro de uma seção alta. O JS monta o mural
+   (6 colunas num plano inclinado) e o fluxo do warp, e uma linha do
+   tempo presa à rolagem conduz a história. Todas as classes usam o
+   prefixo od-. Sem JS / movimento reduzido / telas pequenas: a seção
+   mostra só o bloco .od-static.
+   ============================================================ */
+
+:root {
+  --od-bg: #010702;
+  --od-text: #F3F6EC;
+  --od-muted: rgba(243, 246, 236, 0.4);
+  --od-soft: rgba(243, 246, 236, 0.62);
+  --od-lime: #A8FF35;
+  --od-lime-soft: #D8FFA6;
+  --od-gut: 5vw;
+}
+
+/* ============================================================
+   Seção
+   ============================================================ */
+
+.od {
+  position: relative;
+}
+
+/* modo animado (o JS adiciona .od-on) */
+.od-stage { display: none; }
+.od-on .od-stage {
+  display: block;
+  position: sticky;
+  top: 0;
+  height: 100vh;
+  overflow: hidden;
+}
+.od-on .od-static { display: none; }
+
+.od-frame {
+  /* o conteúdo segue a largura máxima do site (1240px), centralizado;
+     só o mural e o fundo ocupam a tela inteira. (% = largura do palco) */
+  --od-w: min(1240px, 100% - 2 * var(--od-gut));
+  --od-side: calc((100% - var(--od-w)) / 2);
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  background: var(--od-bg);
+}
+
+/* ---------- campo de fundo ---------- */
+
+.od-bg {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  pointer-events: none;
+}
+.od-bg > * { position: absolute; }
+.od-bg-aurora {
+  left: -8%;
+  top: -10%;
+  width: 116%;
+  height: 120%;
+  object-fit: cover;
+  object-position: center 40%;
+  opacity: 0.16;
+  filter: brightness(0.5) saturate(0.85);
+  transform: scaleX(-1) rotate(-6deg);
+}
+/* a luz do ponto de fuga: de onde os cards nascem */
+.od-bg-core {
+  left: 50%;
+  top: 50%;
+  width: 90vmax;
+  height: 90vmax;
+  margin: -45vmax 0 0 -45vmax;
+  border-radius: 50%;
+  background: radial-gradient(closest-side, rgba(140, 230, 60, 0.16) 0%, rgba(120, 210, 60, 0.07) 32%, rgba(80, 160, 40, 0.02) 60%, transparent 100%);
+}
+/* véu da chegada: o JS o tira aos poucos para o fundo acender (o grupo
+   .od-bg nunca muda de opacidade, para a malha em overlay não mudar de cara) */
+.od-bg-veil {
+  inset: 0;
+  background: var(--od-bg);
+}
+.od-bg-dots {
+  inset: 0;
+  background-image: radial-gradient(rgba(216, 255, 166, 0.5) 0.8px, transparent 1.25px);
+  background-size: 4.5px 4.5px;
+  mix-blend-mode: overlay;
+  opacity: 0.4;
+}
+
+/* ---------- mundo 3D ---------- */
+
+.od-world {
+  position: absolute;
+  inset: 0;
+  perspective: 1200px;
+  perspective-origin: 50% 50%;
+  pointer-events: none;
+}
+.od-plane {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 0;
+  height: 0;
+  transform-style: preserve-3d;
+}
+.od-col {
+  position: absolute;
+  top: 0;
+  transform-style: preserve-3d;
+}
+.od-card {
+  position: absolute;
+  left: 0;
+  width: 100%;
+  container-type: inline-size;
+}
+/* flutuação leve dos cards do mural: animação da propriedade translate na
+   casca do card (o JS dá ritmo, sentido e fase a cada um) e só anda com a
+   seção à vista. Fica na casca, nunca no conteúdo: o conteúdo é dimensionado
+   pelo contêiner (cqw), e animá-lo obrigava o navegador a recalcular o
+   estilo de todos os filhos a cada quadro. Os cards de onde os painéis
+   saem ficam parados */
+.od-card {
+  animation: od-float 3.6s ease-in-out infinite alternate;
+  animation-play-state: paused;
+}
+.od-live .od-card { animation-play-state: running; }
+.od-card.od-still { animation: none; }
+@keyframes od-float {
+  from { translate: 0 -2.5%; }
+  to { translate: 0 2.5%; }
+}
+.od-stream {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 0;
+  height: 0;
+  transform-style: preserve-3d;
+}
+.od-s {
+  position: absolute;
+  visibility: hidden;
+  container-type: inline-size;
+}
+
+/* ---------- cards: base ---------- */
+
+.od-ci {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  isolation: isolate;
+  border-radius: 14px;
+  background: #06110A;
+  color: var(--od-text);
+}
+.od-ci > img,
+.od-ci > video {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+/* mídia: lavagem verde leve + filete de borda */
+.od-k-media::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  border-radius: inherit;
+  background: linear-gradient(180deg, rgba(120, 200, 60, 0.06) 0%, rgba(6, 24, 13, 0) 45%, rgba(4, 16, 8, 0.3) 100%);
+  box-shadow: inset 0 0 0 1px rgba(243, 246, 236, 0.08);
+  pointer-events: none;
+}
+
+/* receita dos cards do site: corpo escuro, brilho verde subindo do pé,
+   malha de pontos e o filete em overlay mais forte embaixo */
+.od-k-glass {
+  background:
+    radial-gradient(70% 36% at 50% 100%, rgba(196, 250, 120, 0.17) 0%, rgba(160, 231, 75, 0.06) 52%, transparent 82%),
+    linear-gradient(to top, rgba(160, 231, 75, 0.1) 0%, rgba(139, 196, 62, 0.04) 38%, rgba(129, 178, 58, 0) 68%),
+    linear-gradient(180deg, rgba(160, 231, 75, 0.035) 0%, rgba(160, 231, 75, 0) 42%),
+    #07110A;
+}
+.od-k-glass::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  border-radius: inherit;
+  pointer-events: none;
+  background-image: radial-gradient(rgba(216, 255, 166, 0.38) 0.7px, transparent 1.2px);
+  background-size: 5px 5px;
+  mix-blend-mode: overlay;
+  opacity: 0.32;
+  -webkit-mask-image: linear-gradient(to top, #000 15%, transparent 66%);
+  mask-image: linear-gradient(to top, #000 15%, transparent 66%);
+}
+.od-k-glass::after,
+.od-edge::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: 3;
+  border-radius: inherit;
+  padding: 1px;
+  pointer-events: none;
+  mix-blend-mode: overlay;
+  background: linear-gradient(to top, rgba(255, 255, 255, 0.7) 0%, rgba(255, 255, 255, 0.24) 22%, rgba(255, 255, 255, 0.08) 40%, rgba(255, 255, 255, 0.03) 100%);
+  -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor;
+  mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+  mask-composite: exclude;
+}
+.od-k-glass > * { position: relative; z-index: 1; }
+
+/* ---------- números ---------- */
+
+.od-k-stat {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: 9cqw 9cqw 8.5cqw;
+}
+.od-stat-n {
+  font-weight: 500;
+  font-size: 31cqw;
+  line-height: 0.9;
+  letter-spacing: -0.045em;
+  color: #F5F9F0;
+  font-variant-numeric: tabular-nums;
+}
+.od-stat-n .od-acc { color: var(--od-lime); }
+.od-stat-n svg {
+  display: inline-block;
+  width: 0.36em;
+  height: 0.36em;
+  margin-left: 0.08em;
+  vertical-align: 0.42em;
+}
+.od-stat-l {
+  font-weight: 500;
+  font-size: 6.4cqw;
+  letter-spacing: -0.015em;
+  color: rgba(245, 249, 240, 0.94);
+}
+.od-stat-d {
+  margin-top: 1.6cqw;
+  font-size: 4.7cqw;
+  line-height: 1.45;
+  color: rgba(255, 255, 255, 0.46);
+}
+
+/* ---------- depoimentos ---------- */
+
+.od-k-quote {
+  display: flex;
+  flex-direction: column;
+  padding: 8.5cqw 8.5cqw 8cqw;
+}
+.od-q-mark {
+  display: block;
+  height: 9cqw;
+  font-size: 22cqw;
+  line-height: 0.82;
+  font-weight: 500;
+  color: var(--od-lime);
+}
+.od-q-t {
+  margin-top: 5cqw;
+  font-size: 6.9cqw;
+  line-height: 1.32;
+  letter-spacing: -0.018em;
+  color: rgba(245, 249, 240, 0.92);
+}
+.od-q-who {
+  display: flex;
+  align-items: center;
+  gap: 3.6cqw;
+  margin-top: auto;
+}
+.od-q-who img {
+  width: 13cqw;
+  height: 13cqw;
+  border-radius: 50%;
+  object-fit: cover;
+  flex-shrink: 0;
+  box-shadow: 0 0 0 1px rgba(216, 255, 166, 0.22);
+}
+.od-q-who b {
+  display: block;
+  font-weight: 500;
+  font-size: 4.9cqw;
+  color: #F5F9F0;
+}
+.od-q-who i {
+  display: block;
+  margin-top: 0.6cqw;
+  font-style: normal;
+  font-size: 4.3cqw;
+  color: rgba(255, 255, 255, 0.46);
+}
+
+/* ---------- edições (mini past-card) ---------- */
+
+.od-k-ed {
+  display: flex;
+  flex-direction: column;
+  padding: 4.2cqw 4.2cqw 8cqw;
+}
+.od-ed-photo {
+  position: relative;
+  aspect-ratio: 16 / 11;
+  border-radius: 3cqw;
+  overflow: hidden;
+}
+.od-ed-photo img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+.od-ed-body { margin: auto 4.6cqw 0; }
+.od-tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 2.4cqw;
+  padding: 1.9cqw 3.3cqw;
+  border-radius: 1.3cqw;
+  border: 1px solid rgba(216, 255, 166, 0.14);
+  background: rgba(216, 255, 166, 0.04);
+  font-size: 3.6cqw;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: rgba(216, 255, 166, 0.78);
+  white-space: nowrap;
+}
+.od-tag::before {
+  content: '';
+  width: 1.6cqw;
+  height: 1.6cqw;
+  border-radius: 50%;
+  background: rgba(168, 255, 53, 0.8);
+}
+.od-ed-title {
+  margin-top: 4.4cqw;
+  font-weight: 500;
+  font-size: 8.4cqw;
+  line-height: 1.08;
+  letter-spacing: -0.02em;
+  color: #F5F9F0;
+}
+
+/* ---------- marca ---------- */
+
+.od-k-brand {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: 9cqw;
+}
+.od-k-brand img {
+  width: 40cqw;
+  height: auto;
+  display: block;
+}
+.od-brand-t {
+  font-weight: 500;
+  font-size: 11cqw;
+  line-height: 1.02;
+  letter-spacing: -0.035em;
+  color: #F5F9F0;
+}
+.od-brand-s {
+  margin-top: 3cqw;
+  font-size: 4.6cqw;
+  color: rgba(255, 255, 255, 0.46);
+}
+
+/* ---------- tipográficos ---------- */
+
+.od-k-type {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: 9cqw;
+}
+.od-type-k {
+  font-size: 4.2cqw;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: rgba(216, 255, 166, 0.7);
+}
+.od-type-big {
+  font-weight: 500;
+  font-size: 27cqw;
+  line-height: 0.92;
+  letter-spacing: -0.05em;
+  color: #F5F9F0;
+}
+.od-type-big span { color: var(--od-lime); }
+.od-type-sm {
+  margin-top: 3cqw;
+  font-size: 5cqw;
+  line-height: 1.4;
+  color: rgba(255, 255, 255, 0.5);
+}
+
+.od-k-route {
+  display: flex;
+  flex-direction: column;
+  padding: 9cqw;
+}
+.od-route {
+  position: relative;
+  list-style: none;
+  margin-top: auto;
+  padding-left: 7cqw;
+}
+.od-route::before {
+  content: '';
+  position: absolute;
+  left: 1.2cqw;
+  top: 3cqw;
+  bottom: 3cqw;
+  width: 1px;
+  background: linear-gradient(to bottom, rgba(168, 255, 53, 0.7), rgba(243, 246, 236, 0.14));
+}
+.od-route li { position: relative; }
+.od-route li + li { margin-top: 5.4cqw; }
+.od-route li::before {
+  content: '';
+  position: absolute;
+  left: -7cqw;
+  top: 2.6cqw;
+  width: 3.4cqw;
+  height: 3.4cqw;
+  border-radius: 50%;
+  background: #07110A;
+  box-shadow: inset 0 0 0 1px rgba(168, 255, 53, 0.8);
+}
+.od-route li.is-done::before { background: var(--od-lime); box-shadow: 0 0 2.4cqw rgba(168, 255, 53, 0.5); }
+.od-route b {
+  display: block;
+  font-weight: 500;
+  font-size: 7.6cqw;
+  letter-spacing: -0.02em;
+  color: #F5F9F0;
+}
+.od-route i {
+  display: block;
+  font-style: normal;
+  font-size: 4.2cqw;
+  color: rgba(255, 255, 255, 0.46);
+}
+.od-route li.is-next b { color: rgba(243, 246, 236, 0.55); }
+
+/* ---------- warp: rótulos e mini números ---------- */
+
+.od-k-label {
+  display: flex;
+  align-items: center;
+  gap: 5cqw;
+  padding: 0 9cqw;
+  border-radius: 999px;
+  font-weight: 500;
+  font-size: 9.5cqw;
+  letter-spacing: -0.01em;
+  white-space: nowrap;
+}
+.od-k-label::before {
+  content: '';
+  width: 4.4cqw;
+  height: 4.4cqw;
+  flex-shrink: 0;
+  border-radius: 50%;
+  background: var(--od-lime);
+  box-shadow: 0 0 3cqw rgba(168, 255, 53, 0.6);
+}
+.od-k-mini {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  padding: 10cqw;
+}
+.od-k-mini b {
+  font-weight: 500;
+  font-size: 30cqw;
+  line-height: 0.9;
+  letter-spacing: -0.045em;
+}
+.od-k-mini b span { color: var(--od-lime); }
+.od-k-mini i {
+  margin-top: 4cqw;
+  font-style: normal;
+  font-size: 7cqw;
+  color: rgba(255, 255, 255, 0.55);
+}
+
+/* ============================================================
+   Camadas de luz / profundidade
+   ============================================================ */
+
+.od-dof,
+.od-dim,
+.od-edges,
+.od-scrim,
+.od-afterglow {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+/* profundidade de campo: o topo do plano inclinado (mais longe) desfoca */
+.od-dof { opacity: 0; }
+.od-dof--tilt {
+  bottom: auto;
+  height: 38%; /* só a faixa de cima: menos área de backdrop-filter */
+  backdrop-filter: blur(5px);
+  -webkit-backdrop-filter: blur(5px);
+  -webkit-mask-image: linear-gradient(to bottom, #000 0%, rgba(0, 0, 0, 0.75) 37%, transparent 95%);
+  mask-image: linear-gradient(to bottom, #000 0%, rgba(0, 0, 0, 0.75) 37%, transparent 95%);
+}
+/* no fim, o que está no fundo (o centro, para onde tudo implode) desfoca */
+.od-dof--core {
+  backdrop-filter: blur(9px);
+  -webkit-backdrop-filter: blur(9px);
+  -webkit-mask-image: radial-gradient(ellipse 42% 46% at 50% 50%, #000 0%, rgba(0, 0, 0, 0.7) 45%, transparent 100%);
+  mask-image: radial-gradient(ellipse 42% 46% at 50% 50%, #000 0%, rgba(0, 0, 0, 0.7) 45%, transparent 100%);
+}
+.od-dim {
+  background: var(--od-bg);
+  opacity: 0;
+}
+/* bordas que fundem o palco com a página + vinheta */
+.od-edges {
+  background:
+    linear-gradient(to bottom, #010702 0%, rgba(1, 7, 2, 0.82) 7%, rgba(1, 7, 2, 0) 24%, rgba(1, 7, 2, 0) 80%, rgba(1, 7, 2, 0.85) 94%, #010702 100%),
+    radial-gradient(130% 100% at 50% 50%, rgba(1, 7, 2, 0) 55%, rgba(1, 7, 2, 0.7) 100%);
+}
+.od-scrim--center {
+  background: radial-gradient(ellipse 40% 34% at 50% 51%, rgba(1, 7, 2, 0.86) 0%, rgba(1, 7, 2, 0.62) 42%, rgba(1, 7, 2, 0.2) 72%, rgba(1, 7, 2, 0) 100%);
+}
+.od-scrim--left {
+  opacity: 0;
+  /* opaco sob a coluna de texto (nada do mural vaza atrás da leitura) e
+     some antes do painel; acompanha o container centralizado */
+  background: linear-gradient(90deg,
+    #010702 0%,
+    rgba(1, 7, 2, 0.99) calc(var(--od-side) + var(--od-w) * 0.37),
+    rgba(1, 7, 2, 0.82) calc(var(--od-side) + var(--od-w) * 0.42),
+    rgba(1, 7, 2, 0.36) calc(var(--od-side) + var(--od-w) * 0.5),
+    rgba(1, 7, 2, 0) calc(var(--od-side) + var(--od-w) * 0.6));
+}
+.od-afterglow {
+  opacity: 0;
+  background:
+    radial-gradient(ellipse 34% 30% at 50% 52%, rgba(168, 255, 53, 0.09) 0%, rgba(120, 210, 60, 0.035) 45%, transparent 100%);
+}
+
+/* ============================================================
+   Texto: máscaras de linha
+   ============================================================ */
+
+.od-m {
+  display: block;
+  overflow: hidden;
+  /* respiro para acentos e cedilhas sem mexer no ritmo das linhas */
+  padding: 0.06em 0 0.16em;
+  margin: -0.06em 0 -0.16em;
+}
+.od-l { display: block; }
+.od-muted { color: var(--od-muted); }
+
+/* ---------- abertura ---------- */
+
+.od-head {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 40px 24px 0;
+  pointer-events: none;
+}
+.od-head-in {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.od-head-in > .od-m:first-child { display: inline-block; }
+.od-head .kicker { display: inline-flex; }
+.od-head-title {
+  margin-top: 22px;
+  font-weight: 500;
+  font-size: clamp(44px, 5vw, 72px);
+  line-height: 1.04;
+  letter-spacing: -0.03em;
+  color: #F5F9F0;
+}
+.od-head-sub {
+  max-width: 30em;
+  margin-top: 24px;
+  font-size: 18px;
+  line-height: 1.55;
+  letter-spacing: -0.02em;
+  color: rgba(255, 255, 255, 0.58);
+  text-wrap: balance;
+}
+
+/* ---------- painéis de destaque ---------- */
+
+.od-feats {
+  position: absolute;
+  inset: 0;
+  /* mesma câmera do mural (o JS copia a perspectiva): o painel sai de um
+     card do mural exatamente onde ele está */
+  perspective: 1200px;
+  perspective-origin: 50% 50%;
+  pointer-events: none;
+}
+.od-feat {
+  /* --fb: quanto da moldura de vidro aparece (0 = só a foto, igual ao card
+     do mural de onde o painel sai; 1 = painel completo).
+     --ix / --cr: o recorte da foto (sobra de cada lado e raio dos cantos),
+     para o painel nascer no formato do card de origem e se abrir */
+  --fb: 1;
+  --ix: 0%;
+  --cr: 10px;
+  position: absolute;
+  right: var(--od-side);
+  top: calc(50% + 22px);
+  width: calc(var(--od-w) * 0.6);
+  margin: 0;
+  padding: 10px;
+  border-radius: 18px;
+  opacity: 0;
+  box-shadow: 0 40px 90px rgba(0, 0, 0, calc(0.55 * var(--fb))), 0 0 0 1px rgba(243, 246, 236, calc(0.05 * var(--fb)));
+}
+.od-feat::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  border-radius: inherit;
+  opacity: var(--fb);
+  background:
+    radial-gradient(62% 30% at 50% 100%, rgba(196, 250, 120, 0.16) 0%, rgba(160, 231, 75, 0.06) 50%, transparent 80%),
+    linear-gradient(to top, rgba(160, 231, 75, 0.09) 0%, rgba(139, 196, 62, 0.04) 38%, rgba(129, 178, 58, 0) 68%),
+    #07110A;
+}
+.od-feat::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: 3;
+  border-radius: inherit;
+  padding: 1px;
+  pointer-events: none;
+  mix-blend-mode: overlay;
+  background: linear-gradient(to top, rgba(255, 255, 255, 0.8) 0%, rgba(255, 255, 255, 0.28) 22%, rgba(255, 255, 255, 0.08) 42%, transparent 60%);
+  -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor;
+  mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+  mask-composite: exclude;
+  opacity: var(--fb);
+}
+/* a foto tem a mesma proporção dos cards do mural (16:10) */
+.od-feat-media {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 16 / 10;
+}
+/* a luz da própria imagem: um duplicado desfocado atrás dela. A imagem já
+   vem desfocada (glow-*.jpg, 208×140, com margem escura para o halo vazar
+   além da foto): um blur(30px) do navegador era refeito a cada quadro
+   enquanto o painel se movia. A foto ocupa o miolo da imagem, alinhado a
+   94% × 98% da foto do painel, um pouco abaixo */
+.od-feat-glow {
+  position: absolute;
+  left: -11%;
+  top: -15.6%;
+  width: 122.2%;
+  height: 137.2%;
+  object-fit: fill;
+  opacity: calc(0.45 * var(--fb));
+  transform: translateY(14px);
+}
+.od-feat-clip {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  border-radius: 10px;
+  background: #06110A;
+}
+.od-feat-clip,
+.od-feat-shade {
+  clip-path: inset(0% var(--ix) 0% var(--ix) round var(--cr));
+}
+.od-feat-img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+.od-feat-clip::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to top, rgba(1, 7, 2, 0.62) 0%, rgba(1, 7, 2, 0) 26%);
+  box-shadow: inset 0 0 0 1px rgba(243, 246, 236, 0.06);
+  border-radius: inherit;
+}
+.od-feat-shade {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  border-radius: inherit;
+  background: var(--od-bg);
+  pointer-events: none;
+}
+.od-feat-cap {
+  position: absolute;
+  left: 30px;
+  right: 30px;
+  bottom: 24px;
+  z-index: 2;
+  display: flex;
+  justify-content: space-between;
+  opacity: var(--fb);
+  font-size: 12px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: rgba(243, 246, 236, 0.72);
+}
+.od-feat-cap span:first-child { color: var(--od-lime-soft); }
+
+/* ---------- textos das edições ---------- */
+
+.od-chs {
+  position: absolute;
+  left: var(--od-side);
+  top: calc(50% + 22px);
+  width: calc(var(--od-w) * 0.34);
+  transform: translateY(-50%);
+  display: grid;
+  pointer-events: none;
+}
+.od-ch {
+  grid-area: 1 / 1;
+  align-self: center;
+}
+.od-ch-label .od-l {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  font-size: 15px;
+  letter-spacing: -0.005em;
+  color: rgba(243, 246, 236, 0.82);
+}
+.od-ch-label b {
+  font-weight: 500;
+  color: var(--od-lime);
+  font-variant-numeric: tabular-nums;
+}
+.od-ch-label i {
+  width: 34px;
+  height: 1px;
+  background: rgba(243, 246, 236, 0.3);
+}
+.od-ch-title {
+  margin-top: 22px;
+  font-weight: 500;
+  font-size: clamp(40px, 3.9vw, 58px);
+  line-height: 1.02;
+  letter-spacing: -0.032em;
+  color: #F5F9F0;
+}
+.od-ch-title .od-m:last-child .od-l { color: var(--od-muted); }
+.od-ch-desc {
+  max-width: 25em;
+  margin-top: 24px;
+  font-size: 17px;
+  line-height: 1.58;
+  letter-spacing: -0.015em;
+  color: rgba(255, 255, 255, 0.6);
+}
+.od-ch-meta {
+  margin-top: 30px;
+  max-width: 25em;
+}
+.od-ch-meta .od-l {
+  display: flex;
+  justify-content: space-between;
+  padding-top: 14px;
+  border-top: 1px solid rgba(243, 246, 236, 0.12);
+  font-size: 12px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: rgba(243, 246, 236, 0.78);
+}
+.od-ch-meta .od-l span { color: rgba(243, 246, 236, 0.38); }
+
+/* ---------- indicador 01 / 03 ---------- */
+
+.od-prog {
+  position: absolute;
+  left: var(--od-side);
+  bottom: 6.5vh;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-size: 14px;
+  letter-spacing: 0.02em;
+  font-variant-numeric: tabular-nums;
+  color: rgba(243, 246, 236, 0.42);
+  opacity: 0;
+}
+.od-prog-n {
+  display: block;
+  height: 1.2em;
+  line-height: 1.2;
+  overflow: hidden;
+  color: #F5F9F0;
+  font-weight: 500;
+}
+.od-prog-roll { display: block; }
+.od-prog-roll span { display: block; }
+.od-prog-bar {
+  position: relative;
+  width: 150px;
+  height: 1px;
+  margin-left: 10px;
+  background: rgba(243, 246, 236, 0.16);
+  overflow: hidden;
+}
+.od-prog-bar i {
+  position: absolute;
+  inset: 0;
+  background: var(--od-lime);
+  box-shadow: 0 0 8px rgba(168, 255, 53, 0.6);
+  transform-origin: 0 50%;
+  transform: scaleX(0);
+}
+
+/* ---------- desfecho ---------- */
+
+.od-final {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 44px 24px 0;
+  text-align: center;
+  pointer-events: none;
+}
+.od-final-t {
+  font-weight: 500;
+  font-size: clamp(48px, 6.2vw, 104px);
+  line-height: 0.98;
+  letter-spacing: -0.04em;
+  color: #F5F9F0;
+}
+.od-final-cta {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 20px;
+  margin-top: 48px;
+  opacity: 0;
+}
+.od-final.is-on .od-final-cta { pointer-events: auto; }
+.od-final-next {
+  font-size: 14px;
+  letter-spacing: -0.005em;
+  color: rgba(243, 246, 236, 0.46);
+}
+.od-final-next b {
+  font-weight: 500;
+  color: rgba(243, 246, 236, 0.86);
+}
+
+/* ============================================================
+   Versão estática (sem JS, movimento reduzido, telas pequenas)
+   ============================================================ */
+
+.od-static {
+  padding: 120px 24px 160px;
+  max-width: 1240px;
+  margin: 0 auto;
+}
+.od-static-head {
+  text-align: center;
+  margin-bottom: 72px;
+}
+.od-static-head h2 {
+  margin-top: 20px;
+  font-weight: 500;
+  font-size: clamp(40px, 5vw, 72px);
+  line-height: 1.06;
+  letter-spacing: -0.03em;
+  color: #F5F9F0;
+}
+.od-static-head h2 span { color: var(--od-muted); }
+.od-static-sub {
+  max-width: 30em;
+  margin: 22px auto 0;
+  font-size: 17px;
+  line-height: 1.55;
+  color: rgba(255, 255, 255, 0.55);
+}
+.od-static-row {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr)) minmax(0, 1.6fr);
+  gap: 16px;
+  margin-top: 24px;
+}
+.od-static-stat,
+.od-static-quote {
+  margin: 0;
+  padding: 26px 26px 24px;
+  border-radius: 16px;
+  background:
+    radial-gradient(62% 30% at 50% 100%, rgba(196, 250, 120, 0.12) 0%, transparent 80%),
+    rgba(7, 16, 10, 0.7);
+  box-shadow: inset 0 0 0 1px rgba(243, 246, 236, 0.06);
+}
+.od-static-n {
+  font-weight: 500;
+  font-size: 48px;
+  line-height: 1;
+  letter-spacing: -0.04em;
+  color: #F5F9F0;
+}
+.od-static-n span { color: var(--od-lime); }
+.od-static-stat p + p {
+  margin-top: 12px;
+  font-size: 14px;
+  color: rgba(243, 246, 236, 0.6);
+}
+.od-static-quote blockquote {
+  font-size: 18px;
+  line-height: 1.45;
+  letter-spacing: -0.015em;
+  color: rgba(245, 249, 240, 0.9);
+}
+.od-static-quote figcaption {
+  margin-top: 14px;
+  font-size: 13px;
+  color: rgba(243, 246, 236, 0.5);
+}
+.od-static-final {
+  margin-top: 120px;
+  text-align: center;
+}
+.od-static-final p {
+  font-weight: 500;
+  font-size: clamp(38px, 6vw, 88px);
+  line-height: 1.02;
+  letter-spacing: -0.04em;
+  color: #F5F9F0;
+  margin-bottom: 40px;
+}
+.od-static-final p span { color: var(--od-muted); }
+
+@media (max-width: 1100px) {
+  .od-static-row { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+  .od-static-quote { grid-column: 1 / -1; }
+}
+@media (max-width: 640px) {
+  .od-static { padding: 88px 16px 120px; }
+  .od-static-row { grid-template-columns: 1fr; }
+  .od-static-n { font-size: 40px; }
+  .od-static-final { margin-top: 88px; }
+}

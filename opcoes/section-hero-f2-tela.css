@@ -1,0 +1,403 @@
+/* ============================================================
+   Seção hero — F2 Tela
+   Uma tela panorâmica (proporção de cinema) feita de cards separados,
+   com o acabamento dos cards do hero do site. Medidas no estado "de
+   frente"; inclinação, escala e frente de luz são transforms do JS.
+   Por quadro só mudam transform e opacity.
+   ============================================================ */
+
+:root {
+  --shft-pw: min(88vw, 1720px);                                   /* largura da tela */
+  --shft-g: clamp(10px, 0.95vw, 16px);                            /* vão entre cards e borda */
+  --shft-c: calc((var(--shft-pw) - 8 * var(--shft-g)) / 7);         /* largura de um card */
+  --shft-ch: calc(var(--shft-c) * 1.25);                           /* card 4:5, como no site */
+  --shft-ph: calc(2 * var(--shft-ch) + 3 * var(--shft-g));          /* altura da tela */
+  --shft-r: 22px;
+  --shft-tr: 16px;
+  --shft-lime: #A8FF35;
+  --shft-lime-soft: #D8FFA6;
+  --shft-ease: cubic-bezier(0.2, 0.7, 0.2, 1);
+}
+
+/* ============ Hero ============ */
+
+.shft-hero {
+  position: relative;
+  overflow: clip;
+  /* respiro acima do título: o selo começa bem abaixo do menu */
+  padding: clamp(128px, 15.5vh, 190px) 0 0;
+  background: linear-gradient(180deg, #010D03 0%, var(--bg) 70%);
+  -webkit-user-select: none;
+  user-select: none;
+}
+.shft-hero > .rich-bg { z-index: 0; }
+.shft-off .rich-bg .band { animation-play-state: paused; }
+
+/* pé do hero: derrete na seção seguinte */
+.shft-hero::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 30vh;
+  z-index: 5;
+  background: linear-gradient(to bottom, rgba(1, 7, 2, 0) 0%, rgba(1, 7, 2, 0.7) 60%, #010702 100%);
+  pointer-events: none;
+}
+
+/* ============ Texto ============ */
+
+.shft-copy {
+  position: relative;
+  z-index: 4;
+  pointer-events: none;
+  will-change: transform, opacity;
+}
+.shft-copy .hero-copy { padding: 0 24px; }
+.shft-copy .title {
+  margin-top: 16px;
+  font-size: clamp(40px, 4.2vw, 64px);
+  line-height: 1.02;
+  letter-spacing: -0.04em;
+}
+.shft-copy .title-clip { box-shadow: 0 0 0 1px rgba(243, 246, 236, 0.16), 0 10px 26px rgba(0, 0, 0, 0.4); }
+.shft-copy .sub {
+  margin-top: 14px;
+  max-width: 50ch;
+  font-size: clamp(15.5px, 1.08vw, 18px);
+}
+.shft-copy .actions { margin-top: 22px; }
+.shft-copy .next-stop { margin-top: 12px; }
+
+/* ============ Palco (fica preso no centro durante o fechamento) ============ */
+
+.shft-stage {
+  position: sticky;
+  z-index: 2;
+  top: calc((100vh - var(--shft-ph)) / 2);
+  width: var(--shft-pw);
+  height: var(--shft-ph);
+  /* respiro abaixo do texto, antes da tela */
+  margin: clamp(48px, 6.2vh, 88px) auto 0;
+}
+/* espaço do fechamento: a tela fica parada enquanto a frase aparece */
+.shft-hold { height: 75vh; }
+
+.shft-tilt {
+  position: absolute;
+  inset: 0;
+  transform-origin: 50% 0;
+  will-change: transform;
+}
+
+/* a tela: painel escuro com o anel premium do sistema */
+.shft-panel {
+  position: absolute;
+  inset: 0;
+  border-radius: var(--shft-r);
+  background:
+    radial-gradient(70% 60% at 50% 100%, rgba(196, 250, 120, 0.08) 0%, rgba(160, 231, 75, 0.02) 60%, transparent 85%),
+    #06110A;
+  box-shadow:
+    0 60px 120px -24px rgba(0, 0, 0, 0.72),
+    0 24px 48px rgba(0, 0, 0, 0.3),
+    inset 0 0 0 1px rgba(243, 246, 236, 0.08);
+}
+.shft-panel::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: 6;
+  border-radius: inherit;
+  padding: 1px;
+  pointer-events: none;
+  mix-blend-mode: overlay;
+  background: linear-gradient(to top, rgba(255, 255, 255, 0.7) 0%, rgba(255, 255, 255, 0.24) 22%, rgba(255, 255, 255, 0.08) 45%, rgba(255, 255, 255, 0.16) 100%);
+  -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor;
+  mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+  mask-composite: exclude;
+}
+
+/* a grade: 7 colunas x 2 linhas, a do centro alta */
+.shft-grid {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  grid-template-columns: repeat(7, minmax(0, 1fr));
+  grid-template-rows: repeat(2, minmax(0, 1fr));
+  gap: var(--shft-g);
+  padding: var(--shft-g);
+}
+
+/* cards: o mesmo acabamento do hero do site */
+.shft-cell,
+.shft-tile {
+  position: relative;
+  margin: 0;
+  min-width: 0;
+  min-height: 0;
+  border-radius: var(--shft-tr);
+  overflow: hidden;
+  background: #0C2414;
+}
+.shft-cell img,
+.shft-tile video {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+/* véu leve da marca */
+.shft-cell::before,
+.shft-tile::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  background: linear-gradient(180deg, rgba(120, 200, 60, 0.07) 0%, rgba(6, 24, 13, 0) 45%, rgba(4, 16, 8, 0.32) 100%);
+  pointer-events: none;
+}
+/* filete */
+.shft-cell::after,
+.shft-tile::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: 3;
+  border-radius: inherit;
+  box-shadow: inset 0 0 0 1px rgba(243, 246, 236, 0.08);
+  transition: box-shadow 0.5s ease;
+  pointer-events: none;
+}
+.shft-cell::before { background: linear-gradient(180deg, rgba(1, 7, 2, 0.12) 0%, rgba(1, 7, 2, 0.4) 100%); }
+
+.shft-gray {
+  position: absolute;
+  inset: 0;
+}
+.shft-lit .shft-gray,
+.shft-lit .shft-beamwrap { visibility: hidden; }
+
+/* a frente leva a janela circular; dentro, os cards em cor ficam parados */
+.shft-front {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 0;
+  height: 100%;
+  will-change: transform;
+}
+.shft-clip {
+  position: absolute;
+  left: 0;
+  top: calc(50% - var(--shft-pw) * 0.66);
+  width: calc(var(--shft-pw) * 1.32);
+  height: calc(var(--shft-pw) * 1.32);
+  border-radius: 50%;
+  overflow: hidden;
+}
+.shft-after {
+  position: absolute;
+  left: 0;
+  top: calc(var(--shft-pw) * 0.66 - var(--shft-ph) / 2);
+  width: var(--shft-pw);
+  height: var(--shft-ph);
+  will-change: transform;
+}
+
+.shft-slot {
+  position: relative;
+  min-width: 0;
+  min-height: 0;
+  display: grid;
+}
+.shft-slot > .shft-tile { grid-area: 1 / 1; }
+/* luz que o card aceso derrama sobre a tela */
+.shft-glow {
+  position: absolute;
+  inset: -18% -22%;
+  border-radius: 50%;
+  background: radial-gradient(closest-side, rgba(168, 255, 53, 0.34) 0%, rgba(168, 255, 53, 0.12) 48%, rgba(168, 255, 53, 0) 100%);
+  opacity: 0;
+  transition: opacity 0.7s ease;
+  pointer-events: none;
+}
+.shft-tile {
+  transition: transform 0.6s var(--shft-ease), opacity 0.5s ease, box-shadow 0.6s var(--shft-ease);
+  will-change: transform;
+}
+.shft-ping {
+  position: absolute;
+  inset: 0;
+  z-index: 4;
+  border-radius: inherit;
+  box-shadow: inset 0 0 0 1.5px rgba(216, 255, 166, 0.9), 0 0 24px rgba(168, 255, 53, 0.35);
+  opacity: 0;
+  pointer-events: none;
+}
+
+/* hover: o card salta da tela, acende o anel e derrama luz */
+.shft-slot.is-hover { z-index: 5; }
+.shft-slot.is-hover .shft-glow { opacity: 1; }
+.shft-slot.is-hover .shft-tile {
+  transform: translate3d(0, -10px, 0) scale(1.06);
+  box-shadow: 0 30px 60px rgba(0, 0, 0, 0.55);
+}
+.shft-slot.is-hover .shft-tile::after { box-shadow: inset 0 0 0 1.5px rgba(216, 255, 166, 0.85); }
+.shft-grid.is-focus .shft-slot:not(.is-hover) .shft-tile { opacity: 0.66; }
+.shft-scrolling .shft-stage { pointer-events: none; }
+
+/* feixe: arco desenhado no SVG (filtros estáticos, só transform se move) */
+.shft-beamwrap {
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  overflow: hidden;
+  pointer-events: none;
+}
+.shft-beam {
+  position: absolute;
+  top: 0;
+  height: 100%;
+  will-change: transform;
+}
+.shft-beam-svg {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+}
+.shft-tag {
+  position: absolute;
+  top: 16px;
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  height: 30px;
+  padding: 0 13px;
+  border-radius: 999px;
+  font-size: 14px;
+  font-weight: 500;
+  line-height: 1;
+  white-space: nowrap;
+  transform: scale(var(--shft-tag-k, 1));
+  transform-origin: 0 0;
+}
+.shft-tag--antes {
+  transform-origin: 100% 0;
+  color: rgba(243, 246, 236, 0.8);
+  background: rgba(6, 12, 8, 0.74);
+  box-shadow: inset 0 0 0 1px rgba(243, 246, 236, 0.16);
+}
+.shft-tag--depois {
+  color: #0A1F12;
+  background: var(--shft-lime-soft);
+  box-shadow: 0 6px 22px rgba(168, 255, 53, 0.3);
+}
+.shft-tag--depois i {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: #2E7D12;
+}
+
+.shft-dim {
+  position: absolute;
+  inset: 0;
+  z-index: 5;
+  border-radius: inherit;
+  background: #010702;
+  opacity: 0;
+  pointer-events: none;
+  will-change: opacity;
+}
+
+/* ============ Fechamento ============ */
+
+.shft-phrase {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  z-index: 7;
+  width: max-content;
+  max-width: 90vw;
+  transform: translate(-50%, -50%);
+  text-align: center;
+  font-size: clamp(36px, 3.9vw, 62px);
+  font-weight: 500;
+  line-height: 1.05;
+  letter-spacing: -0.038em;
+  color: var(--text-hi);
+  pointer-events: none;
+}
+.shft-phrase-l {
+  display: block;
+  opacity: 0;
+  will-change: transform, opacity;
+}
+.shft-phrase-m { color: rgba(243, 246, 236, 0.5); }
+
+/* ============ Seção seguinte (simulada) ============ */
+
+.shft-next {
+  position: relative;
+  z-index: 1;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 22px;
+  padding: 120px 24px;
+  background: var(--bg);
+  text-align: center;
+}
+.shft-next-t {
+  max-width: 20ch;
+  font-size: clamp(34px, 3.6vw, 56px);
+  font-weight: 500;
+  line-height: 1.06;
+  letter-spacing: -0.035em;
+  color: var(--text-hi);
+}
+.shft-next-m { color: var(--text-dim); }
+.shft-next-note { font-size: 13px; color: rgba(243, 246, 236, 0.3); }
+
+/* ============ Antes da entrada ============ */
+
+.shft-js:not(.shft-static):not(.shft-go) .shft-copy .hero-copy > *,
+.shft-js:not(.shft-static):not(.shft-go) .shft-stage { opacity: 0; }
+
+/* ============ Versão estática ============ */
+
+.shft-static .shft-stage { position: relative; top: auto; margin-bottom: 120px; }
+.shft-static .shft-hold,
+.shft-static .shft-phrase,
+.shft-static .shft-gray,
+.shft-static .shft-beamwrap { display: none; }
+.shft-static .shft-front { width: 100%; }
+.shft-static .shft-clip,
+.shft-static .shft-after {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  border-radius: 0;
+  overflow: visible;
+}
+
+@media (max-width: 899px) {
+  :root {
+    --shft-pw: calc(100vw - 24px);
+    --shft-g: 5px;
+    --shft-r: 12px;
+    --shft-tr: 7px;
+  }
+  .shft-copy .title { font-size: clamp(34px, 9vw, 52px); }
+}

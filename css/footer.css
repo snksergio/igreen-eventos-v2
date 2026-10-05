@@ -1,0 +1,849 @@
+/* ============================================================
+   Rodapé do site — "Seu nome no crachá" (proposta G4, opcoes/footer-g4)
+   An open, deep-dark footer set on the site's 12-column grid. The
+   left eight columns carry the statement, one quiet field ("Como você
+   quer ser chamado?") and the info grid; the right four are the bay
+   where the iGreen Live credential hangs from a strap that comes down
+   from above the screen. Whatever is typed in the field is printed on
+   the credential live (footer-g4.js), which swings a little with every
+   letter. The room is static: a low aurora backlights the bay, the
+   hero's dot matrix gives it texture.
+   ============================================================ */
+
+.ft-footer {
+  --ft-ink: #F3F6EC;
+  --ft-mute: rgba(243, 246, 236, 0.4);
+  --ft-soft: rgba(243, 246, 236, 0.66);
+  --ft-lime: #A8FF35;
+  --ft-lime-soft: #D8FFA6;
+  --ft-gap: 24px;
+  --ft-w: min(clamp(1240px, 61vw, 1560px), 100vw - 48px);       /* content width */
+  --ft-st: min(calc(var(--ft-w) * 0.06), 8.4vh);              /* statement size */
+  --ft-cw: min(calc(var(--ft-w) * 0.252), 36.5vh);            /* credential width */
+  --ft-fade: clamp(110px, 13vh, 190px);                        /* the strap comes out of the dark */
+  --ft-dark: 72px;                                             /* hidden band under the top menu */
+  --ft-x: clamp(0px, 100vw - 2033px, 640px);                   /* extra width once the grid grows past 1240 */
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  padding-top: clamp(124px, 15.4vh, 200px);
+  overflow: hidden;
+  isolation: isolate;
+  background: var(--bg);
+  color: var(--ft-ink);
+}
+
+/* ============ the room ============ */
+
+.ft-room {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  overflow: hidden;
+  pointer-events: none;
+  background: var(--bg); /* the grain blends with the page black, not with nothing */
+}
+.ft-aurora {
+  position: absolute;
+  inset: 0;
+  transform-origin: 50% 100%;
+  will-change: transform, opacity;
+}
+/* the house aurora artwork, low on the floor; its ribbon climbs toward the bay */
+.ft-ribbon {
+  position: absolute;
+  left: 0;
+  width: 110%;
+  bottom: -34%;
+  height: 78%;
+  object-fit: cover;
+  object-position: 50% 62%;
+  opacity: 0.34;
+  /* strongest low and to the right, under the bay; it thins out to the left */
+  -webkit-mask-image: radial-gradient(60% 95% at 74% 100%, #000 30%, rgba(0, 0, 0, 0.35) 65%, transparent 100%);
+  mask-image: radial-gradient(60% 95% at 74% 100%, #000 30%, rgba(0, 0, 0, 0.35) 65%, transparent 100%);
+}
+/* deep green body of the haze, heavier under the bay */
+.ft-haze {
+  position: absolute;
+  left: 46%;
+  width: 76%;
+  bottom: -40%;
+  height: 90%;
+  background: radial-gradient(closest-side, rgba(10, 80, 30, 0.62), rgba(6, 46, 18, 0.32) 52%, rgba(4, 24, 10, 0) 100%);
+}
+/* where the haze meets the floor */
+.ft-floor {
+  position: absolute;
+  left: 50%;
+  width: 62%;
+  bottom: -14%;
+  height: 26%;
+  background: radial-gradient(50% 50% at 50% 100%, rgba(216, 255, 166, 0.16), rgba(168, 255, 53, 0.05) 46%, rgba(168, 255, 53, 0) 76%);
+}
+/* a soft backlight behind the credential's resting place (placed by js) */
+.ft-back {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: calc(var(--ft-cw) * 2.5);
+  height: calc(var(--ft-cw) * 3);
+  translate: -50% -50%;
+  background: radial-gradient(closest-side, rgba(150, 236, 70, 0.1), rgba(110, 200, 60, 0.035) 52%, rgba(110, 200, 60, 0) 100%);
+  opacity: 0;
+}
+/* the house dot matrix, exactly as in the hero's .rich-bg: a faint constant
+   grid, plus a blended copy that only lights up where the aurora shines */
+.ft-dots-base,
+.ft-dots {
+  position: absolute;
+  inset: 0;
+  background-image: radial-gradient(rgba(216, 255, 166, 0.5) 0.8px, transparent 1.25px);
+  background-size: 4.5px 4.5px;
+}
+.ft-dots-base { opacity: 0.03; }
+.ft-dots {
+  mix-blend-mode: overlay;
+  opacity: 0.72;
+}
+
+/* ============ content ============ */
+
+.ft-wrap {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  flex: 1 1 auto;
+  flex-direction: column;
+  width: var(--ft-w);
+  margin: 0 auto;
+}
+
+.ft-head,
+.ft-grid,
+.ft-bar {
+  position: relative;
+  z-index: 2;
+  display: grid;
+  grid-template-columns: repeat(12, minmax(0, 1fr));
+  column-gap: var(--ft-gap);
+}
+
+/* ---------- statement ---------- */
+
+.ft-st {
+  grid-column: 1 / 9;
+  margin: 0;
+  font-family: var(--font-display);
+  font-weight: 500;
+  font-size: var(--ft-st);
+  line-height: 1;
+  letter-spacing: -0.036em;
+  color: var(--ft-ink);
+}
+/* each line is its own mask: room above for accents, below for descenders */
+.ft-l {
+  display: block;
+  overflow: hidden;
+  padding: 0.08em 0 0.1em;
+  margin: -0.08em 0 -0.1em;
+  white-space: nowrap;
+}
+.ft-li { display: block; }
+.ft-l-mute { color: var(--ft-mute); }
+
+/* ---------- the field ---------- */
+
+.ft-ask {
+  grid-column: 1 / 6;
+  margin-top: clamp(34px, 4.4vh, 72px);
+}
+.ft-k {
+  display: block;
+  margin: 0 0 4px;
+  font-size: calc(15px + var(--ft-x) * 0.005);
+  line-height: 1.2;
+  letter-spacing: -0.005em;
+  color: rgba(243, 246, 236, 0.5);
+  cursor: text;
+}
+.ft-field {
+  position: relative;
+}
+/* the resting hairline and, over it, a lime line drawn while focused */
+.ft-field::before,
+.ft-field::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 1px;
+  pointer-events: none;
+}
+.ft-field::before {
+  background: rgba(243, 246, 236, 0.16);
+  transform-origin: 0 50%;
+  transition: background-color 0.4s ease;
+}
+.ft-field::after {
+  background: linear-gradient(90deg, var(--ft-lime), var(--ft-lime-soft));
+  transform: scaleX(0);
+  transform-origin: 0 50%;
+  transition: transform 0.9s cubic-bezier(0.19, 1, 0.22, 1);
+}
+.ft-field:hover::before { background: rgba(243, 246, 236, 0.3); }
+.ft-field:focus-within::after { transform: scaleX(1); }
+
+.ft-input {
+  display: block;
+  width: 100%;
+  height: calc(var(--ft-st) * 0.84);
+  margin: 0;
+  padding: 0;
+  border: 0;
+  border-radius: 0;
+  outline: 0;
+  background: none;
+  font-family: var(--font-display);
+  font-weight: 500;
+  font-size: calc(var(--ft-st) * 0.46);
+  letter-spacing: -0.026em;
+  color: var(--ft-ink);
+  caret-color: var(--ft-lime);
+  -webkit-appearance: none;
+  appearance: none;
+}
+.ft-input::placeholder {
+  color: rgba(243, 246, 236, 0.22);
+  opacity: 1;
+  transition: color 0.4s ease;
+}
+.ft-input:focus::placeholder { color: rgba(243, 246, 236, 0.14); }
+.ft-input::selection { background: rgba(168, 255, 53, 0.28); }
+
+
+/* ---------- calls to action ---------- */
+
+.ft-cta {
+  grid-column: 1 / 9;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-top: clamp(26px, 3.6vh, 44px);
+}
+/* minimum gap under the head; on tall screens the free height is shared
+   equally above the grid and above the bar (auto margins) */
+.ft-head { margin-bottom: clamp(42px, 5.4vh, 100px); }
+.ft-mag { will-change: transform; }
+.ft-ghost {
+  /* the site's ghost button without the backdrop blur */
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
+}
+
+/* ---------- info grid ---------- */
+
+.ft-grid {
+  position: relative;
+  margin-top: auto;
+  padding-top: clamp(26px, 3.4vh, 40px);
+}
+/* the hairline stops at the bay: the credential owns the right third */
+.ft-rule {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: calc((var(--ft-w) - var(--ft-gap) * 11) / 12 * 8 + var(--ft-gap) * 7);
+  height: 1px;
+  background: rgba(243, 246, 236, 0.1);
+  transform-origin: 0 50%;
+}
+.ft-col { grid-row: 1; min-width: 0; }
+.ft-stop { grid-column: 1 / 4; }
+.ft-event { grid-column: 4 / 6; }
+.ft-contact { grid-column: 6 / 9; }
+.ft-bay { grid-column: 9 / 13; grid-row: 1; }
+
+.ft-h {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  margin: 0 0 20px;
+  font-size: calc(14px + var(--ft-x) * 0.005);
+  line-height: 1;
+  color: var(--ft-mute);
+}
+.ft-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--ft-lime);
+  box-shadow: 0 0 8px rgba(168, 255, 53, 0.6);
+}
+.ft-city {
+  margin: 0;
+  font-family: var(--font-display);
+  font-weight: 500;
+  font-size: calc(34px + var(--ft-x) * 0.016);
+  line-height: 1;
+  letter-spacing: -0.03em;
+  color: var(--ft-ink);
+}
+.ft-when {
+  margin: 14px 0 0;
+  font-size: calc(16px + var(--ft-x) * 0.006);
+  line-height: 1.4;
+  color: rgba(243, 246, 236, 0.78);
+}
+.ft-venue {
+  margin: 2px 0 0;
+  font-size: calc(15px + var(--ft-x) * 0.006);
+  line-height: 1.4;
+  color: var(--ft-mute);
+}
+.ft-more {
+  margin-top: 20px;
+  font-size: calc(15px + var(--ft-x) * 0.006);
+  color: var(--ft-lime-soft);
+}
+
+.ft-list,
+.ft-social { list-style: none; margin: 0; padding: 0; }
+.ft-list li + li { margin-top: 10px; }
+.ft-list a,
+.ft-social a {
+  font-size: calc(16px + var(--ft-x) * 0.006);
+  line-height: 1.25;
+  color: var(--ft-soft);
+}
+.ft-mail {
+  font-size: calc(20px + var(--ft-x) * 0.008);
+  line-height: 1.2;
+  letter-spacing: -0.015em;
+  color: var(--ft-ink);
+}
+.ft-phone {
+  margin-top: 12px;
+  font-size: calc(16px + var(--ft-x) * 0.006);
+  color: var(--ft-soft);
+}
+.ft-addr {
+  margin: 10px 0 0;
+  font-size: calc(15px + var(--ft-x) * 0.006);
+  line-height: 1.4;
+  color: var(--ft-mute);
+}
+.ft-social {
+  display: grid;
+  grid-template-columns: max-content max-content;
+  gap: 11px 28px;
+  margin-top: 22px;
+}
+
+/* underline that draws in from the left and leaves to the right */
+.ft-u {
+  position: relative;
+  display: inline-block;
+  transition: color 0.3s ease;
+}
+.ft-u::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: -3px;
+  height: 1px;
+  background: currentColor;
+  transform: scaleX(0);
+  transform-origin: 100% 50%;
+  transition: transform 0.55s cubic-bezier(0.2, 0.7, 0.2, 1);
+}
+.ft-u:hover::after,
+.ft-u:focus-visible::after {
+  transform: scaleX(1);
+  transform-origin: 0 50%;
+}
+.ft-list a:hover,
+.ft-social a:hover,
+.ft-phone:hover,
+.ft-legal a:hover { color: var(--ft-ink); }
+.ft-mail::after { bottom: -4px; }
+.ft-mail, .ft-phone, .ft-more { display: table; } /* own line, underline as wide as the text */
+
+/* ---------- bottom bar ---------- */
+
+.ft-bar {
+  position: relative;
+  align-items: center;
+  margin-top: auto;
+  padding: 18px 0 clamp(20px, 2.4vh, 34px);
+  border-top: 1px solid rgba(243, 246, 236, 0.1);
+  font-size: calc(14px + var(--ft-x) * 0.005);
+  line-height: 1.2;
+  color: rgba(243, 246, 236, 0.5);
+}
+/* breathing room above the bar, kept even when the footer grows */
+.ft-grid { margin-bottom: clamp(38px, 4.4vh, 88px); }
+.ft-bar p { margin: 0; }
+.ft-copy { grid-column: 1 / 4; color: rgba(243, 246, 236, 0.72); }
+.ft-made { grid-column: 4 / 6; }
+.ft-legal {
+  grid-column: 6 / 11;
+  display: flex;
+  gap: 24px;
+  white-space: nowrap;
+}
+.ft-legal a { color: rgba(243, 246, 236, 0.5); }
+.ft-up {
+  grid-column: 12;
+  justify-self: end;
+  display: grid;
+  place-items: center;
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  box-shadow: inset 0 0 0 1px rgba(243, 246, 236, 0.18);
+  color: var(--ft-ink);
+  transition: background-color 0.35s ease, color 0.35s ease, box-shadow 0.35s ease;
+}
+.ft-up svg {
+  width: 16px;
+  height: 16px;
+  transition: transform 0.5s cubic-bezier(0.2, 0.7, 0.2, 1);
+}
+.ft-up:hover {
+  background: var(--ft-lime);
+  color: #041007;
+  box-shadow: inset 0 0 0 1px var(--ft-lime);
+}
+.ft-up:hover svg { transform: translateY(-2px); }
+
+/* ============================================================
+   The lanyard stage: the whole footer, clipped, with a soft fade at
+   the top so the strap (and the card, when it drops or is thrown up)
+   comes out of the dark instead of from a hard edge
+   ============================================================ */
+
+.ft-stage {
+  position: absolute;
+  inset: 0;
+  z-index: 3;
+  overflow: hidden;
+  pointer-events: none;
+  -webkit-mask-image: linear-gradient(to bottom, transparent var(--ft-dark), rgba(0, 0, 0, 0.4) calc(var(--ft-dark) + var(--ft-fade) * 0.45), #000 calc(var(--ft-dark) + var(--ft-fade)));
+  mask-image: linear-gradient(to bottom, transparent var(--ft-dark), rgba(0, 0, 0, 0.4) calc(var(--ft-dark) + var(--ft-fade) * 0.45), #000 calc(var(--ft-dark) + var(--ft-fade)));
+}
+.ft-strap {
+  /* above the card: the clip runs over its top edge into the slot */
+  position: absolute;
+  z-index: 2;
+  left: 0;
+  top: 0;
+  display: block;
+}
+.ft-cue {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 1px;
+  height: 1px;
+}
+
+/* ---------- the credential ---------- */
+
+.ft-card {
+  position: absolute;
+  z-index: 1;
+  left: 0;
+  top: 0;
+  width: var(--ft-cw);
+  aspect-ratio: 54 / 86; /* a vertical CR80 badge */
+  font-size: calc(var(--ft-cw) / 17.5);
+  transform-origin: 50% 0;
+  pointer-events: auto;
+  cursor: grab;
+  touch-action: none;
+  -webkit-user-select: none;
+  user-select: none;
+  will-change: transform;
+  /* parked above the room until the script drops it */
+  transform: translate3d(-200vw, -200vh, 0);
+}
+.ft-card.is-drag { cursor: grabbing; }
+
+.ft-face {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  padding: 0.875em 0.875em 0;
+  border-radius: 1.1em;
+  overflow: hidden;
+  /* matte black PVC: a deep green-black with a faint top light */
+  background:
+    radial-gradient(110% 46% at 50% 0%, rgba(168, 255, 53, 0.07), rgba(168, 255, 53, 0) 72%),
+    linear-gradient(172deg, #0B1A10 0%, #07120B 44%, #050D08 100%);
+  box-shadow:
+    inset 0 0 0 1px rgba(243, 246, 236, 0.07),
+    0 2.2em 4em -1em rgba(0, 0, 0, 0.8),
+    0 0.5em 1.2em rgba(0, 0, 0, 0.45);
+}
+/* matte texture printed into the plastic (static, moves with the card) */
+.ft-face::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  border-radius: inherit;
+  pointer-events: none;
+  background: url('../assets/img/footer-shared/grain-256.png') repeat 0 0 / 180px 180px;
+  mix-blend-mode: soft-light;
+  opacity: 0.22;
+}
+.ft-face > * { position: relative; z-index: 1; }
+/* lime foil edge: bright where the light falls (top left), a glint low right */
+.ft-face::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: 6;
+  border-radius: inherit;
+  padding: 1px;
+  pointer-events: none;
+  background: linear-gradient(158deg,
+    rgba(216, 255, 166, 0.75) 0%,
+    rgba(168, 255, 53, 0.32) 14%,
+    rgba(168, 255, 53, 0.06) 36%,
+    rgba(168, 255, 53, 0.03) 62%,
+    rgba(168, 255, 53, 0.22) 88%,
+    rgba(216, 255, 166, 0.45) 100%);
+  -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor;
+  mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+  mask-composite: exclude;
+}
+
+/* punched slot where the clip goes through */
+.ft-hole {
+  position: absolute;
+  left: 50%;
+  top: 0.62em;
+  width: 2.5em;
+  height: 0.52em;
+  translate: -50% 0;
+  border-radius: 999px;
+  background: #010402;
+  box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.9), 0 1px 0 rgba(243, 246, 236, 0.08);
+}
+
+.ft-card-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: 1.3em;
+}
+.ft-card-logo {
+  display: block;
+  height: 1.08em;
+  width: auto;
+}
+.ft-card-ed {
+  font-size: 0.8125em;
+  font-weight: 500;
+  letter-spacing: -0.01em;
+  color: var(--ft-ink);
+}
+.ft-card-ed i {
+  font-style: normal;
+  color: var(--ft-mute);
+}
+
+.ft-photo {
+  flex: 1 1 auto;
+  min-height: 0;
+  margin-top: 0.75em;
+  border-radius: 0.6em;
+  overflow: hidden;
+  background: #0C2414;
+}
+.ft-photo img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: 50% 22%;
+  pointer-events: none;
+}
+/* the photo melts into the card at the bottom */
+.ft-photo::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  box-shadow: inset 0 0 0 1px rgba(243, 246, 236, 0.08);
+  background: linear-gradient(180deg, rgba(6, 17, 10, 0) 58%, rgba(6, 17, 10, 0.6) 100%);
+}
+
+/* holographic security seal on the photo corner */
+.ft-seal {
+  position: absolute;
+  right: 0.55em;
+  bottom: 0.55em;
+  z-index: 2;
+  display: grid;
+  place-items: center;
+  width: 1.75em;
+  height: 1.75em;
+  border-radius: 50%;
+  overflow: hidden;
+  color: #06180D;
+  box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.25), 0 2px 6px rgba(0, 0, 0, 0.4);
+}
+.ft-seal-foil {
+  position: absolute;
+  inset: -40%;
+  background: conic-gradient(from 0deg, #A8FF35, #E9FFC4, #6EE7A0, #CFFF8A, #9BF0C8, #F4FFD8, #A8FF35);
+  will-change: transform;
+}
+.ft-seal svg {
+  position: relative;
+  width: 0.85em;
+  height: 0.85em;
+}
+
+/* ---------- the printed name ---------- */
+
+.ft-id { margin-top: 0.9em; }
+.ft-name {
+  height: 1em;
+  margin: 0;
+  font-family: var(--font-display);
+  font-weight: 500;
+  font-size: 2.05em;
+  line-height: 1;
+  letter-spacing: -0.034em;
+  white-space: pre;
+  color: var(--ft-ink);
+}
+.ft-name-in {
+  display: inline-block;
+  vertical-align: baseline;
+}
+/* a freshly printed letter: it lands as a soft lime bloom that cools into
+   the ink. Two copies of the glyph cross-fade (opacity only): the bloom,
+   with its glow painted once, and the ink letter itself */
+.ft-ink { position: relative; }
+.ft-ink-a,
+.ft-ink-b {
+  animation-duration: 0.85s;
+  animation-timing-function: cubic-bezier(0.2, 0.7, 0.2, 1);
+  animation-fill-mode: both;
+  animation-delay: var(--ft-d, 0s);
+}
+.ft-ink-a { animation-name: ft-ink-a; }
+.ft-ink-b {
+  position: absolute;
+  left: 0;
+  top: 0;
+  line-height: normal; /* same baseline as the inline letter under it */
+  color: var(--ft-lime-soft);
+  text-shadow: 0 0 0.2em rgba(168, 255, 53, 0.9), 0 0 0.05em rgba(216, 255, 166, 0.7);
+  pointer-events: none;
+  animation-name: ft-ink-b;
+}
+@keyframes ft-ink-a {
+  0%   { opacity: 0; }
+  30%  { opacity: 0.12; }
+  100% { opacity: 1; }
+}
+@keyframes ft-ink-b {
+  0%   { opacity: 0; }
+  18%  { opacity: 0.95; }
+  100% { opacity: 0; }
+}
+/* the print head: a lime nib at the end of the name while typing */
+.ft-nib {
+  display: inline-block;
+  position: relative;
+  width: 0;
+  height: 0.72em;
+  vertical-align: baseline;
+}
+.ft-nib::after {
+  content: '';
+  position: absolute;
+  left: 0.06em;
+  bottom: -0.04em;
+  width: 0.055em;
+  height: 0.8em;
+  border-radius: 0.03em;
+  background: var(--ft-lime);
+  box-shadow: 0 0 0.25em rgba(168, 255, 53, 0.7);
+  opacity: 0;
+  transition: opacity 0.5s ease;
+}
+.ft-name.is-typing .ft-nib::after {
+  opacity: 1;
+  transition-duration: 0.12s;
+}
+
+.ft-meta {
+  margin: 0.6em 0 0;
+  font-size: 0.78em;
+  line-height: 1.3;
+  letter-spacing: -0.005em;
+  color: var(--ft-mute);
+}
+.ft-meta span {
+  display: block;
+  color: rgba(243, 246, 236, 0.86);
+}
+
+.ft-card-foot {
+  display: flex;
+  align-items: flex-end;
+  gap: 0.85em;
+  margin-top: 0.85em;
+  padding-bottom: 0.85em;
+}
+.ft-qr {
+  flex: 0 0 auto;
+  width: 3.4em;
+  height: 3.4em;
+  padding: 0.28em;
+  border-radius: 0.4em;
+  background: #EEF5E4;
+  color: #06110A;
+  display: block;
+}
+.ft-facts {
+  display: grid;
+  gap: 0.42em;
+  margin: 0;
+  font-size: 0.72em;
+  line-height: 1.25;
+}
+.ft-facts div { display: block; }
+.ft-facts dt { color: var(--ft-mute); }
+.ft-facts dd {
+  margin: 0;
+  color: rgba(243, 246, 236, 0.88);
+}
+
+/* the lime strip: the badge's access colour */
+.ft-strip {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin: 0 -0.875em;
+  height: 1.75em;
+  padding: 0 0.875em;
+  background: var(--ft-lime);
+  color: #06180D;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+}
+.ft-strip span { font-size: 0.8125em; }
+.ft-strip-n {
+  font-weight: 500;
+  opacity: 0.6;
+  font-variant-numeric: tabular-nums;
+}
+
+/* holographic sheen: a wide iridescent band slid by the script with the
+   card's swing and twist (transform + opacity only) */
+.ft-holo {
+  position: absolute;
+  inset: 0;
+  z-index: 5;
+  overflow: hidden;
+  border-radius: inherit;
+  pointer-events: none;
+  mix-blend-mode: screen;
+}
+.ft-holo-in {
+  position: absolute;
+  top: -20%;
+  bottom: -20%;
+  left: 0;
+  width: 300%;
+  opacity: 0.1;
+  background: linear-gradient(105deg,
+    rgba(168, 255, 53, 0) 34%,
+    rgba(168, 255, 53, 0.3) 41%,
+    rgba(238, 255, 214, 0.55) 45%,
+    rgba(110, 231, 160, 0.4) 48.5%,
+    rgba(216, 255, 166, 0.52) 52%,
+    rgba(168, 255, 53, 0.2) 57%,
+    rgba(168, 255, 53, 0) 64%);
+  transform: translate3d(-40%, 0, 0);
+  will-change: transform, opacity;
+}
+
+/* ============ starting states (only with JS + motion) ============ */
+
+.ft-js .ft-li { transform: translateY(110%); }
+.ft-js .ft-rv { opacity: 0; }
+.ft-js .ft-rule { transform: scaleX(0); }
+.ft-js .ft-field::before { transform: scaleX(0); }
+.ft-js .ft-field.is-drawn::before {
+  transform: scaleX(1);
+  transition: transform 1.6s cubic-bezier(0.7, 0, 0.2, 1), background-color 0.4s ease;
+}
+.ft-js .ft-aurora { opacity: 0; }
+
+/* ============ calm static version below 900px ============ */
+
+@media (max-width: 900px) {
+  .ft-footer {
+    --ft-w: calc(100vw - 40px);
+    --ft-st: clamp(38px, 8.6vw, 60px);
+    --ft-cw: min(300px, 72vw);
+    padding-top: 112px;
+  }
+  .ft-wrap { display: contents; }
+  .ft-head, .ft-grid, .ft-bar { width: var(--ft-w); margin-left: auto; margin-right: auto; }
+  .ft-head { order: 1; }
+  .ft-stage { order: 2; }
+  .ft-grid { order: 3; }
+  .ft-bar { order: 4; margin-top: 0; }
+  .ft-st { grid-column: 1 / -1; }
+  .ft-l { white-space: normal; }
+  .ft-ask, .ft-cta { grid-column: 1 / -1; }
+  .ft-input { height: 52px; font-size: 26px; }
+  .ft-cta { flex-wrap: wrap; }
+  .ft-stage {
+    position: relative;
+    inset: auto;
+    padding: 56px 0 8px;
+    -webkit-mask-image: none;
+    mask-image: none;
+  }
+  .ft-strap, .ft-cue { display: none; }
+  .ft-card {
+    position: relative;
+    margin: 0 auto;
+    transform: none;
+    cursor: default;
+  }
+  .ft-rule { width: 100%; }
+  .ft-grid { row-gap: 44px; }
+  .ft-col { grid-row: auto; }
+  .ft-stop { grid-column: 1 / -1; }
+  .ft-event { grid-column: 1 / -1; }
+  .ft-contact { grid-column: 1 / -1; }
+  .ft-bay { display: none; }
+  .ft-bar { row-gap: 12px; }
+  .ft-copy, .ft-made { grid-column: span 6; }
+  .ft-legal { grid-column: 1 / 11; flex-wrap: wrap; gap: 8px 18px; }
+  .ft-up { grid-column: 11 / 13; grid-row: 2; }
+  .ft-back { display: none; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ft-ink-a { animation: none; }
+  .ft-ink-b { display: none; }
+  .ft-u::after, .ft-up svg, .ft-field::after { transition: none; }
+}

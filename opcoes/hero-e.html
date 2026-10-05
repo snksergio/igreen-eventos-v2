@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Opção E — Correnteza</title>
+  <link rel="icon" href="../assets/img/igreen-logo.svg">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Instrument+Sans:wdth,wght@75..100,400..700&display=swap">
+  <link rel="stylesheet" href="../css/portalv2.css">
+  <link rel="stylesheet" href="hero-e.css">
+  <script>
+    /* marca o modo antes da primeira pintura: com JS e movimento, o hero
+       nasce apagado e a entrada orquestrada o acende; sem movimento ou em
+       telas estreitas, a versão estática e colorida aparece direto */
+    document.documentElement.classList.add('he-js');
+    if (matchMedia('(prefers-reduced-motion: reduce), (max-width: 899px)').matches) {
+      document.documentElement.classList.add('he-static');
+    }
+  </script>
+</head>
+<body class="tone-green">
+
+  <!-- Menu fixo do topo (mesmo markup do site) -->
+  <header class="topnav">
+    <a class="topnav-logo" href="../index.html"><img src="../assets/img/igreen-logo.svg" alt="iGreen"></a>
+    <nav class="topnav-links" aria-label="Menu fixo">
+      <a href="../index.html">Início</a>
+      <a href="../index.html">Palestrantes</a>
+      <a href="../index.html#agenda">Agenda</a>
+      <a href="../index.html">FAQ</a>
+    </nav>
+    <div class="topnav-actions">
+      <a class="topnav-login" href="#">
+        <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><circle cx="12" cy="8" r="3.4" stroke="currentColor" stroke-width="1.5"/><path d="M5.2 19.4c.9-3.6 3.4-5.4 6.8-5.4s5.9 1.8 6.8 5.4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+        Entrar
+      </a>
+      <a class="topnav-cta" href="#">Cadastre-se</a>
+    </div>
+  </header>
+
+  <!-- ============================================================
+       Opção E — Correnteza
+       Texto à esquerda; à direita três colunas de vidas (cards no
+       padrão do site, proporções naturais) que nascem cinza e paradas.
+       Uma única frente de luz atravessa o conjunto na diagonal: cada
+       card que ela toca ganha cor, aro de luz e vida, e as colunas
+       começam a correr devagar, em sentidos alternados. Depois disso
+       a cena fica calma: só muda quais vídeos tocam.
+       Na rolagem, o texto sai, as vidas se reúnem ao centro e uma
+       frase fecha o hero antes da próxima seção.
+       ============================================================ -->
+  <main class="he-hero" id="topo">
+
+    <!-- Fundo animado do site (estilos em portalv2.css) -->
+    <div class="rich-bg" aria-hidden="true">
+      <img class="aurora-base" src="../assets/img/aurora-base.webp" alt="">
+      <span class="wash"></span>
+      <span class="band band-l1"></span>
+      <span class="band band-l2"></span>
+      <span class="band band-d1"></span>
+      <span class="band band-d2"></span>
+      <span class="dots-base"></span>
+      <span class="dots"></span>
+    </div>
+
+    <!-- sombra suave sob o texto -->
+    <div class="he-shade" aria-hidden="true"></div>
+    <!-- luz que fica atrás das colunas depois da carga -->
+    <div class="he-aura" aria-hidden="true"></div>
+
+    <!-- As colunas de vidas (montadas pelo JS), numa janela que começa
+         abaixo do menu: borda limpa, sem desvanecer os cards -->
+    <div class="he-window">
+      <div class="he-reel" aria-label="Histórias de licenciados em vídeo"></div>
+    </div>
+
+    <!-- A frente de luz da transformação (passa uma vez) -->
+    <div class="he-beam" aria-hidden="true"><span class="he-beam-in"></span></div>
+
+    <!-- véu da saída -->
+    <div class="he-veil" aria-hidden="true"></div>
+
+    <div class="he-wrap">
+      <!-- Hero copy (mesmo conteúdo do site) -->
+      <div class="hero-copy he-copy">
+        <div class="hero-badge">
+          <span class="avatars" aria-hidden="true">
+            <img src="../speakers/pedro-cut.png" alt="">
+            <img src="../speakers/carla-cut.png" alt="">
+            <img src="../speakers/ana-cut.png" alt="">
+            <img src="../speakers/bruno-cut.png" alt="">
+          </span>
+          <span><b>+2.000</b> vidas transformadas</span>
+        </div>
+
+        <h1 class="title">
+          <span class="line">Renda recorrente</span>
+          <span class="line">que <span class="title-clip" aria-hidden="true"><video src="../assets/video/cards/sel-musgo3.mp4" poster="../assets/video/cards/sel-musgo3.jpg" muted loop autoplay playsinline></video></span> transforma</span>
+          <span class="line line-muted">vidas de verdade</span>
+        </h1>
+
+        <p class="sub">Conheça as histórias de quem virou licenciado iGreen e construiu renda com energia por assinatura, telecom e seguros, todo mês.</p>
+
+        <div class="actions">
+          <a class="btn-primary" href="#">
+            Seja licenciado
+            <span class="chip chip-dark">
+              <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                <path d="M7 17L17 7M9 7h8v8" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+            </span>
+          </a>
+          <a class="btn-ghost" href="#">Ver histórias</a>
+        </div>
+
+        <a class="next-stop" href="../index.html#agenda">Próxima parada do tour: <b>Goiânia, 16 de agosto</b></a>
+      </div>
+
+      <!-- telas estreitas: três cards parados, coloridos -->
+      <div class="he-strip" aria-hidden="true">
+        <figure><img src="../assets/video/cards/sel-carro.jpg" alt="" loading="lazy"></figure>
+        <figure><img src="../assets/video/cards/gen-executiva2.jpg" alt="" loading="lazy"></figure>
+        <figure><img src="../assets/video/cards/sel-suv.jpg" alt="" loading="lazy"></figure>
+      </div>
+    </div>
+
+    <!-- a frase que fecha o hero na rolagem -->
+    <p class="he-coda">
+      <span class="he-coda-l"><span>Cada</span> <span>uma</span> <span>dessas</span> <span>vidas</span></span>
+      <span class="he-coda-l he-coda-m"><span>começou</span> <span>com</span> <span>uma</span> <span>decisão.</span></span>
+    </p>
+
+    <!-- base que derrete na seção seguinte (só aparece na saída) -->
+    <div class="he-foot" aria-hidden="true"></div>
+
+  </main>
+
+  <!-- Simula a seção seguinte, para julgar a saída do hero -->
+  <section class="he-next" aria-label="Seção seguinte">
+    <p class="he-next-t"><span>A próxima história</span> <span class="he-next-m">pode ser a sua.</span></p>
+    <p class="he-next-note">Seção seguinte (opção E)</p>
+  </section>
+
+  <script src="../assets/vendor/gsap.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.13.0/ScrollTrigger.min.js"></script>
+  <script src="hero-e.js"></script>
+</body>
+</html>

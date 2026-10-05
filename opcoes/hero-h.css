@@ -1,0 +1,694 @@
+/* ============================================================
+   Hero H — Painel de embarque ("A virada")
+   Texto em coluna à esquerda; à direita um painel split-flap de
+   vidro escuro (7 × 5 palhetas) em que cada palheta é uma pessoa.
+   O hero-h.js monta as palhetas e cuida da virada (WAAPI, só
+   transform/opacity, no compositor). Aqui ficam o layout, o visual
+   das palhetas e do painel, e a entrada do texto.
+   Medidas do painel (--hh-cw, --hh-gap, --hh-pad) vêm do JS.
+   ============================================================ */
+
+:root {
+  --hh-lime: #A8FF35;
+  --hh-lime-soft: #D8FFA6;
+  --hh-ink: #F3F6EC;
+  --hh-base: #06110A;
+  --hh-bg: #010702;
+  --hh-flap: #0B150F;          /* face das palhetas de letra */
+  --hh-well: #020804;          /* fundo do encaixe da palheta */
+  --hh-pin: 105vh;             /* quanto a rolagem fica presa no hero */
+  --hh-ease: cubic-bezier(0.16, 1, 0.3, 1);   /* expo.out */
+}
+
+/* ============ Palco preso ============ */
+
+.hh {
+  position: relative;
+  height: calc(100vh + var(--hh-pin));
+  background: var(--hh-bg);
+}
+.hh-stage {
+  position: sticky;
+  top: 0;
+  height: 100vh;
+  overflow: hidden;
+  isolation: isolate;
+  background: linear-gradient(180deg, #010D03 0%, var(--hh-bg) 70%);
+  -webkit-user-select: none;
+  user-select: none;
+}
+
+.hh-scrim {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  z-index: 2;
+  width: 62%;
+  pointer-events: none;
+  background: radial-gradient(58% 52% at 30% 56%, rgba(1, 7, 2, 0.62) 0%, rgba(1, 7, 2, 0.4) 42%, rgba(1, 7, 2, 0.12) 68%, rgba(1, 7, 2, 0) 86%);
+  will-change: opacity;
+}
+
+.hh-wrap {
+  position: absolute;
+  top: 88px;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 3;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--hh-colgap, 64px);
+  padding: 0 var(--hh-side, 56px) 1.5vh;
+}
+
+/* ============ Texto: coluna à esquerda ============ */
+
+.hh .hh-copy {
+  flex: 0 0 auto;
+  width: max-content;
+  padding: 0;
+  align-items: flex-start;
+  text-align: left;
+  will-change: transform, opacity;
+}
+
+.hh .title {
+  margin-top: 26px;
+  /* ~64px de 1440 a 1920; cresce junto com o painel em 2560 */
+  font-size: max(min(4.45vw, 64px), 3.2vw);
+  line-height: 1.03;
+  letter-spacing: -0.038em;
+}
+.hh .title .line {
+  width: auto;
+  margin: 0;
+  white-space: nowrap;
+}
+.hh-line-in { display: inline-block; }
+
+.hh .sub {
+  margin-top: 24px;
+  max-width: 27em;
+  font-size: max(min(1.2vw, 18px), 0.86vw);
+}
+.hh .actions {
+  margin-top: 32px;
+  justify-content: flex-start;
+}
+.hh .next-stop {
+  margin-top: 22px;
+  display: inline-block;
+}
+@media (min-width: 2200px) {
+  .hh .btn-primary,
+  .hh .btn-ghost { height: 56px; font-size: 17.5px; }
+  .hh .btn-primary:has(.chip) { padding: 0 7px 0 27px; }
+  .hh .chip { width: 42px; height: 42px; }
+  .hh .hero-badge { height: 44px; font-size: 15.5px; }
+  .hh .next-stop { font-size: 15px; }
+}
+
+/* o clipe da frase dá a partida: anel e halo saem da pílula */
+.hh .title-clip {
+  position: relative;
+  overflow: visible;
+  background: transparent;
+  box-shadow: none;
+}
+.hh .title-clip video {
+  position: relative;
+  z-index: 1;
+  border-radius: 999px;
+  background: #0E2A17;
+  box-shadow: 0 0 0 1px rgba(243, 246, 236, 0.16), 0 12px 32px rgba(0, 0, 0, 0.35);
+}
+.hh .title-clip::before,
+.hh .title-clip::after {
+  content: '';
+  position: absolute;
+  inset: -1px;
+  border-radius: 999px;
+  pointer-events: none;
+  opacity: 0;
+}
+.hh .title-clip::before {
+  z-index: 0;
+  inset: -10px -14px;
+  background: radial-gradient(closest-side, rgba(168, 255, 53, 0.5), rgba(168, 255, 53, 0.14) 55%, rgba(168, 255, 53, 0) 100%);
+}
+.hh .title-clip::after {
+  z-index: 2;
+  box-shadow: 0 0 0 1.5px rgba(216, 255, 166, 0.9), 0 0 18px 2px rgba(168, 255, 53, 0.42);
+}
+.hh.hh-fire .title-clip::before { animation: hh-halo 1.7s var(--hh-ease) both; }
+.hh.hh-fire .title-clip::after { animation: hh-ring 1.5s var(--hh-ease) both; }
+@keyframes hh-halo {
+  0%   { opacity: 0; transform: scale(0.8); }
+  14%  { opacity: 1; transform: scale(1.04); }
+  100% { opacity: 0; transform: scale(1.22); }
+}
+@keyframes hh-ring {
+  0%   { opacity: 0; transform: scale(1); }
+  10%  { opacity: 1; }
+  100% { opacity: 0; transform: scale(1.6, 1.9); }
+}
+
+/* ============ O painel (a "caixa" de vidro) ============ */
+
+.hh-slot {
+  position: relative;
+  flex: 0 0 auto;
+  width: var(--hh-bw, 700px);
+  height: var(--hh-bh, 620px);
+}
+.hh-board {
+  --hh-r: calc(var(--hh-cw, 90px) * 0.085);
+  position: absolute;
+  inset: 0;
+  padding: var(--hh-pad, 14px);
+  border-radius: calc(var(--hh-r) + var(--hh-pad, 14px));
+  background:
+    radial-gradient(70% 30% at 50% 104%, rgba(196, 250, 120, 0.12) 0%, rgba(160, 231, 75, 0.04) 55%, transparent 82%),
+    linear-gradient(180deg, rgba(243, 246, 236, 0.035) 0%, rgba(243, 246, 236, 0) 18%),
+    #050D07;
+  box-shadow:
+    inset 0 0 0 1px rgba(243, 246, 236, 0.07),
+    inset 0 1px 0 rgba(243, 246, 236, 0.05),
+    0 50px 90px -40px rgba(0, 0, 0, 0.85),
+    0 18px 40px -20px rgba(0, 0, 0, 0.6);
+  will-change: transform;
+}
+/* anel "overlay" do sistema: mais claro na base */
+.hh-board::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: 6;
+  border-radius: inherit;
+  padding: 1px;
+  pointer-events: none;
+  mix-blend-mode: overlay;
+  background: linear-gradient(to top, rgba(255, 255, 255, 0.7) 0%, rgba(255, 255, 255, 0.24) 22%, rgba(255, 255, 255, 0.08) 40%, rgba(255, 255, 255, 0.03) 100%);
+  -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor;
+  mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+  mask-composite: exclude;
+}
+
+/* camada de trás (recortada pela moldura): luz do cursor e a carga */
+.hh-back {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  overflow: hidden;
+  border-radius: inherit;
+  pointer-events: none;
+}
+/* luz do cursor por trás do vidro: aparece nas frestas entre palhetas */
+.hh-light {
+  position: absolute;
+  left: 0;
+  top: 0;
+  z-index: 0;
+  width: calc(var(--hh-cw, 90px) * 4.2);
+  height: calc(var(--hh-cw, 90px) * 4.2);
+  margin: calc(var(--hh-cw, 90px) * -2.1) 0 0 calc(var(--hh-cw, 90px) * -2.1);
+  border-radius: 50%;
+  background: radial-gradient(closest-side, rgba(168, 255, 53, 0.34) 0%, rgba(168, 255, 53, 0.12) 45%, rgba(168, 255, 53, 0) 100%);
+  opacity: 0;
+  transition: opacity 0.6s ease;
+  pointer-events: none;
+  will-change: transform;
+}
+.hh-board.is-near .hh-light { opacity: 1; }
+
+.hh-grid {
+  position: relative;
+  z-index: 1;
+  display: grid;
+  grid-template-columns: repeat(7, var(--hh-cw, 90px));
+  grid-auto-rows: calc(var(--hh-cw, 90px) * 1.25);
+  gap: var(--hh-gap, 8px);
+}
+
+/* a carga da virada (uma vez só): uma luz lima que atravessa o painel
+   POR TRÁS das palhetas — acende as frestas e a moldura, não as fotos */
+.hh-charge {
+  position: absolute;
+  top: -12%;
+  bottom: -12%;
+  left: 0;
+  z-index: 0;
+  width: 58%;
+  pointer-events: none;
+  opacity: 0;
+  border-radius: 50%;
+  background: radial-gradient(closest-side, rgba(200, 255, 120, 0.62) 0%, rgba(168, 255, 53, 0.3) 38%, rgba(168, 255, 53, 0.08) 70%, rgba(168, 255, 53, 0) 100%);
+}
+
+/* ============ A palheta ============ */
+
+.hh-m {
+  position: relative;
+  border-radius: var(--hh-r);
+  background: var(--hh-well);
+  transition: transform 0.55s var(--hh-ease);
+  will-change: transform;
+}
+/* sombra própria (só opacidade muda no hover) */
+.hh-m::before {
+  content: '';
+  position: absolute;
+  inset: 4% 3% -3%;
+  z-index: -1;
+  border-radius: inherit;
+  box-shadow: 0 18px 34px -10px rgba(0, 0, 0, 0.75), 0 0 26px rgba(168, 255, 53, 0.16);
+  opacity: 0;
+  transition: opacity 0.55s var(--hh-ease);
+}
+/* anel "overlay" sutil, igual aos cards do site */
+.hh-m::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: 8;
+  border-radius: inherit;
+  padding: 1px;
+  pointer-events: none;
+  mix-blend-mode: overlay;
+  background: linear-gradient(to top, rgba(255, 255, 255, 0.55) 0%, rgba(255, 255, 255, 0.16) 30%, rgba(255, 255, 255, 0.05) 60%, rgba(255, 255, 255, 0.12) 100%);
+  -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor;
+  mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+  mask-composite: exclude;
+}
+
+/* metades: estáticas (embaixo) e as que giram (em cima) */
+.hh-h {
+  position: absolute;
+  left: 0;
+  right: 0;
+  height: calc(50% - 1px);
+  overflow: hidden;
+  background: var(--hh-flap);
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+}
+.hh-st,
+.hh-ft {
+  top: 0;
+  border-radius: var(--hh-r) var(--hh-r) 0 0;
+}
+.hh-sb,
+.hh-fb {
+  bottom: 0;
+  border-radius: 0 0 var(--hh-r) var(--hh-r);
+}
+.hh-st,
+.hh-sb { z-index: 1; }
+.hh-ft,
+.hh-fb {
+  z-index: 4;
+  visibility: hidden;
+}
+.hh-ft { transform-origin: 50% calc(100% + 1px); }
+.hh-fb { transform-origin: 50% -1px; }
+
+/* a face: sempre do tamanho da palheta inteira; cada metade mostra a sua parte */
+.hh-f {
+  position: absolute;
+  left: 0;
+  width: 100%;
+  height: calc(var(--hh-cw, 90px) * 1.25);
+  background-color: var(--hh-flap);
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+.hh-st .hh-f,
+.hh-ft .hh-f { top: 0; }
+.hh-sb .hh-f,
+.hh-fb .hh-f { bottom: 0; }
+
+/* letras do painel */
+.hh-t {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--font-display);
+  font-weight: 500;
+  font-size: calc(var(--hh-cw, 90px) * 0.8);
+  line-height: 1;
+  letter-spacing: 0;
+  color: var(--hh-ink);
+  padding-top: calc(var(--hh-cw, 90px) * 0.04);
+}
+.hh-t.is-dim { color: rgba(243, 246, 236, 0.46); }
+.hh-t.is-lime { color: var(--hh-lime); }
+
+/* sombras da virada (opacidade animada pelo JS) */
+.hh-sh,
+.hh-cast {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  pointer-events: none;
+  opacity: 0;
+}
+.hh-ft .hh-sh { background: linear-gradient(to bottom, rgba(1, 7, 2, 0.35), rgba(1, 7, 2, 0.85)); }
+.hh-fb .hh-sh { background: linear-gradient(to bottom, rgba(1, 7, 2, 0.9), rgba(1, 7, 2, 0.4)); }
+.hh-cast { background: linear-gradient(to bottom, rgba(1, 7, 2, 0.75), rgba(1, 7, 2, 0.15)); }
+
+/* ---------- as viradas (classes postas pelo JS) ----------
+   normal (is-f1/is-f2): a aba de cima cai acelerando, a de baixo assenta
+   e quica de leve; rápida (is-r1/is-r2): o "procurar" do painel.
+   Duas cópias de cada keyframe para reiniciar sem forçar layout. */
+.hh-m { perspective: calc(var(--hh-cw, 90px) * 5.25); }
+
+.is-f1 .hh-ft, .is-f2 .hh-ft, .is-r1 .hh-ft, .is-r2 .hh-ft, .is-flut .hh-ft,
+.is-f1 .hh-fb, .is-f2 .hh-fb, .is-r1 .hh-fb, .is-r2 .hh-fb { visibility: visible; }
+
+.is-f1 .hh-ft { animation: hh-fall-a 200ms cubic-bezier(0.55, 0.05, 0.9, 0.5) forwards; }
+.is-f2 .hh-ft { animation: hh-fall-b 200ms cubic-bezier(0.55, 0.05, 0.9, 0.5) forwards; }
+.is-f1 .hh-fb { animation: hh-land-a 380ms linear 200ms both; }
+.is-f2 .hh-fb { animation: hh-land-b 380ms linear 200ms both; }
+.is-f1 .hh-ft .hh-sh { animation: hh-dark-a 200ms ease-in forwards; }
+.is-f2 .hh-ft .hh-sh { animation: hh-dark-b 200ms ease-in forwards; }
+.is-f1 .hh-fb .hh-sh { animation: hh-lit-a 190ms ease-out 200ms both; }
+.is-f2 .hh-fb .hh-sh { animation: hh-lit-b 190ms ease-out 200ms both; }
+.is-f1 .hh-sb .hh-cast { animation: hh-cast-a 352ms linear; }
+.is-f2 .hh-sb .hh-cast { animation: hh-cast-b 352ms linear; }
+
+.is-r1 .hh-ft { animation: hh-fall-a 64ms cubic-bezier(0.55, 0.05, 0.9, 0.5) forwards; }
+.is-r2 .hh-ft { animation: hh-fall-b 64ms cubic-bezier(0.55, 0.05, 0.9, 0.5) forwards; }
+.is-r1 .hh-fb { animation: hh-snap-a 80ms cubic-bezier(0.3, 0.5, 0.6, 1) 64ms both; }
+.is-r2 .hh-fb { animation: hh-snap-b 80ms cubic-bezier(0.3, 0.5, 0.6, 1) 64ms both; }
+.is-r1 .hh-ft .hh-sh { animation: hh-dark-a 64ms ease-in forwards; }
+.is-r2 .hh-ft .hh-sh { animation: hh-dark-b 64ms ease-in forwards; }
+.is-r1 .hh-fb .hh-sh { animation: hh-lit-a 80ms ease-out 64ms both; }
+.is-r2 .hh-fb .hh-sh { animation: hh-lit-b 80ms ease-out 64ms both; }
+
+/* o "sopro" nas vizinhas: a aba de cima levanta um pouco e volta */
+.is-flut .hh-ft { animation: hh-flut 620ms 50ms both; }
+.is-flut .hh-ft .hh-sh { animation: hh-flut-sh 620ms 50ms both; }
+.is-flut .hh-st .hh-cast { animation: hh-flut-cast 620ms 50ms both; }
+
+@keyframes hh-fall-a { from { transform: rotateX(0deg); } to { transform: rotateX(-90deg); } }
+@keyframes hh-fall-b { from { transform: rotateX(0deg); } to { transform: rotateX(-90deg); } }
+@keyframes hh-land-a {
+  0%   { transform: rotateX(90deg); animation-timing-function: cubic-bezier(0.4, 0.3, 0.75, 1); }
+  44%  { transform: rotateX(0deg); animation-timing-function: cubic-bezier(0.2, 0.6, 0.4, 1); }
+  68%  { transform: rotateX(7deg); animation-timing-function: cubic-bezier(0.5, 0, 0.5, 1); }
+  100% { transform: rotateX(0deg); }
+}
+@keyframes hh-land-b {
+  0%   { transform: rotateX(90deg); animation-timing-function: cubic-bezier(0.4, 0.3, 0.75, 1); }
+  44%  { transform: rotateX(0deg); animation-timing-function: cubic-bezier(0.2, 0.6, 0.4, 1); }
+  68%  { transform: rotateX(7deg); animation-timing-function: cubic-bezier(0.5, 0, 0.5, 1); }
+  100% { transform: rotateX(0deg); }
+}
+@keyframes hh-snap-a { from { transform: rotateX(90deg); } to { transform: rotateX(0deg); } }
+@keyframes hh-snap-b { from { transform: rotateX(90deg); } to { transform: rotateX(0deg); } }
+@keyframes hh-dark-a { from { opacity: 0; } to { opacity: 0.9; } }
+@keyframes hh-dark-b { from { opacity: 0; } to { opacity: 0.9; } }
+@keyframes hh-lit-a { from { opacity: 1; } to { opacity: 0; } }
+@keyframes hh-lit-b { from { opacity: 1; } to { opacity: 0; } }
+@keyframes hh-cast-a { 0% { opacity: 0; } 57% { opacity: 0.85; } 100% { opacity: 0; } }
+@keyframes hh-cast-b { 0% { opacity: 0; } 57% { opacity: 0.85; } 100% { opacity: 0; } }
+@keyframes hh-flut {
+  0%   { transform: rotateX(0deg); animation-timing-function: cubic-bezier(0.3, 0.7, 0.4, 1); }
+  32%  { transform: rotateX(-42deg); animation-timing-function: cubic-bezier(0.5, 0, 0.6, 1); }
+  78%  { transform: rotateX(4deg); animation-timing-function: cubic-bezier(0.4, 0, 0.6, 1); }
+  100% { transform: rotateX(0deg); }
+}
+@keyframes hh-flut-sh { 0% { opacity: 0; } 32% { opacity: 0.5; } 80%, 100% { opacity: 0; } }
+@keyframes hh-flut-cast { 0% { opacity: 0; } 32% { opacity: 0.95; } 80%, 100% { opacity: 0; } }
+
+/* a pessoa em movimento (vídeo) */
+.hh-live {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  overflow: hidden;
+  border-radius: inherit;
+  opacity: 0;
+  transition: opacity 0.6s cubic-bezier(0.45, 0, 0.25, 1);
+  pointer-events: none;
+}
+.hh-live video {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+.hh-m.is-live .hh-live { opacity: 1; }
+.hh-m.is-cut .hh-live { transition: none; }
+
+/* a dobradiça e o brilho do plástico */
+.hh-hinge {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: calc(50% - 1px);
+  z-index: 6;
+  height: 2px;
+  background: rgba(2, 8, 4, 0.9);
+  box-shadow: 0 1px 0 rgba(243, 246, 236, 0.07), 0 -1px 0 rgba(1, 7, 2, 0.25);
+  pointer-events: none;
+}
+.hh-hinge::before,
+.hh-hinge::after {
+  content: '';
+  position: absolute;
+  top: -2px;
+  width: 3px;
+  height: 6px;
+  border-radius: 1px;
+  background: #1A2A1F;
+}
+.hh-hinge::before { left: 0; }
+.hh-hinge::after { right: 0; }
+.hh-gloss {
+  position: absolute;
+  inset: 0;
+  z-index: 5;
+  border-radius: inherit;
+  pointer-events: none;
+  background:
+    linear-gradient(to bottom,
+      rgba(255, 255, 255, 0.07) 0%,
+      rgba(255, 255, 255, 0) 22%,
+      rgba(1, 7, 2, 0) 38%,
+      rgba(1, 7, 2, 0.16) 49.4%,
+      rgba(1, 7, 2, 0.26) 50.6%,
+      rgba(1, 7, 2, 0.05) 60%,
+      rgba(1, 7, 2, 0) 70%,
+      rgba(1, 7, 2, 0.12) 100%);
+}
+
+/* aro lima e reflexo do hover */
+.hh-rim {
+  position: absolute;
+  inset: 0;
+  z-index: 7;
+  border-radius: inherit;
+  box-shadow: inset 0 0 0 1px rgba(216, 255, 166, 0.85), inset 0 0 18px rgba(168, 255, 53, 0.22);
+  opacity: 0;
+  transition: opacity 0.5s var(--hh-ease);
+  pointer-events: none;
+}
+.hh-sheen {
+  position: absolute;
+  inset: 0;
+  z-index: 7;
+  overflow: hidden;
+  border-radius: inherit;
+  pointer-events: none;
+}
+.hh-sheen i {
+  position: absolute;
+  top: -20%;
+  bottom: -20%;
+  left: 0;
+  width: 70%;
+  background: linear-gradient(100deg, rgba(243, 255, 226, 0) 20%, rgba(243, 255, 226, 0.28) 48%, rgba(255, 255, 255, 0.42) 52%, rgba(216, 255, 166, 0) 80%);
+  transform: translate3d(-110%, 0, 0);
+  opacity: 0;
+}
+.is-glint .hh-sheen i { animation: hh-glint 1.1s cubic-bezier(0.3, 0.1, 0.2, 1) both; }
+@keyframes hh-glint {
+  0%   { transform: translate3d(-110%, 0, 0); opacity: 0; }
+  22%  { opacity: 0.55; }
+  100% { transform: translate3d(170%, 0, 0); opacity: 0; }
+}
+
+
+/* anel que se expande quando a palheta para na pessoa */
+.hh-ping {
+  position: absolute;
+  inset: 0;
+  z-index: 9;
+  border-radius: inherit;
+  box-shadow: 0 0 0 1.5px rgba(216, 255, 166, 0.85), 0 0 18px rgba(168, 255, 53, 0.3);
+  opacity: 0;
+  pointer-events: none;
+}
+
+.hh-m.is-hover {
+  z-index: 3;
+  transform: translate3d(0, -4px, 0) scale(1.06);
+}
+.hh-m.is-hover::before { opacity: 1; }
+.hh-m.is-hover .hh-rim { opacity: 1; }
+
+/* ============ Entrada (uma vez; só transform/opacity) ============ */
+
+.hh-js .hh .hh-rise,
+.hh-js .hh .hh-line-in {
+  opacity: 0;
+  transform: translate3d(0, 22px, 0);
+}
+.hh-js .hh .hh-line-in { transform: translate3d(0, 0.42em, 0); }
+.hh.hh-in .hh-rise,
+.hh.hh-in .hh-line-in {
+  animation: hh-rise 1.15s var(--hh-ease) both;
+}
+.hh.hh-in .hero-badge { animation-delay: 0.05s; }
+.hh.hh-in .line:nth-child(1) .hh-line-in { animation-delay: 0.14s; }
+.hh.hh-in .line:nth-child(2) .hh-line-in { animation-delay: 0.22s; }
+.hh.hh-in .line:nth-child(3) .hh-line-in { animation-delay: 0.3s; }
+.hh.hh-in .sub { animation-delay: 0.42s; }
+.hh.hh-in .actions { animation-delay: 0.52s; }
+.hh.hh-in .next-stop { animation-delay: 0.6s; }
+@keyframes hh-rise {
+  from { opacity: 0; transform: var(--hh-from, translate3d(0, 22px, 0)); }
+  to   { opacity: 1; transform: none; }
+}
+.hh-line-in { --hh-from: translate3d(0, 0.42em, 0); }
+
+/* o painel chega inteiro, cinza e quieto */
+.hh-js .hh .hh-board { opacity: 0; transform: translate3d(0, 26px, 0); }
+.hh.hh-in .hh-board {
+  animation: hh-board-in 1.3s var(--hh-ease) 0.18s both;
+}
+@keyframes hh-board-in {
+  from { opacity: 0; transform: translate3d(0, 26px, 0); }
+  to   { opacity: 1; transform: none; }
+}
+/* depois da entrada o JS assume o transform do painel (rolagem) */
+.hh.hh-ready .hh-board { animation: none; opacity: 1; transform: none; }
+
+/* rede de segurança sem JS do hero */
+.hh.hh-fallback .hh-rise,
+.hh.hh-fallback .hh-line-in,
+.hh.hh-fallback .hh-board {
+  opacity: 1;
+  transform: none;
+}
+
+/* ============ Passagem para a próxima seção ============ */
+
+.hh-fade {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 5;
+  height: 22vh;
+  pointer-events: none;
+  opacity: 0;
+  background: linear-gradient(to bottom, rgba(1, 7, 2, 0) 0%, rgba(1, 7, 2, 0.7) 60%, var(--hh-bg) 100%);
+}
+
+.hh-next {
+  position: relative;
+  z-index: 1;
+  min-height: 90vh;
+  display: grid;
+  place-items: center;
+  padding: 0 24px;
+  background: var(--hh-bg);
+}
+.hh-next-line {
+  font-family: var(--font-display);
+  font-weight: 500;
+  font-size: clamp(30px, 3.1vw, 54px);
+  line-height: 1.1;
+  letter-spacing: -0.032em;
+  text-align: center;
+  color: var(--hh-ink);
+}
+.hh-next-line span { color: rgba(243, 246, 236, 0.4); }
+
+/* ============ Pausa (fora da tela / aba oculta) ============ */
+
+.hh.hh-paused .rich-bg .band,
+.hh.hh-paused .title-clip::before,
+.hh.hh-paused .title-clip::after {
+  animation-play-state: paused;
+}
+
+/* ============ Movimento reduzido: estático, colorido, calmo ============ */
+
+@media (prefers-reduced-motion: reduce) {
+  .hh { height: 100vh; }
+  .hh-js .hh .hh-rise,
+  .hh-js .hh .hh-line-in,
+  .hh-js .hh .hh-board {
+    opacity: 1;
+    transform: none;
+    animation: none;
+  }
+  .hh .title-clip::before,
+  .hh .title-clip::after,
+  .hh-light,
+  .hh-charge { display: none; }
+  .hh-m,
+  .hh-m::before,
+  .hh-rim { transition: none; }
+}
+
+/* ============ Telas estreitas: versão estática simples ============ */
+
+@media (max-width: 899px) {
+  .hh { height: auto; }
+  .hh-stage {
+    position: relative;
+    height: auto;
+    min-height: 100vh;
+    padding: 112px 0 64px;
+  }
+  .hh-wrap {
+    position: relative;
+    top: 0;
+    flex-direction: column;
+    gap: 44px;
+    padding: 0 16px;
+  }
+  .hh .hh-copy {
+    width: auto;
+    align-items: center;
+    text-align: center;
+  }
+  .hh .title .line { white-space: normal; }
+  .hh .title { font-size: clamp(34px, 8.6vw, 56px); }
+  .hh .sub { font-size: 16.5px; }
+  .hh .actions { justify-content: center; }
+  .hh-js .hh .hh-rise,
+  .hh-js .hh .hh-line-in,
+  .hh-js .hh .hh-board {
+    opacity: 1;
+    transform: none;
+    animation: none;
+  }
+  .hh-fade { display: none; }
+  .hh-scrim {
+    width: 100%;
+    height: 70vh;
+    bottom: auto;
+    background: radial-gradient(70% 60% at 50% 55%, rgba(1, 7, 2, 0.5) 0%, rgba(1, 7, 2, 0) 80%);
+  }
+}

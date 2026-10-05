@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Hero B — Ignição</title>
+  <link rel="icon" href="../assets/img/igreen-logo.svg">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Instrument+Sans:wdth,wght@75..100,400..700&display=swap">
+  <link rel="stylesheet" href="../css/portalv2.css">
+  <link rel="stylesheet" href="hero-b.css">
+</head>
+<body class="tone-green">
+
+  <!-- Menu fixo do topo (mesmo markup do site) -->
+  <header class="topnav">
+    <a class="topnav-logo" href="../index.html"><img src="../assets/img/igreen-logo.svg" alt="iGreen"></a>
+    <nav class="topnav-links" aria-label="Menu fixo">
+      <a href="../index.html">Início</a>
+      <a href="../index.html">Palestrantes</a>
+      <a href="../index.html#agenda">Agenda</a>
+      <a href="../index.html">FAQ</a>
+    </nav>
+    <div class="topnav-actions">
+      <a class="topnav-login" href="#">
+        <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><circle cx="12" cy="8" r="3.4" stroke="currentColor" stroke-width="1.5"/><path d="M5.2 19.4c.9-3.6 3.4-5.4 6.8-5.4s5.9 1.8 6.8 5.4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+        Entrar
+      </a>
+      <a class="topnav-cta" href="#">Cadastre-se</a>
+    </div>
+  </header>
+
+  <!-- ============================================================
+       Hero B — Ignição
+       O clipe dentro da frase é o gerador. Os vídeos flutuam em três
+       órbitas de profundidade ao redor do texto, cinzas e parados.
+       A cada batida o gerador emite uma onda elíptica; quando ela
+       alcança um vídeo ele acende: luz, cor e movimento. Os que
+       estavam acesos esfriam de volta ao cinza.
+       Sem JS, com movimento reduzido ou abaixo de 900px: layout
+       estático e calmo.
+       ============================================================ -->
+  <div class="hb-scroller">
+    <main class="hero hb" id="hb">
+
+      <!-- fundo animado do site (estilos em portalv2.css) -->
+      <div class="rich-bg" aria-hidden="true">
+        <img class="aurora-base" src="../assets/img/aurora-base.webp" alt="">
+        <span class="wash"></span>
+        <span class="band band-l1"></span>
+        <span class="band band-l2"></span>
+        <span class="band band-d1"></span>
+        <span class="band band-d2"></span>
+        <span class="dots-base"></span>
+        <span class="dots"></span>
+      </div>
+
+      <!-- palco 3D: três profundidades de vídeos + a onda do gerador.
+           data-o = profundidade (0 longe, 1 meio, 2 perto) · data-x/data-y =
+           posição na tela a partir do centro do texto (fração da meia
+           largura/altura) · data-r = proporção do card · data-s = escala.
+           Cada card tem o vídeo, a capa colorida (o pôster, para trocas
+           suaves) e a foto cinza do "antes". -->
+      <div class="hb-stage" aria-label="Histórias de licenciados em vídeo">
+        <div class="hb-world">
+          <div class="hb-orbit" data-orbit="0"></div>
+          <div class="hb-orbit" data-orbit="1"></div>
+          <div class="hb-orbit" data-orbit="2"></div>
+          <span class="hb-wave" aria-hidden="true"></span>
+          <span class="hb-wave hb-wave--echo" aria-hidden="true"></span>
+
+          <div class="hb-tiles">
+            <figure class="hb-tile" data-o="2" data-x="-0.736" data-y="-0.46" data-r="0.78" data-s="1">
+              <div class="hb-float"><span class="hb-glow"></span><div class="hb-card">
+                <video src="../assets/video/cards/gen-executiva2.mp4" poster="../assets/video/cards/gen-executiva2.jpg" muted loop playsinline preload="metadata" aria-label="Executiva de blazer verde apresentando em um estúdio com luzes verdes"></video>
+                <img class="hb-cover" src="../assets/video/cards/gen-executiva2.jpg" alt="">
+                <img class="hb-gray" src="../assets/img/hero-b/gen-executiva2-g.jpg" alt="">
+                <span class="hb-shade"></span><span class="hb-sweep"></span><span class="hb-rim"></span>
+              </div><span class="hb-ping"></span></div>
+            </figure>
+            <figure class="hb-tile" data-o="0" data-x="-0.47" data-y="-0.66" data-r="1.6" data-s="1">
+              <div class="hb-float"><span class="hb-glow"></span><div class="hb-card">
+                <video src="../assets/video/cards/gen-podcast.mp4" poster="../assets/video/cards/gen-podcast.jpg" muted loop playsinline preload="metadata" aria-label="Licenciado gravando podcast em um estúdio de parede verde"></video>
+                <img class="hb-cover" src="../assets/video/cards/gen-podcast.jpg" alt="">
+                <img class="hb-gray" src="../assets/img/hero-b/gen-podcast-g.jpg" alt="">
+                <span class="hb-shade"></span><span class="hb-sweep"></span><span class="hb-rim"></span>
+              </div><span class="hb-ping"></span></div>
+            </figure>
+            <figure class="hb-tile" data-o="1" data-x="-0.52" data-y="0.03" data-r="1" data-s="1">
+              <div class="hb-float"><span class="hb-glow"></span><div class="hb-card">
+                <video src="../assets/video/cards/sel-musgo1.mp4" poster="../assets/video/cards/sel-musgo1.jpg" muted loop playsinline preload="metadata" aria-label="Licenciado falando diante do logo iGreen no muro verde"></video>
+                <img class="hb-cover" src="../assets/video/cards/sel-musgo1.jpg" alt="">
+                <img class="hb-gray" src="../assets/img/hero-b/sel-musgo1-g.jpg" alt="">
+                <span class="hb-shade"></span><span class="hb-sweep"></span><span class="hb-rim"></span>
+              </div><span class="hb-ping"></span></div>
+            </figure>
+            <figure class="hb-tile" data-o="2" data-x="-0.74" data-y="0.46" data-r="1.6" data-s="1">
+              <div class="hb-float"><span class="hb-glow"></span><div class="hb-card">
+                <video src="../assets/video/cards/gen-walk.mp4" poster="../assets/video/cards/gen-walk.jpg" muted loop playsinline preload="metadata" aria-label="Executiva de blazer verde caminhando pelo escritório"></video>
+                <img class="hb-cover" src="../assets/video/cards/gen-walk.jpg" alt="">
+                <img class="hb-gray" src="../assets/img/hero-b/gen-walk-g.jpg" alt="">
+                <span class="hb-shade"></span><span class="hb-sweep"></span><span class="hb-rim"></span>
+              </div><span class="hb-ping"></span></div>
+            </figure>
+            <figure class="hb-tile" data-o="0" data-x="-0.47" data-y="0.58" data-r="0.75" data-s="1">
+              <div class="hb-float"><span class="hb-glow"></span><div class="hb-card">
+                <video src="../assets/video/cards/gen-reuniao.mp4" poster="../assets/video/cards/gen-reuniao.jpg" muted loop playsinline preload="metadata" aria-label="Executiva de blazer verde apresentando em uma sala de reunião"></video>
+                <img class="hb-cover" src="../assets/video/cards/gen-reuniao.jpg" alt="">
+                <img class="hb-gray" src="../assets/img/hero-b/gen-reuniao-g.jpg" alt="">
+                <span class="hb-shade"></span><span class="hb-sweep"></span><span class="hb-rim"></span>
+              </div><span class="hb-ping"></span></div>
+            </figure>
+            <figure class="hb-tile" data-o="1" data-x="0.5" data-y="-0.6" data-r="1.6" data-s="1">
+              <div class="hb-float"><span class="hb-glow"></span><div class="hb-card">
+                <video src="../assets/video/past/crowd-hands.mp4" poster="../assets/video/past/crowd-hands.jpg" muted loop playsinline preload="metadata" aria-label="Público vibrando com as mãos para o alto no evento"></video>
+                <img class="hb-cover" src="../assets/video/past/crowd-hands.jpg" alt="">
+                <img class="hb-gray" src="../assets/img/hero-b/crowd-hands-g.jpg" alt="">
+                <span class="hb-shade"></span><span class="hb-sweep"></span><span class="hb-rim"></span>
+              </div><span class="hb-ping"></span></div>
+            </figure>
+            <figure class="hb-tile" data-o="2" data-x="0.79" data-y="-0.3" data-r="0.8" data-s="1">
+              <div class="hb-float"><span class="hb-glow"></span><div class="hb-card">
+                <video src="../assets/video/cards/sel-carro.mp4" poster="../assets/video/cards/sel-carro.jpg" muted loop playsinline preload="metadata" aria-label="Licenciada sorrindo diante de um carro verde"></video>
+                <img class="hb-cover" src="../assets/video/cards/sel-carro.jpg" alt="">
+                <img class="hb-gray" src="../assets/img/hero-b/sel-carro-g.jpg" alt="">
+                <span class="hb-shade"></span><span class="hb-sweep"></span><span class="hb-rim"></span>
+              </div><span class="hb-ping"></span></div>
+            </figure>
+            <figure class="hb-tile" data-o="0" data-x="0.5" data-y="0.05" data-r="1" data-s="1">
+              <div class="hb-float"><span class="hb-glow"></span><div class="hb-card">
+                <video src="../assets/video/cards/sel-estudio.mp4" poster="../assets/video/cards/sel-estudio.jpg" muted loop playsinline preload="metadata" aria-label="Apresentadora em estúdio com telão de ondas verdes"></video>
+                <img class="hb-cover" src="../assets/video/cards/sel-estudio.jpg" alt="">
+                <img class="hb-gray" src="../assets/img/hero-b/sel-estudio-g.jpg" alt="">
+                <span class="hb-shade"></span><span class="hb-sweep"></span><span class="hb-rim"></span>
+              </div><span class="hb-ping"></span></div>
+            </figure>
+            <figure class="hb-tile" data-o="1" data-x="0.71" data-y="0.44" data-r="0.75" data-s="1">
+              <div class="hb-float"><span class="hb-glow"></span><div class="hb-card">
+                <video src="../assets/video/cards/gen-kart.mp4" poster="../assets/video/cards/gen-kart.jpg" muted loop playsinline preload="metadata" aria-label="Piloto de kart com macacão e capacete verdes da iGreen"></video>
+                <img class="hb-cover" src="../assets/video/cards/gen-kart.jpg" alt="">
+                <img class="hb-gray" src="../assets/img/hero-b/gen-kart-g.jpg" alt="">
+                <span class="hb-shade"></span><span class="hb-sweep"></span><span class="hb-rim"></span>
+              </div><span class="hb-ping"></span></div>
+            </figure>
+            <figure class="hb-tile" data-o="0" data-x="0.47" data-y="0.66" data-r="1.6" data-s="1">
+              <div class="hb-float"><span class="hb-glow"></span><div class="hb-card">
+                <video src="../assets/video/past/stage-speaker.mp4" poster="../assets/video/past/stage-speaker.jpg" muted loop playsinline preload="metadata" aria-label="Palestrante no palco do iGreen Live"></video>
+                <img class="hb-cover" src="../assets/video/past/stage-speaker.jpg" alt="">
+                <img class="hb-gray" src="../assets/img/hero-b/stage-speaker-g.jpg" alt="">
+                <span class="hb-shade"></span><span class="hb-sweep"></span><span class="hb-rim"></span>
+              </div><span class="hb-ping"></span></div>
+            </figure>
+          </div>
+        </div>
+      </div>
+
+      <!-- Texto do hero (mesmo conteúdo do site); um véu escuro suave
+           atrás dele mantém a leitura quando a luz passa -->
+
+      <div class="hero-copy hb-copy">
+        <!-- a luz que explode da frase quando ela acende -->
+        <span class="hb-burst" aria-hidden="true"></span>
+        <span class="hb-streak" aria-hidden="true"></span>
+
+        <div class="hero-badge">
+          <span class="avatars" aria-hidden="true">
+            <img src="../speakers/pedro-cut.png" alt="">
+            <img src="../speakers/carla-cut.png" alt="">
+            <img src="../speakers/ana-cut.png" alt="">
+            <img src="../speakers/bruno-cut.png" alt="">
+          </span>
+          <span><b>+2.000</b> vidas transformadas</span>
+        </div>
+
+        <h1 class="title">
+          <span class="line">Renda recorrente</span>
+          <span class="line">que <span class="title-clip" aria-hidden="true"><span class="hb-halo"></span><video src="../assets/video/cards/sel-musgo3.mp4" poster="../assets/video/cards/sel-musgo3.jpg" muted loop autoplay playsinline></video><span class="hb-core"></span></span> transforma</span>
+          <span class="line line-muted hb-vline"><span class="hb-vtext">vidas de verdade</span><span class="hb-lime" aria-hidden="true"><span>vidas de verdade</span></span><span class="hb-hot" aria-hidden="true">vidas de verdade</span><span class="hb-edge" aria-hidden="true"></span></span>
+        </h1>
+
+        <p class="sub">Conheça as histórias de quem virou licenciado iGreen e construiu renda com energia por assinatura, telecom e seguros, todo mês.</p>
+
+        <div class="actions">
+          <a class="btn-primary" href="#">
+            Seja licenciado
+            <span class="chip chip-dark">
+              <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                <path d="M7 17L17 7M9 7h8v8" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+            </span>
+          </a>
+          <a class="btn-ghost" href="#">Ver histórias</a>
+        </div>
+
+        <a class="next-stop" href="#agenda">Próxima parada do tour: <b>Goiânia, 16 de agosto</b></a>
+      </div>
+
+    </main>
+  </div>
+
+  <!-- Simula a seção seguinte (recebe a passagem do hero) -->
+  <section class="hb-next" aria-label="Próxima seção">
+    <p class="hb-next-line">Trabalho não é só renda —<br><span>ele muda a sua história.</span></p>
+  </section>
+
+  <script src="../assets/vendor/gsap.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.13.0/ScrollTrigger.min.js"></script>
+  <script src="hero-b.js"></script>
+</body>
+</html>

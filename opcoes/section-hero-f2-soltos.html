@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Seção hero — F2 Soltos</title>
+  <link rel="icon" href="../assets/img/igreen-logo.svg">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Instrument+Sans:wdth,wght@75..100,400..700&display=swap">
+  <link rel="stylesheet" href="../css/portalv2.css">
+  <link rel="stylesheet" href="section-hero-f2-soltos.css">
+  <script>
+    /* com JS e movimento, o hero nasce apagado e a entrada o acende;
+       com movimento reduzido ou em telas estreitas, a versão estática */
+    document.documentElement.classList.add('shfs-js');
+    if (matchMedia('(prefers-reduced-motion: reduce), (max-width: 899px)').matches) {
+      document.documentElement.classList.add('shfs-static');
+    }
+    /* rede de segurança: se o script não rodar, mostra tudo */
+    setTimeout(function () { document.documentElement.classList.add('shfs-go'); }, 4000);
+  </script>
+</head>
+<body class="tone-green">
+
+  <!-- Menu fixo do topo (mesmo markup do site) -->
+  <header class="topnav">
+    <a class="topnav-logo" href="../index.html"><img src="../assets/img/igreen-logo.svg" alt="iGreen"></a>
+    <nav class="topnav-links" aria-label="Menu fixo">
+      <a href="../index.html">Início</a>
+      <a href="../index.html">Palestrantes</a>
+      <a href="../index.html#agenda">Agenda</a>
+      <a href="../index.html">FAQ</a>
+    </nav>
+    <div class="topnav-actions">
+      <a class="topnav-login" href="#">
+        <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><circle cx="12" cy="8" r="3.4" stroke="currentColor" stroke-width="1.5"/><path d="M5.2 19.4c.9-3.6 3.4-5.4 6.8-5.4s5.9 1.8 6.8 5.4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+        Entrar
+      </a>
+      <a class="topnav-cta" href="#">Cadastre-se</a>
+    </div>
+  </header>
+
+  <!-- ============================================================
+       Seção hero — F2 Soltos (variação da opção F2)
+       Os mesmos cards da F2, agora soltos: sem tela fechada, flutuam numa
+       composição arejada sobre o plano inclinado — colunas em escada,
+       cards que crescem para o centro. Sem luz desfocada atrás; título
+       com respiro acima e abaixo.
+       Na chegada, todos os cards estão em "antes": cinza e parados. Uma
+       frente de luz lima, curva, atravessa o plano uma única vez — pelo
+       ar entre os cards — e cada card responde quando a luz passa. Depois,
+       calma: alguns tocam e passam a vez, sem piscar. Na rolagem o plano
+       se endireita e vem na direção de quem vê; para por um instante, os
+       cards recuam e a frase "Mais de 2.000 vidas já mudaram. A próxima
+       pode ser a sua." fecha o hero.
+       ============================================================ -->
+  <main class="shfs-hero" id="topo">
+
+    <!-- Fundo animado do site (estilos em portalv2.css) -->
+    <div class="rich-bg" aria-hidden="true">
+      <img class="aurora-base" src="../assets/img/aurora-base.webp" alt="">
+      <span class="wash"></span>
+      <span class="band band-l1"></span>
+      <span class="band band-l2"></span>
+      <span class="band band-d1"></span>
+      <span class="band band-d2"></span>
+      <span class="dots-base"></span>
+      <span class="dots"></span>
+    </div>
+
+    <!-- Hero copy (mesmo conteúdo do site) -->
+    <div class="shfs-copy">
+      <div class="hero-copy">
+        <div class="hero-badge">
+          <span class="avatars" aria-hidden="true">
+            <img src="../speakers/pedro-cut.png" alt="">
+            <img src="../speakers/carla-cut.png" alt="">
+            <img src="../speakers/ana-cut.png" alt="">
+            <img src="../speakers/bruno-cut.png" alt="">
+          </span>
+          <span><b>+2.000</b> vidas transformadas</span>
+        </div>
+
+        <h1 class="title">
+          <span class="line">Renda recorrente</span>
+          <span class="line">que <span class="title-clip" aria-hidden="true"><video src="../assets/video/cards/sel-musgo3.mp4" poster="../assets/video/cards/sel-musgo3.jpg" muted loop autoplay playsinline></video></span> transforma</span>
+          <span class="line line-muted">vidas de verdade</span>
+        </h1>
+
+        <p class="sub">Conheça as histórias de quem virou licenciado iGreen e construiu renda com energia por assinatura, telecom e seguros, todo mês.</p>
+
+        <div class="actions">
+          <a class="btn-primary" href="#">
+            Seja licenciado
+            <span class="chip chip-dark">
+              <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                <path d="M7 17L17 7M9 7h8v8" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+            </span>
+          </a>
+          <a class="btn-ghost" href="#">Ver histórias</a>
+        </div>
+
+        <a class="next-stop" href="../index.html#agenda">Próxima parada do tour: <b>Goiânia, 16 de agosto</b></a>
+      </div>
+    </div>
+
+    <!-- Os cards soltos: ficam parados (sticky) por um instante no fim,
+         para a frase de fechamento -->
+    <div class="shfs-stage" role="group" aria-label="Licenciados iGreen em vídeo">
+      <div class="shfs-tilt">
+
+        <div class="shfs-field">
+          <!-- antes: fotogramas cinza e parados (imagens já tratadas) -->
+          <div class="shfs-gray" aria-hidden="true">
+            <div class="shfs-layer">
+            <span class="shfs-cell" style="left:0.000%;top:12.081%;width:10.204%;height:33.557%"><img src="../assets/img/section-hero-f2-soltos/gen-executiva1-antes.jpg" alt="" style="object-position:30% 40%"></span>
+            <span class="shfs-cell" style="left:0.714%;top:51.678%;width:8.776%;height:28.859%"><img src="../assets/img/section-hero-f2-soltos/gen-reuniao-antes.jpg" alt="" style="object-position:50% 30%"></span>
+            <span class="shfs-cell" style="left:13.699%;top:4.362%;width:10.102%;height:33.221%"><img src="../assets/img/section-hero-f2-soltos/sel-musgo1-antes.jpg" alt="" style="object-position:50% 25%"></span>
+            <span class="shfs-cell" style="left:13.010%;top:43.624%;width:11.480%;height:37.752%"><img src="../assets/img/section-hero-f2-soltos/sel-escritorio-antes.jpg" alt="" style="object-position:50% 35%"></span>
+            <span class="shfs-cell" style="left:27.296%;top:1.007%;width:12.755%;height:41.946%"><img src="../assets/img/section-hero-f2-soltos/gen-podcast-antes.jpg" alt="" style="object-position:50% 30%"></span>
+            <span class="shfs-cell" style="left:28.316%;top:48.993%;width:10.714%;height:35.235%"><img src="../assets/img/section-hero-f2-soltos/gen-walk-antes.jpg" alt="" style="object-position:50% 40%"></span>
+            <span class="shfs-cell" style="left:42.857%;top:0.000%;width:14.286%;height:100.000%"><img src="../assets/img/section-hero-f2-soltos/gen-executiva2-antes.jpg" alt="" style="object-position:50% 30%"></span>
+            <span class="shfs-cell" style="left:60.842%;top:2.685%;width:10.969%;height:36.074%"><img src="../assets/img/section-hero-f2-soltos/sel-suv-antes.jpg" alt="" style="object-position:50% 25%"></span>
+            <span class="shfs-cell" style="left:59.949%;top:44.799%;width:12.755%;height:41.946%"><img src="../assets/img/section-hero-f2-soltos/sel-estudio-antes.jpg" alt="" style="object-position:50% 40%"></span>
+            <span class="shfs-cell" style="left:75.510%;top:7.383%;width:11.480%;height:37.752%"><img src="../assets/img/section-hero-f2-soltos/gen-kart-antes.jpg" alt="" style="object-position:50% 30%"></span>
+            <span class="shfs-cell" style="left:76.199%;top:51.174%;width:10.102%;height:33.221%"><img src="../assets/img/section-hero-f2-soltos/sel-carro-antes.jpg" alt="" style="object-position:50% 15%"></span>
+            <span class="shfs-cell" style="left:90.612%;top:14.094%;width:8.571%;height:28.188%"><img src="../assets/img/section-hero-f2-soltos/sel-jardim-antes.jpg" alt="" style="object-position:50% 35%"></span>
+            <span class="shfs-cell" style="left:89.796%;top:48.322%;width:10.204%;height:33.557%"><img src="../assets/img/section-hero-f2-soltos/sel-musgo2-antes.jpg" alt="" style="object-position:50% 25%"></span>
+            </div>
+          </div>
+
+          <!-- depois: os mesmos cards em cor, recortados pela frente curva -->
+          <div class="shfs-front">
+            <div class="shfs-clip">
+              <div class="shfs-after">
+                <div class="shfs-layer">
+              <div class="shfs-slot" style="left:0.000%;top:12.081%;width:10.204%;height:33.557%">
+                <span class="shfs-glow" aria-hidden="true"></span>
+                <figure class="shfs-tile" data-i="0">
+                  <video src="../assets/video/cards/gen-executiva1.mp4" poster="../assets/video/cards/gen-executiva1.jpg" muted loop playsinline preload="metadata" style="object-position:30% 40%" aria-label="Executiva de blazer verde sorrindo com o celular na mão"></video>
+                  <span class="shfs-ping" aria-hidden="true"></span>
+                </figure>
+              </div>
+              <div class="shfs-slot" style="left:0.714%;top:51.678%;width:8.776%;height:28.859%">
+                <span class="shfs-glow" aria-hidden="true"></span>
+                <figure class="shfs-tile" data-i="1">
+                  <video src="../assets/video/cards/gen-reuniao.mp4" poster="../assets/video/cards/gen-reuniao.jpg" muted loop playsinline preload="metadata" style="object-position:50% 30%" aria-label="Executiva de blazer verde apresentando em uma sala de reunião"></video>
+                  <span class="shfs-ping" aria-hidden="true"></span>
+                </figure>
+              </div>
+              <div class="shfs-slot" style="left:13.699%;top:4.362%;width:10.102%;height:33.221%">
+                <span class="shfs-glow" aria-hidden="true"></span>
+                <figure class="shfs-tile" data-i="2">
+                  <video src="../assets/video/cards/sel-musgo1.mp4" poster="../assets/video/cards/sel-musgo1.jpg" muted loop playsinline preload="metadata" style="object-position:50% 25%" aria-label="Licenciado falando diante do logo iGreen no muro verde"></video>
+                  <span class="shfs-ping" aria-hidden="true"></span>
+                </figure>
+              </div>
+              <div class="shfs-slot" style="left:13.010%;top:43.624%;width:11.480%;height:37.752%">
+                <span class="shfs-glow" aria-hidden="true"></span>
+                <figure class="shfs-tile" data-i="3">
+                  <video src="../assets/video/cards/sel-escritorio.mp4" poster="../assets/video/cards/sel-escritorio.jpg" muted loop playsinline preload="metadata" style="object-position:50% 35%" aria-label="Licenciado de camiseta verde em um escritório moderno"></video>
+                  <span class="shfs-ping" aria-hidden="true"></span>
+                </figure>
+              </div>
+              <div class="shfs-slot" style="left:27.296%;top:1.007%;width:12.755%;height:41.946%">
+                <span class="shfs-glow" aria-hidden="true"></span>
+                <figure class="shfs-tile" data-i="4">
+                  <video src="../assets/video/cards/gen-podcast.mp4" poster="../assets/video/cards/gen-podcast.jpg" muted loop playsinline preload="metadata" style="object-position:50% 30%" aria-label="Licenciado gravando podcast em um estúdio de parede verde"></video>
+                  <span class="shfs-ping" aria-hidden="true"></span>
+                </figure>
+              </div>
+              <div class="shfs-slot" style="left:28.316%;top:48.993%;width:10.714%;height:35.235%">
+                <span class="shfs-glow" aria-hidden="true"></span>
+                <figure class="shfs-tile" data-i="5">
+                  <video src="../assets/video/cards/gen-walk.mp4" poster="../assets/video/cards/gen-walk.jpg" muted loop playsinline preload="metadata" style="object-position:50% 40%" aria-label="Executiva de blazer verde caminhando pelo escritório"></video>
+                  <span class="shfs-ping" aria-hidden="true"></span>
+                </figure>
+              </div>
+              <div class="shfs-slot" style="left:42.857%;top:0.000%;width:14.286%;height:100.000%">
+                <span class="shfs-glow" aria-hidden="true"></span>
+                <figure class="shfs-tile" data-i="6">
+                  <video src="../assets/video/cards/gen-executiva2.mp4" poster="../assets/video/cards/gen-executiva2.jpg" muted loop playsinline preload="metadata" style="object-position:50% 30%" aria-label="Executiva de blazer verde apresentando em um estúdio com luzes verdes"></video>
+                  <span class="shfs-ping" aria-hidden="true"></span>
+                </figure>
+              </div>
+              <div class="shfs-slot" style="left:60.842%;top:2.685%;width:10.969%;height:36.074%">
+                <span class="shfs-glow" aria-hidden="true"></span>
+                <figure class="shfs-tile" data-i="7">
+                  <video src="../assets/video/cards/sel-suv.mp4" poster="../assets/video/cards/sel-suv.jpg" muted loop playsinline preload="metadata" style="object-position:50% 25%" aria-label="Licenciado com o celular diante de um SUV verde"></video>
+                  <span class="shfs-ping" aria-hidden="true"></span>
+                </figure>
+              </div>
+              <div class="shfs-slot" style="left:59.949%;top:44.799%;width:12.755%;height:41.946%">
+                <span class="shfs-glow" aria-hidden="true"></span>
+                <figure class="shfs-tile" data-i="8">
+                  <video src="../assets/video/cards/sel-estudio.mp4" poster="../assets/video/cards/sel-estudio.jpg" muted loop playsinline preload="metadata" style="object-position:50% 40%" aria-label="Apresentadora em estúdio com telão de ondas verdes"></video>
+                  <span class="shfs-ping" aria-hidden="true"></span>
+                </figure>
+              </div>
+              <div class="shfs-slot" style="left:75.510%;top:7.383%;width:11.480%;height:37.752%">
+                <span class="shfs-glow" aria-hidden="true"></span>
+                <figure class="shfs-tile" data-i="9">
+                  <video src="../assets/video/cards/gen-kart.mp4" poster="../assets/video/cards/gen-kart.jpg" muted loop playsinline preload="metadata" style="object-position:50% 30%" aria-label="Piloto de kart com macacão e capacete verdes da iGreen"></video>
+                  <span class="shfs-ping" aria-hidden="true"></span>
+                </figure>
+              </div>
+              <div class="shfs-slot" style="left:76.199%;top:51.174%;width:10.102%;height:33.221%">
+                <span class="shfs-glow" aria-hidden="true"></span>
+                <figure class="shfs-tile" data-i="10">
+                  <video src="../assets/video/cards/sel-carro.mp4" poster="../assets/video/cards/sel-carro.jpg" muted loop playsinline preload="metadata" style="object-position:50% 15%" aria-label="Licenciada sorrindo diante de um carro verde"></video>
+                  <span class="shfs-ping" aria-hidden="true"></span>
+                </figure>
+              </div>
+              <div class="shfs-slot" style="left:90.612%;top:14.094%;width:8.571%;height:28.188%">
+                <span class="shfs-glow" aria-hidden="true"></span>
+                <figure class="shfs-tile" data-i="11">
+                  <video src="../assets/video/cards/sel-jardim.mp4" poster="../assets/video/cards/sel-jardim.jpg" muted loop playsinline preload="metadata" style="object-position:50% 35%" aria-label="Licenciado com polo iGreen falando ao lado do jardim vertical"></video>
+                  <span class="shfs-ping" aria-hidden="true"></span>
+                </figure>
+              </div>
+              <div class="shfs-slot" style="left:89.796%;top:48.322%;width:10.204%;height:33.557%">
+                <span class="shfs-glow" aria-hidden="true"></span>
+                <figure class="shfs-tile" data-i="12">
+                  <video src="../assets/video/cards/sel-musgo2.mp4" poster="../assets/video/cards/sel-musgo2.jpg" muted loop playsinline preload="metadata" style="object-position:50% 25%" aria-label="Licenciado de óculos falando diante do logo iGreen"></video>
+                  <span class="shfs-ping" aria-hidden="true"></span>
+                </figure>
+              </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- o feixe de luz atravessa o ar entre os cards -->
+          <div class="shfs-beamwrap" aria-hidden="true">
+            <div class="shfs-beam">
+              <svg class="shfs-beam-svg"></svg>
+              <span class="shfs-tag shfs-tag--antes">antes</span>
+              <span class="shfs-tag shfs-tag--depois"><i></i>depois</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- fechamento: os cards recuam e a frase aparece -->
+        <p class="shfs-phrase" aria-hidden="true">
+          <span class="shfs-phrase-l">Mais de 2.000 vidas já mudaram.</span>
+          <span class="shfs-phrase-l shfs-phrase-m">A próxima pode ser a sua.</span>
+        </p>
+      </div>
+    </div>
+    <div class="shfs-hold" aria-hidden="true"></div>
+
+  </main>
+
+  <!-- Simula a seção seguinte, para julgar a saída do hero -->
+  <section class="shfs-next" aria-label="Seção seguinte">
+    <p class="shfs-next-t"><span>Trabalho não é só renda.</span> <span class="shfs-next-m">Ele muda a sua história.</span></p>
+    <p class="shfs-next-note">Seção seguinte (F2 Soltos)</p>
+  </section>
+
+  <script src="../assets/vendor/gsap.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.13.0/ScrollTrigger.min.js"></script>
+  <script src="section-hero-f2-soltos.js"></script>
+</body>
+</html>

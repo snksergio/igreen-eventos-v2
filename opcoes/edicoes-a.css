@@ -1,0 +1,801 @@
+/* ============================================================
+   Opção A — Câmera no mosaico
+   Edições que marcaram história: uma parede escura de momentos do
+   tour, cada ladrilho com sua pílula de legenda. A rolagem conduz uma
+   câmera que mergulha em cada edição (a pílula cresce junto e a
+   legenda se completa), viaja na diagonal até a próxima e, no fim,
+   recolhe os ladrilhos em ilhas para a frase de fechamento — e o palco
+   recua como um cartão enquanto a próxima seção sobe por cima.
+
+   Layout padrão (sem JS ou com movimento reduzido): estático e calmo.
+   .oa.is-live (adicionado pelo JS): palco fixo + câmera.
+   Tudo prefixado com oa- para não colidir com o site.
+   ============================================================ */
+
+/* ---------- blocos de demonstração (antes / depois da seção) ---------- */
+
+.oa-demo {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 18px;
+  background: var(--bg);
+  color: rgba(243, 246, 236, 0.4);
+  font-size: 14px;
+  letter-spacing: 0;
+  text-align: center;
+}
+.oa-demo--lead {
+  height: 70vh;
+  padding-top: 88px;
+}
+.oa-demo-line {
+  width: 1px;
+  height: 72px;
+  background: linear-gradient(to bottom, rgba(243, 246, 236, 0.32), rgba(243, 246, 236, 0));
+}
+.oa-demo--tail {
+  position: relative;
+  z-index: 2;
+  height: 80vh;
+}
+/* live mode: the next section rides over the receding stage (the site's
+   cinema band hand-off), casting a soft shadow upward */
+.oa.is-live + .oa-demo--tail {
+  height: 130vh;
+  margin-top: -100vh;
+  justify-content: flex-start;
+  padding-top: 18vh;
+  box-shadow: 0 -48px 110px rgba(0, 0, 0, 0.6);
+}
+.oa.is-live + .oa-demo--tail::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+  height: 1px;
+  background: linear-gradient(90deg, rgba(243, 246, 236, 0) 0%, rgba(243, 246, 236, 0.16) 50%, rgba(243, 246, 236, 0) 100%);
+}
+
+/* ============================================================
+   Layout estático (padrão)
+   ============================================================ */
+
+.oa {
+  position: relative;
+  background: var(--bg);
+  overflow-x: clip;
+}
+.oa-stage {
+  position: relative;
+  max-width: 1240px;
+  margin: 0 auto;
+  padding: 120px 24px 160px;
+}
+
+.oa-head { text-align: center; }
+.oa-head h2 {
+  margin-top: 20px;
+  font-family: var(--font-display);
+  font-weight: 500;
+  font-size: clamp(44px, 5vw, 72px);
+  line-height: 1.06;
+  letter-spacing: -0.03em;
+  color: #F5F9F0;
+}
+.oa-head h2 span:not([class]),
+.oa-phrase span:not([class]),
+.oa-muted { color: rgba(243, 246, 236, 0.4); }
+.oa-sub {
+  margin-top: 22px;
+  font-size: 18px;
+  line-height: 1.55;
+  color: rgba(243, 246, 236, 0.55);
+}
+
+/* the camera, light layers and chapter indicator only exist live */
+.oa-cam,
+.oa-depth,
+.oa-veil,
+.oa-fade,
+.oa-dim-in,
+.oa-dim-out,
+.oa-rim,
+.oa-hud { display: none; }
+
+/* three edition cards in the site's card language (.past-card recipe):
+   dark glass body, green glow rising from the bottom, dot matrix over it
+   and the overlay edge, bright at the bottom and fading up the sides */
+.oa-list {
+  list-style: none;
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 24px;
+  margin-top: 80px;
+}
+.oa-ed {
+  position: relative;
+  padding: 12px 12px 26px;
+  border-radius: 16px;
+  overflow: hidden;
+  background:
+    radial-gradient(62% 30% at 50% 100%, rgba(196, 250, 120, 0.14) 0%, rgba(160, 231, 75, 0.06) 50%, transparent 80%),
+    linear-gradient(to top, rgba(160, 231, 75, 0.09) 0%, rgba(139, 196, 62, 0.04) 38%, rgba(129, 178, 58, 0) 68%),
+    rgba(7, 16, 10, 0.58);
+  box-shadow: 0 24px 48px rgba(0, 0, 0, 0.32);
+}
+.oa-ed > * {
+  position: relative;
+  z-index: 1;
+}
+.oa-ed > :not(.oa-ed-photo) {
+  margin-left: 12px;
+  margin-right: 12px;
+}
+.oa-ed::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  border-radius: inherit;
+  pointer-events: none;
+  background-image: radial-gradient(rgba(216, 255, 166, 0.38) 0.7px, transparent 1.2px);
+  background-size: 5px 5px;
+  mix-blend-mode: overlay;
+  opacity: 0.2;
+  -webkit-mask-image: linear-gradient(to top, #000 15%, transparent 62%);
+  mask-image: linear-gradient(to top, #000 15%, transparent 62%);
+}
+.oa-ed::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  border-radius: inherit;
+  padding: 1px;
+  pointer-events: none;
+  mix-blend-mode: overlay;
+  background: linear-gradient(to top, rgba(255, 255, 255, 0.58) 0%, rgba(255, 255, 255, 0.2) 22%, rgba(255, 255, 255, 0.07) 38%, transparent 50%);
+  -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor;
+  mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+  mask-composite: exclude;
+}
+.oa-ed-photo {
+  aspect-ratio: 16 / 10;
+  margin: 0 0 20px;
+  border-radius: 8px;
+  overflow: hidden;
+  background: #0C2414;
+}
+.oa-ed-photo img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+.oa-ed-tag,
+.oa-slot-tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 13px;
+  letter-spacing: 0;
+  color: rgba(216, 255, 166, 0.8);
+}
+.oa-ed-tag::before,
+.oa-slot-tag::before {
+  content: '';
+  width: 5px;
+  height: 5px;
+  flex-shrink: 0;
+  border-radius: 50%;
+  background: #A8FF35;
+  box-shadow: 0 0 8px rgba(168, 255, 53, 0.6);
+}
+.oa-ed h3 {
+  margin-top: 14px;
+  font-family: var(--font-display);
+  font-weight: 500;
+  font-size: 24px;
+  letter-spacing: -0.015em;
+  color: #F5F9F0;
+}
+.oa-ed p {
+  margin-top: 10px;
+  font-size: 14.5px;
+  line-height: 1.6;
+  color: rgba(243, 246, 236, 0.5);
+}
+.oa-ed-date {
+  display: block;
+  margin-top: 16px;
+  font-size: 13px;
+  color: rgba(243, 246, 236, 0.36);
+}
+
+/* a quiet strip of moments under the cards */
+.oa-strip {
+  display: grid;
+  grid-template-columns: repeat(6, minmax(0, 1fr));
+  gap: 12px;
+  margin-top: 24px;
+}
+.oa-strip img {
+  width: 100%;
+  aspect-ratio: 4 / 5;
+  object-fit: cover;
+  display: block;
+  border-radius: 12px;
+  background: #0C2414;
+  opacity: 0.86;
+}
+
+.oa-finale {
+  margin-top: 96px;
+  text-align: center;
+}
+.oa-phrase {
+  font-family: var(--font-display);
+  font-weight: 500;
+  font-size: clamp(32px, 3.6vw, 52px);
+  line-height: 1.06;
+  letter-spacing: -0.03em;
+  color: #F5F9F0;
+  text-wrap: balance;
+}
+.oa-row { display: none; }
+.oa-cta {
+  display: flex;
+  justify-content: center;
+  margin-top: 32px;
+}
+
+@media (max-width: 1000px) {
+  .oa-list { grid-template-columns: 1fr; max-width: 480px; margin-left: auto; margin-right: auto; }
+  .oa-strip { grid-template-columns: repeat(3, minmax(0, 1fr)); max-width: 480px; margin-left: auto; margin-right: auto; }
+  .oa-strip img:nth-child(n + 4) { display: none; }
+}
+@media (max-width: 810px) {
+  .oa-stage { padding: 96px 16px 120px; }
+  .oa-sub { font-size: 16.5px; }
+  .oa-sub br { display: none; }
+  .oa-list { margin-top: 56px; }
+}
+
+/* ============================================================
+   Modo animado — palco fixo + câmera no mosaico
+   ============================================================ */
+
+/* pinned runway: 100vh of stage + 112 timeline units of 5vh each
+   (the last 100vh is the hand-off, while the next section rides over) */
+.oa.is-live { height: 660vh; }
+
+.oa.is-live .oa-stage {
+  position: sticky;
+  top: 0;
+  height: 100vh;
+  height: 100svh;
+  max-width: none;
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+  background: var(--bg);
+  transform-origin: 50% 40%;
+  --cw: min(23vw, 340px, 34vh * var(--ar, 1.6));
+  --row-gap: 24px;
+}
+
+/* masked line reveals: the clip, an outer layer (exit) and an inner
+   layer (entrance), so both directions never fight over one transform */
+.oa-mask {
+  display: block;
+  overflow: hidden;
+  padding: 0.04em 0 0.14em;
+  margin: -0.04em 0 -0.14em;
+}
+.oa-lo,
+.oa-li { display: block; }
+.oa-mask--inline { display: inline-block; vertical-align: top; }
+
+/* ---------- câmera + parede ---------- */
+
+.oa.is-live .oa-cam {
+  display: block;
+  position: absolute;
+  inset: 0;
+  transition: opacity 0.9s ease;
+}
+/* the side margins stay quiet: neighbours read as a hint, not as noise */
+.oa.is-live .oa-cam::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: linear-gradient(90deg, rgba(1, 7, 2, 0.78) 0%, rgba(1, 7, 2, 0.35) 5%, rgba(1, 7, 2, 0) 9%, rgba(1, 7, 2, 0) 91%, rgba(1, 7, 2, 0.35) 95%, rgba(1, 7, 2, 0.78) 100%);
+}
+/* until the wall is built (webfont measured), the stage stays dark */
+.oa.is-pending .oa-cam { opacity: 0; }
+.oa.is-pending .oa-stage > :not(.oa-cam) { visibility: hidden; }
+/* staggered columns: every other column hangs half a tile lower */
+.oa-wall {
+  position: absolute;
+  left: 0;
+  top: 0;
+  display: flex;
+  align-items: flex-start;
+  gap: var(--gap, 30px);
+  transform-origin: 0 0;
+  --pill-o: 1;
+}
+.oa-col {
+  display: flex;
+  flex-direction: column;
+  gap: var(--gap, 30px);
+  flex: none;
+}
+.oa-col:nth-child(even) { margin-top: calc((var(--th, 200px) + var(--gap, 30px)) / 2); }
+
+.oa-tile {
+  position: relative;
+  flex: none;
+  width: var(--tw, 300px);
+  height: var(--th, 200px);
+  margin: 0;
+  overflow: hidden;
+  border-radius: var(--r, 22px);
+  background: #0C2414;
+}
+.oa-tile img,
+.oa-tile video {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+/* light brand wash + hairline, as on the hero mosaic tiles */
+.oa-tile::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: 1; /* over the media, under the pill and the edition layers */
+  border-radius: inherit;
+  background: linear-gradient(180deg, rgba(120, 200, 60, 0.05) 0%, rgba(6, 24, 13, 0) 45%, rgba(4, 16, 8, 0.26) 100%);
+  box-shadow: inset 0 0 0 1px rgba(243, 246, 236, 0.07);
+  pointer-events: none;
+}
+
+/* the three edition tiles: always above their neighbours */
+.oa-tile--ed { z-index: 2; }
+.oa-media {
+  position: absolute;
+  inset: 0;
+  transform-origin: 50% 60%;
+}
+/* the event clip fades in over the still only while its edition is on
+   screen and once it is really playing — the still comes alive */
+.oa-media video {
+  opacity: 0;
+  transition: opacity 1s ease;
+}
+.oa-tile--ed.is-alive .oa-media video.is-playing { opacity: 1; }
+
+/* legibility scrim for the description (fades in with it), plus the
+   site's card recipe: green glow rising from the bottom, dot matrix,
+   overlay edge */
+.oa-shade {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  background: linear-gradient(to top, rgba(1, 7, 2, 0.88) 0%, rgba(1, 7, 2, 0.55) 24%, rgba(1, 7, 2, 0) 50%);
+  opacity: 0;
+}
+.oa-glow {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  background:
+    radial-gradient(58% 30% at 50% 104%, rgba(196, 250, 120, 0.26) 0%, rgba(160, 231, 75, 0.1) 46%, transparent 78%),
+    linear-gradient(to top, rgba(160, 231, 75, 0.1) 0%, rgba(139, 196, 62, 0.03) 30%, transparent 52%);
+  mix-blend-mode: screen;
+}
+.oa-dots {
+  position: absolute;
+  inset: 0;
+  z-index: 3;
+  background-image: radial-gradient(rgba(216, 255, 166, 0.5) 0.8px, transparent 1.3px);
+  background-size: 5px 5px;
+  mix-blend-mode: overlay;
+  opacity: 0.38;
+  -webkit-mask-image: linear-gradient(to top, #000 6%, transparent 42%);
+  mask-image: linear-gradient(to top, #000 6%, transparent 42%);
+}
+.oa-edge {
+  position: absolute;
+  inset: 0;
+  z-index: 4;
+  border-radius: inherit;
+  padding: 1px;
+  pointer-events: none;
+  mix-blend-mode: overlay;
+  background: linear-gradient(to top, rgba(255, 255, 255, 0.85) 0%, rgba(255, 255, 255, 0.28) 22%, rgba(255, 255, 255, 0.1) 38%, transparent 50%);
+  -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor;
+  mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+  mask-composite: exclude;
+}
+
+/* ---------- caption pill: every tile carries one ----------
+   sized in wall pixels; a featured tile is shown at scale 1, so these
+   are the real on-screen sizes once the camera arrives */
+.oa-cap {
+  position: absolute;
+  left: 28px;
+  bottom: 28px;
+  z-index: 5;
+  display: inline-flex;
+  align-items: center;
+  gap: 18px;
+  height: 56px;
+  max-width: calc(100% - 56px);
+  padding: 0 7px 0 24px;
+  border-radius: 999px;
+  background: #F3F6EC;
+  box-shadow: 0 14px 36px rgba(0, 0, 0, 0.3), 0 1px 0 rgba(255, 255, 255, 0.6) inset;
+  color: #06180D;
+  font-size: 18px;
+  font-weight: 500;
+  letter-spacing: -0.015em;
+  white-space: nowrap;
+  opacity: var(--pill-o, 1);
+}
+.oa-cap-type {
+  display: inline-flex;
+  align-items: center;
+  min-width: 0;
+  overflow: hidden;
+}
+.oa-cap-text { display: inline-block; }
+.oa-caret {
+  display: inline-block;
+  flex-shrink: 0;
+  width: 2px;
+  height: 1.05em;
+  margin-left: 2px;
+  border-radius: 1px;
+  background: #1F7A2E;
+  animation: oa-blink 1.05s steps(1, end) infinite;
+}
+@keyframes oa-blink {
+  0%, 55% { opacity: 1; }
+  56%, 100% { opacity: 0; }
+}
+.oa-cap-btn {
+  display: grid;
+  place-items: center;
+  width: 42px;
+  height: 42px;
+  flex-shrink: 0;
+  border-radius: 50%;
+  background: #A8FF35;
+  box-shadow: inset 0 0 0 1px rgba(6, 24, 13, 0.08);
+  color: #06180D;
+}
+.oa-cap-btn svg { width: 17px; height: 17px; }
+
+.oa-desc {
+  position: absolute;
+  right: 34px;
+  bottom: 30px;
+  z-index: 5;
+  width: min(360px, 38%);
+  font-size: 15.5px;
+  line-height: 1.5;
+  color: rgba(243, 246, 236, 0.78);
+}
+.oa-desc-date {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 13px;
+  color: rgba(216, 255, 166, 0.85);
+}
+.oa-desc-date::before {
+  content: '';
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: #A8FF35;
+  box-shadow: 0 0 8px rgba(168, 255, 53, 0.6);
+}
+.oa-desc-p { margin-top: 10px; }
+.oa-desc .oa-mask { padding-bottom: 0.1em; margin-bottom: -0.1em; }
+
+/* ---------- light layers ---------- */
+
+/* depth: the further a tile sits from the focus (the screen centre),
+   the darker it gets; its opacity follows the camera's zoom */
+.oa.is-live .oa-depth {
+  display: block;
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: radial-gradient(ellipse 64% 62% at 50% 50%, rgba(1, 7, 2, 0) 26%, rgba(1, 7, 2, 0.5) 70%, rgba(1, 7, 2, 0.88) 100%);
+  opacity: 0;
+}
+/* focus frame: while a tile is featured, everything around it sinks to a
+   whisper (positioned on the featured frame by JS) */
+.oa-focus { display: none; }
+.oa.is-live .oa-focus {
+  display: block;
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: var(--tw, 300px);
+  height: var(--th, 200px);
+  transform-origin: 0 0;
+  border-radius: var(--r, 22px);
+  box-shadow: 0 0 0 120vmax rgba(1, 7, 2, 0.8);
+  pointer-events: none;
+  opacity: 0;
+  will-change: opacity;
+}
+/* intro veil: dims the wall, deepest behind the heading */
+.oa.is-live .oa-veil {
+  display: block;
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background:
+    radial-gradient(ellipse 42% 38% at 50% 54%, rgba(1, 7, 2, 0.66) 0%, rgba(1, 7, 2, 0) 100%),
+    rgba(1, 7, 2, 0.56);
+}
+/* edge fades so the wall melts into the page above and below */
+.oa.is-live .oa-fade {
+  display: block;
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: linear-gradient(to bottom, #010702 0%, rgba(1, 7, 2, 0) 15%, rgba(1, 7, 2, 0) 82%, #010702 100%);
+}
+/* arrival: the wall rises out of darkness */
+.oa.is-live .oa-dim-in,
+.oa.is-live .oa-dim-out {
+  display: block;
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: #010702;
+  opacity: 0;
+}
+.oa.is-live .oa-dim-out { background: #000; }
+.oa.is-live .oa-rim {
+  display: block;
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  border-radius: inherit;
+  box-shadow: inset 0 0 0 1px rgba(243, 246, 236, 0.1);
+  opacity: 0;
+}
+
+/* ---------- intro heading ---------- */
+
+.oa.is-live .oa-head {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 88px 24px 0;
+  pointer-events: none;
+}
+.oa.is-live .oa-head h2 { line-height: 1.04; }
+.oa.is-live .oa-head .oa-sub { margin-top: 24px; }
+
+/* the real edition text stays available to screen readers */
+.oa.is-live .oa-list {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  padding: 0;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  clip-path: inset(50%);
+  white-space: nowrap;
+  border: 0;
+}
+.oa.is-live .oa-strip { display: none; }
+
+/* ---------- chapter indicator ---------- */
+
+.oa.is-live .oa-hud {
+  display: flex;
+  position: absolute;
+  left: 5vw;
+  bottom: 28px;
+  align-items: center;
+  gap: 8px;
+  height: 40px;
+  padding: 0 18px 0 16px;
+  border-radius: 999px;
+  background: rgba(6, 16, 10, 0.55);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  font-size: 14px;
+  line-height: 1.2;
+  font-variant-numeric: tabular-nums;
+  color: #F3F6EC;
+  opacity: 0;
+  visibility: hidden;
+}
+.oa-hud-num {
+  display: block;
+  height: 1.2em;
+  overflow: hidden;
+}
+.oa-hud-roll {
+  display: flex;
+  flex-direction: column;
+}
+.oa-hud-roll span { display: block; height: 1.2em; }
+.oa-hud-total { color: rgba(243, 246, 236, 0.4); }
+.oa-hud-line {
+  position: relative;
+  width: 112px;
+  height: 1px;
+  margin-left: 10px;
+  overflow: hidden;
+  background: rgba(243, 246, 236, 0.16);
+}
+.oa-hud-fill {
+  position: absolute;
+  inset: 0;
+  background: #A8FF35;
+  transform-origin: 0 50%;
+  transform: scaleX(0);
+}
+
+/* ---------- finale ---------- */
+
+.oa.is-live .oa-finale {
+  position: absolute;
+  inset: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 88px 24px 28px;
+  pointer-events: none;
+}
+.oa.is-live .oa-phrase {
+  position: relative;
+  isolation: isolate;
+  font-size: clamp(36px, min(4.6vw, 7.4vh), 68px);
+  line-height: 1.02;
+  letter-spacing: -0.032em;
+}
+/* soft scrim so the phrase never sits on the islands unprotected */
+.oa-phrase-scrim {
+  position: absolute;
+  inset: -55% -22%;
+  z-index: -1;
+  background: radial-gradient(closest-side, rgba(1, 7, 2, 0.82) 0%, rgba(1, 7, 2, 0.5) 55%, rgba(1, 7, 2, 0) 100%);
+  opacity: 0;
+  pointer-events: none;
+}
+.oa.is-live .oa-row {
+  display: flex;
+  gap: var(--row-gap);
+  margin-top: clamp(28px, 5.4vh, 52px);
+}
+.oa-slot {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  width: var(--cw);
+}
+.oa-slot-box {
+  position: relative;
+  display: block;
+  width: 100%;
+  aspect-ratio: var(--ar, 1.6);
+}
+/* the speakers' overlay edge in screen space, landing on the glided tile */
+.oa-slot-edge {
+  position: absolute;
+  inset: 0;
+  border-radius: 14px;
+  padding: 1px;
+  mix-blend-mode: overlay;
+  background: linear-gradient(to top, rgba(255, 255, 255, 0.9) 0%, rgba(255, 255, 255, 0.32) 22%, rgba(255, 255, 255, 0.1) 40%, transparent 55%);
+  -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor;
+  mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+  mask-composite: exclude;
+  opacity: 0;
+}
+/* the green light pooling under each card */
+.oa-slot-glow {
+  position: absolute;
+  left: 8%;
+  right: 8%;
+  bottom: -18%;
+  height: 46%;
+  background: radial-gradient(closest-side, rgba(168, 255, 53, 0.16), rgba(168, 255, 53, 0));
+  filter: blur(14px);
+  opacity: 0;
+}
+.oa-slot .oa-mask { width: 100%; }
+.oa-li.oa-slot-tag {
+  display: flex;
+  justify-content: center;
+  margin-top: 18px;
+}
+.oa-slot-title {
+  margin-top: 6px;
+  font-family: var(--font-display);
+  font-size: 18px;
+  font-weight: 500;
+  line-height: 1.25;
+  letter-spacing: -0.015em;
+  color: #F5F9F0;
+}
+.oa.is-live .oa-cta {
+  margin-top: clamp(24px, 4.6vh, 44px);
+  pointer-events: auto;
+}
+
+/* ---------- phones ---------- */
+
+@media (max-width: 810px) {
+  .oa-cap {
+    left: 14px;
+    bottom: 14px;
+    gap: 10px;
+    height: 46px;
+    max-width: calc(100% - 28px);
+    padding: 0 5px 0 16px;
+    font-size: 14px;
+  }
+  .oa-cap-btn { width: 36px; height: 36px; }
+  .oa-cap-btn svg { width: 15px; height: 15px; }
+  .oa-desc {
+    left: 18px;
+    right: 18px;
+    bottom: 76px;
+    width: auto;
+    font-size: 14px;
+    line-height: 1.46;
+  }
+  .oa-desc-date { font-size: 12.5px; }
+  .oa-desc-p { margin-top: 8px; }
+  .oa-shade { background: linear-gradient(to top, rgba(1, 7, 2, 0.92) 0%, rgba(1, 7, 2, 0.66) 30%, rgba(1, 7, 2, 0) 60%); }
+  .oa.is-live .oa-stage {
+    --row-gap: 10px;
+    --cw: calc((100vw - 32px - 2 * var(--row-gap)) / 3);
+  }
+  .oa.is-live .oa-head h2 { font-size: 44px; }
+  .oa.is-live .oa-hud {
+    left: 16px;
+    bottom: 20px;
+    height: 36px;
+    padding: 0 14px 0 13px;
+    font-size: 13px;
+  }
+  .oa-hud-line { width: 72px; }
+  .oa.is-live .oa-finale { padding: 80px 16px 20px; }
+  .oa.is-live .oa-phrase { font-size: clamp(30px, 8.8vw, 40px); }
+  .oa-slot-tag { margin-top: 12px; font-size: 11px; gap: 6px; }
+  .oa-slot-tag::before { width: 4px; height: 4px; }
+  .oa-slot-title { margin-top: 4px; font-size: 13px; line-height: 1.25; letter-spacing: -0.01em; }
+  .oa-slot-edge { border-radius: 10px; }
+}

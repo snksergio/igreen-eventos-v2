@@ -1,0 +1,502 @@
+/* ============================================================
+   Rodapé G — "Crachá"
+   Um painel escuro sobe no fim da página; da borda de cima desce
+   um cordão com a credencial do iGreen Live. A física (verlet) fica
+   no footer-g.js: o cordão é desenhado num canvas, a credencial é um
+   elemento DOM posicionado só com transform.
+   ============================================================ */
+
+.fg-footer {
+  --fg-ink: #F3F6EC;
+  --fg-mute: rgba(243, 246, 236, 0.4);
+  --fg-soft: rgba(243, 246, 236, 0.62);
+  --fg-lime: #A8FF35;
+  --fg-lime-soft: #D8FFA6;
+  --fg-card: #06110A;
+  --fg-gut: max(24px, calc((100vw - 1240px) / 2));
+  /* the credential's width drives every size inside it (em based) */
+  --fg-cw: clamp(272px, calc(12vw + 124px), 380px);
+  position: relative;
+  background: var(--bg);
+}
+
+/* ---------- the panel ---------- */
+
+.fg-panel {
+  position: relative;
+  overflow: hidden;
+  /* a drawer that stops short of the viewport top, so its edge and the
+     strap coming out of it stay in view at the very bottom */
+  min-height: clamp(740px, calc(100vh - 112px), 1080px);
+  border-radius: 40px 40px 0 0;
+  background: #030C06;
+  isolation: isolate;
+}
+/* hairline that catches the light on the rounded top edge */
+.fg-panel::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: 4;
+  border-radius: inherit;
+  padding: 1px 1px 0;
+  pointer-events: none;
+  background: linear-gradient(to bottom, rgba(216, 255, 166, 0.22) 0, rgba(216, 255, 166, 0.06) 140px, rgba(216, 255, 166, 0) 420px);
+  -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor;
+  mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+  mask-composite: exclude;
+}
+
+/* static house glow: deep green floor light under the credential */
+.fg-bg {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  background:
+    radial-gradient(42% 58% at 80% 104%, rgba(150, 236, 60, 0.20) 0%, rgba(90, 170, 40, 0.08) 45%, rgba(20, 60, 20, 0) 75%),
+    radial-gradient(60% 50% at 18% 0%, rgba(80, 150, 50, 0.07) 0%, rgba(30, 80, 30, 0) 70%),
+    linear-gradient(180deg, #06140A 0%, #030C06 38%, #020904 100%);
+}
+/* fine grain of dots, like the site's glass cards */
+.fg-bg::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-image: radial-gradient(rgba(216, 255, 166, 0.5) 0.6px, transparent 1.1px);
+  background-size: 6px 6px;
+  opacity: 0.07;
+  -webkit-mask-image: radial-gradient(60% 70% at 80% 100%, #000 0%, transparent 80%);
+  mask-image: radial-gradient(60% 70% at 80% 100%, #000 0%, transparent 80%);
+}
+
+/* ---------- content ---------- */
+
+.fg-inner {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  min-height: inherit;
+  width: min(1240px, calc(100% - 80px));
+  margin: 0 auto;
+  padding: clamp(64px, 8vh, 128px) 0 0;
+}
+.fg-head {
+  max-width: none;
+}
+
+.fg-title {
+  margin: 0;
+  font-family: var(--font-display);
+  font-weight: 500;
+  font-size: clamp(72px, 6.6vw, 128px);
+  line-height: 0.98;
+  letter-spacing: -0.042em;
+  color: var(--fg-ink);
+}
+.fg-line {
+  display: block;
+  overflow: hidden;
+  white-space: nowrap;
+  /* room for descenders inside the line mask */
+  padding-bottom: 0.06em;
+  margin-bottom: -0.06em;
+}
+.fg-line-in { display: block; }
+.fg-line-muted { color: var(--fg-mute); }
+
+.fg-sub {
+  margin-top: 28px;
+  max-width: 44ch;
+  font-size: clamp(16px, 1.1vw, 19px);
+  line-height: 1.55;
+  letter-spacing: -0.01em;
+  color: var(--fg-soft);
+  text-wrap: pretty;
+}
+
+.fg-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-top: 34px;
+}
+.fg-cta { will-change: transform; }
+.fg-ghost {
+  /* the site's ghost button without the large backdrop blur */
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
+}
+
+/* link columns sit on the left two thirds; the credential owns the right */
+.fg-cols {
+  display: grid;
+  grid-template-columns: 0.9fr 1.25fr 1.45fr 0.9fr;
+  gap: 40px;
+  max-width: 820px;
+  margin-top: auto;
+  padding-top: 56px;
+}
+.fg-col h3 {
+  margin: 0 0 18px;
+  font-family: var(--font-display);
+  font-weight: 500;
+  font-size: 15px;
+  letter-spacing: -0.01em;
+  color: var(--fg-mute);
+}
+.fg-link {
+  position: relative;
+  display: table;
+  margin-bottom: 11px;
+  font-size: 15.5px;
+  line-height: 1.35;
+  letter-spacing: -0.012em;
+  color: rgba(243, 246, 236, 0.82);
+  transition: color 0.35s ease;
+}
+/* underline drawn from the left on hover, retracts to the right */
+.fg-link span {
+  background: linear-gradient(currentColor, currentColor) no-repeat right 100% / 0 1px;
+  padding-bottom: 2px;
+  transition: background-size 0.5s cubic-bezier(0.19, 1, 0.22, 1);
+}
+.fg-link:hover { color: var(--fg-lime-soft); }
+.fg-link:hover span {
+  background-position: left 100%;
+  background-size: 100% 1px;
+}
+.fg-addr {
+  margin-top: 4px;
+  font-size: 14px;
+  line-height: 1.55;
+  color: var(--fg-mute);
+}
+
+.fg-bar {
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  align-items: center;
+  gap: 24px;
+  max-width: 820px;
+  margin-top: 36px;
+  padding: 22px 0 30px;
+  border-top: 1px solid rgba(243, 246, 236, 0.08);
+  font-size: 14px;
+  letter-spacing: -0.005em;
+  color: var(--fg-mute);
+}
+.fg-bar p { margin: 0; }
+.fg-bar-mid { text-align: center; }
+.fg-top {
+  justify-self: end;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  color: rgba(243, 246, 236, 0.62);
+  transition: color 0.3s ease;
+}
+.fg-top svg {
+  width: 16px;
+  height: 16px;
+  transition: transform 0.5s cubic-bezier(0.19, 1, 0.22, 1);
+}
+.fg-top:hover { color: var(--fg-lime-soft); }
+.fg-top:hover svg { transform: translateY(-3px); }
+
+/* ============================================================
+   The lanyard stage
+   ============================================================ */
+
+.fg-stage {
+  position: absolute;
+  inset: 0;
+  z-index: 3;
+  pointer-events: none;
+}
+.fg-strap {
+  /* above the card: the clip runs over its top edge into the slot */
+  position: absolute;
+  z-index: 2;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+
+/* ---------- the credential ---------- */
+
+.fg-card {
+  position: absolute;
+  z-index: 1;
+  left: 0;
+  top: 0;
+  width: var(--fg-cw);
+  aspect-ratio: 54 / 86; /* a vertical CR80 badge */
+  font-size: calc(var(--fg-cw) / 17.5);
+  transform-origin: 50% 0;
+  pointer-events: auto;
+  cursor: grab;
+  touch-action: none;
+  -webkit-user-select: none;
+  user-select: none;
+  will-change: transform;
+  /* parked above the panel until the script drops it */
+  transform: translate3d(-200vw, -200vh, 0);
+}
+.fg-card.is-drag { cursor: grabbing; }
+
+.fg-card-face {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  padding: 0.875em 0.875em 0;
+  border-radius: 1.1em;
+  overflow: hidden;
+  background:
+    radial-gradient(90% 40% at 50% 0%, rgba(168, 255, 53, 0.08), rgba(168, 255, 53, 0) 70%),
+    linear-gradient(170deg, #0A1A0F 0%, #06110A 46%, #040C07 100%);
+  box-shadow:
+    inset 0 0 0 1px rgba(243, 246, 236, 0.09),
+    0 1.6em 3.2em -0.6em rgba(0, 0, 0, 0.7),
+    0 0.4em 1em rgba(0, 0, 0, 0.35);
+}
+/* premium overlay ring, brighter at the top where the light falls */
+.fg-card-face::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: 6;
+  border-radius: inherit;
+  padding: 1px;
+  pointer-events: none;
+  mix-blend-mode: overlay;
+  background: linear-gradient(to bottom, rgba(255, 255, 255, 0.75) 0%, rgba(255, 255, 255, 0.2) 18%, rgba(255, 255, 255, 0.05) 50%, rgba(255, 255, 255, 0.22) 100%);
+  -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor;
+  mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+  mask-composite: exclude;
+}
+
+/* punched slot where the clip goes through */
+.fg-hole {
+  position: absolute;
+  left: 50%;
+  top: 0.62em;
+  width: 2.5em;
+  height: 0.52em;
+  translate: -50% 0;
+  border-radius: 999px;
+  background: #010402;
+  box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.9), 0 1px 0 rgba(243, 246, 236, 0.08);
+}
+
+.fg-card-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: 1.3em;
+}
+.fg-card-logo {
+  display: block;
+  height: 1.12em;
+  width: auto;
+}
+.fg-card-ed {
+  font-size: 0.8125em;
+  font-weight: 500;
+  letter-spacing: -0.01em;
+  color: var(--fg-ink);
+}
+.fg-card-ed i {
+  font-style: normal;
+  color: var(--fg-mute);
+}
+
+.fg-photo {
+  position: relative;
+  flex: 1 1 auto;
+  min-height: 0;
+  margin-top: 0.75em;
+  border-radius: 0.6em;
+  overflow: hidden;
+  background: #0C2414;
+}
+.fg-photo img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: 50% 22%;
+  pointer-events: none;
+}
+/* the photo melts into the card at the bottom */
+.fg-photo::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  box-shadow: inset 0 0 0 1px rgba(243, 246, 236, 0.08);
+  background: linear-gradient(180deg, rgba(6, 17, 10, 0) 60%, rgba(6, 17, 10, 0.55) 100%);
+}
+
+/* holographic security seal on the photo corner */
+.fg-seal {
+  position: absolute;
+  right: 0.55em;
+  bottom: 0.55em;
+  z-index: 2;
+  display: grid;
+  place-items: center;
+  width: 1.9em;
+  height: 1.9em;
+  border-radius: 50%;
+  overflow: hidden;
+  color: #06180D;
+  box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.25), 0 2px 6px rgba(0, 0, 0, 0.4);
+}
+.fg-seal-foil {
+  position: absolute;
+  inset: -40%;
+  background: conic-gradient(from 0deg, #A8FF35, #E9FFC4, #6EE7A0, #CFFF8A, #9BF0C8, #F4FFD8, #A8FF35);
+  will-change: transform;
+}
+.fg-seal svg {
+  position: relative;
+  width: 0.9em;
+  height: 0.9em;
+}
+
+.fg-id { margin-top: 0.85em; }
+.fg-name {
+  margin: 0;
+  font-family: var(--font-display);
+  font-weight: 500;
+  font-size: 1.95em;
+  line-height: 1;
+  letter-spacing: -0.035em;
+  color: var(--fg-ink);
+}
+.fg-meta {
+  margin: 0.55em 0 0;
+  font-size: 0.78em;
+  line-height: 1.38;
+  letter-spacing: -0.005em;
+  color: var(--fg-mute);
+}
+.fg-meta span { color: rgba(243, 246, 236, 0.86); }
+
+.fg-card-foot {
+  display: flex;
+  align-items: flex-end;
+  gap: 0.85em;
+  margin-top: 0.85em;
+  padding-bottom: 0.85em;
+}
+.fg-qr {
+  flex: 0 0 auto;
+  width: 3.5em;
+  height: 3.5em;
+  padding: 0.28em;
+  border-radius: 0.4em;
+  background: #EEF5E4;
+  color: #06110A;
+  display: block;
+}
+.fg-facts {
+  display: grid;
+  gap: 0.4em;
+  margin: 0;
+  font-size: 0.72em;
+  line-height: 1.25;
+}
+.fg-facts div { display: block; }
+.fg-facts dt { color: var(--fg-mute); }
+.fg-facts dd {
+  margin: 0;
+  color: rgba(243, 246, 236, 0.88);
+}
+
+/* the lime strip: the badge's access colour */
+.fg-strip {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin: 0 -0.875em;
+  height: 1.75em;
+  padding: 0 0.875em;
+  background: var(--fg-lime);
+  color: #06180D;
+  font-size: 1em;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+}
+.fg-strip span { font-size: 0.8125em; }
+.fg-strip-n {
+  font-weight: 500;
+  opacity: 0.6;
+  font-variant-numeric: tabular-nums;
+}
+
+/* holographic sheen: a wide iridescent band slid by the script with the
+   card's swing and twist (transform + opacity only) */
+.fg-holo {
+  position: absolute;
+  inset: 0;
+  z-index: 5;
+  overflow: hidden;
+  border-radius: inherit;
+  pointer-events: none;
+  mix-blend-mode: screen;
+}
+.fg-holo-in {
+  position: absolute;
+  top: -20%;
+  bottom: -20%;
+  left: 0;
+  width: 300%;
+  opacity: 0.1;
+  background: linear-gradient(105deg,
+    rgba(168, 255, 53, 0) 34%,
+    rgba(168, 255, 53, 0.3) 41%,
+    rgba(238, 255, 214, 0.55) 45%,
+    rgba(110, 231, 160, 0.4) 48.5%,
+    rgba(216, 255, 166, 0.52) 52%,
+    rgba(168, 255, 53, 0.2) 57%,
+    rgba(168, 255, 53, 0) 64%);
+  transform: translate3d(-40%, 0, 0);
+  will-change: transform, opacity;
+}
+
+/* ---------- entrance states (set by the script, only with motion) ---------- */
+
+.fg-js .fg-line-in { transform: translateY(105%); }
+.fg-js .fg-sub,
+.fg-js .fg-actions,
+.fg-js .fg-col,
+.fg-js .fg-bar { opacity: 0; }
+
+/* ---------- small screens: calm static fallback ---------- */
+
+@media (max-width: 900px) {
+  .fg-panel { border-radius: 28px 28px 0 0; min-height: 0; }
+  .fg-inner { padding: 120px 24px 0; }
+  .fg-title { font-size: clamp(44px, 11vw, 72px); }
+  .fg-cols { grid-template-columns: 1fr 1fr; gap: 36px 24px; }
+  .fg-bar { grid-template-columns: 1fr; gap: 8px; }
+  .fg-bar-mid { text-align: left; }
+  .fg-top { justify-self: start; }
+  .fg-stage { display: none; }
+  .fg-js .fg-line-in { transform: none; }
+  .fg-js .fg-sub, .fg-js .fg-actions, .fg-js .fg-col, .fg-js .fg-bar { opacity: 1; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .fg-js .fg-line-in { transform: none; }
+  .fg-js .fg-sub, .fg-js .fg-actions, .fg-js .fg-col, .fg-js .fg-bar { opacity: 1; }
+  .fg-link span, .fg-top svg { transition: none; }
+}

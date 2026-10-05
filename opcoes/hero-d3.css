@@ -1,0 +1,312 @@
+/* ============================================================
+   Hero D2 — Retrato ao centro
+   Composição de cartaz: frase em cima · ela no centro · ações
+   embaixo. Ao redor dela uma constelação de painéis de vidro curvos
+   em profundidade (atrás e na frente dela).
+   Antiflicker por construção: o palco tem UMA perspectiva e nenhum
+   preserve-3d — cada painel é desenhado sozinho com a sua transformada
+   3D e a ordem (atrás / na frente dela) é o z-index. O navegador nunca
+   precisa cortar planos que se cruzam.
+   Por quadro só transform/opacity (Web Animations no compositor).
+   ============================================================ */
+
+.hd3 {
+  --hd3-ease: cubic-bezier(0.22, 0.7, 0.18, 1);
+  --hd3-title: clamp(64px, calc(64px + (100vw - 1920px) * 0.031), 84px);
+}
+
+/* ============ Base estática (sem JS, < 900px) ============ */
+
+.hd3 {
+  display: flex;
+  flex-direction: column;
+}
+.hd3 > .hd3-copy { order: 1; }
+.hd3 > .hd3-stage { order: 2; }
+.hd3 .hd3-copy { z-index: 6; }
+.hd3-defs { position: absolute; width: 0; height: 0; overflow: hidden; }
+
+.hd3-stage {
+  position: relative;
+  z-index: 5; /* acima do fade do pé no layout estático */
+  height: 64vh;
+  margin-top: 40px;
+  pointer-events: none;
+}
+.hd3-panel,
+.hd3-bloom,
+.hd3-scrim,
+.hd3-before,
+.hd3-rim { display: none; }
+.hd3-person {
+  position: absolute;
+  left: 50%;
+  bottom: 0;
+  height: 100%;
+  aspect-ratio: 1328 / 1760;
+  transform: translateX(-50%);
+}
+.hd3-person img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+
+/* ============ Composição (≥ 900px, com JS) ============ */
+
+.hd3-3d .hd3 {
+  height: 100vh;
+  min-height: 680px;
+  padding-top: 0;
+}
+
+/* -------- texto à direita dela -------- */
+
+.hd3-3d .hd3-copy {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: var(--hd3-cl, 50vw);
+  width: max-content;
+  max-width: 46vw;
+  padding: 70px 0 9vh;
+  justify-content: center;
+  align-items: flex-start;
+  text-align: left;
+}
+.hd3-3d .hd3-copy .title {
+  margin-top: 24px;
+  font-size: var(--hd3-title);
+  line-height: 1.03;
+  letter-spacing: -0.036em;
+}
+.hd3-3d .hd3-copy .title .line { margin: 0; }
+.hd3-3d .hd3-copy .sub {
+  margin-top: 22px;
+  max-width: 40ch;
+  font-size: clamp(17px, calc(18px + (100vw - 1920px) * 0.005), 21px);
+}
+.hd3-3d .hd3-copy .actions { margin-top: 30px; justify-content: flex-start; }
+.hd3-3d .hd3-copy .next-stop { margin-top: 20px; }
+
+/* véu: sombra larga e macia atrás do bloco de texto */
+.hd3-3d .hd3-scrim {
+  display: block;
+  position: absolute;
+  inset: 0;
+  z-index: 5;
+  pointer-events: none;
+  background: radial-gradient(30vw 34vh at calc(var(--hd3-cl, 50vw) + 14vw) 52%, rgba(1, 7, 2, 0.55) 0%, rgba(1, 7, 2, 0.25) 50%, rgba(1, 7, 2, 0) 100%);
+}
+
+/* fade do pé */
+.hd3-3d .hd3::after {
+  height: 18vh;
+  z-index: 4;
+  background: linear-gradient(to bottom, rgba(1, 7, 2, 0) 0%, rgba(1, 7, 2, 0.45) 58%, #010702 100%);
+}
+
+/* -------- palco: uma perspectiva, nada de preserve-3d -------- */
+
+.hd3-3d .hd3-stage {
+  position: absolute;
+  z-index: 2;
+  inset: 0;
+  height: auto;
+  margin: 0;
+  overflow: hidden;
+  perspective: var(--hd3-persp, 1500px);
+  perspective-origin: var(--hd3-vx, 50%) var(--hd3-vy, 50%);
+}
+.hd3-off .rich-bg .band { animation-play-state: paused !important; }
+
+/* luz ambiente atrás dela (larga e baixa, nunca um halo) */
+.hd3-3d .hd3-bloom {
+  display: block;
+  position: absolute;
+  left: var(--hd3-bx);
+  top: var(--hd3-by);
+  width: var(--hd3-bw);
+  height: var(--hd3-bh);
+  border-radius: 50%;
+  background: radial-gradient(closest-side, rgba(150, 240, 60, 0.2) 0%, rgba(130, 225, 56, 0.08) 45%, rgba(110, 200, 50, 0) 100%);
+  opacity: 0.25;
+  z-index: 1;
+  transition: opacity 2.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+.hd3-alive .hd3-bloom { opacity: 0.85; }
+
+/* -------- ela (plano da tela, z = 0) -------- */
+
+.hd3-3d .hd3-person {
+  left: var(--hd3-pl);
+  top: var(--hd3-pt);
+  bottom: auto;
+  width: var(--hd3-pw);
+  height: var(--hd3-ph);
+  aspect-ratio: auto;
+  transform: none;
+  z-index: 50;
+  transform-origin: 50% 100%;
+}
+.hd3-3d .hd3-before,
+.hd3-3d .hd3-rim { display: block; }
+.hd3-3d .hd3-before { opacity: 1; transition: opacity 1.4s cubic-bezier(0.45, 0, 0.2, 1); }
+.hd3-3d .hd3-rim { opacity: 0; transition: opacity 1.8s cubic-bezier(0.45, 0, 0.2, 1) 0.15s; }
+.hd3-alive .hd3-before { opacity: 0; }
+.hd3-alive .hd3-rim { opacity: 0.6; }
+
+/* -------- painéis de vidro curvos -------- */
+
+.hd3-panel { margin: 0; }
+.hd3-3d .hd3-panel {
+  display: block;
+  position: absolute;
+  left: 0;
+  top: 0;
+  pointer-events: auto;
+  backface-visibility: visible;
+}
+.hd3-card {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  background: #06110A;
+  transition: transform 0.9s var(--hd3-ease), opacity 0.6s ease;
+}
+.hd3-card video,
+.hd3-card img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.hd3-scrub .hd3-card { transition: none; }
+
+/* antes: foto cinza por cima; a onda a apaga uma vez (cor para sempre) */
+.hd3-gray { transition: opacity 0.75s var(--hd3-ease); }
+.is-lit .hd3-gray { opacity: 0; }
+
+/* vidro: sombreamento cilíndrico + reflexo diagonal suave */
+.hd3-sheen {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  pointer-events: none;
+  background:
+    linear-gradient(90deg, rgba(1, 7, 2, 0.5) 0%, rgba(1, 7, 2, 0) 22%, rgba(1, 7, 2, 0) 78%, rgba(1, 7, 2, 0.5) 100%),
+    linear-gradient(115deg, rgba(243, 246, 236, 0) 30%, rgba(243, 246, 236, 0.09) 42%, rgba(243, 246, 236, 0) 54%),
+    linear-gradient(180deg, rgba(243, 246, 236, 0.06) 0%, rgba(243, 246, 236, 0) 32%, rgba(1, 7, 2, 0) 62%, rgba(1, 7, 2, 0.42) 100%);
+}
+
+/* profundidade: véu escuro animado junto com a órbita (compositor):
+   mais escuro quando o painel está longe, atrás dela */
+.hd3-veil {
+  position: absolute;
+  inset: 0;
+  z-index: 3;
+  pointer-events: none;
+  background: #010702;
+  opacity: 0;
+}
+
+/* brilho lima no pé do vidro enquanto o vídeo toca */
+.hd3-card::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: 4;
+  pointer-events: none;
+  background: radial-gradient(76% 46% at 50% 108%, rgba(168, 255, 53, 0.26) 0%, rgba(168, 255, 53, 0.07) 52%, rgba(168, 255, 53, 0) 100%);
+  mix-blend-mode: screen;
+  opacity: 0;
+  transition: opacity 1.2s var(--hd3-ease);
+}
+.is-on .hd3-card::after { opacity: 1; }
+
+/* bordas: filete em overlay (mais forte embaixo) + filete lima */
+.hd3-edge,
+.hd3-lime {
+  position: absolute;
+  left: 0;
+  top: 0;
+  z-index: 5;
+  overflow: visible;
+  pointer-events: none;
+}
+.hd3-edge { mix-blend-mode: overlay; }
+.hd3-edge path { fill: none; stroke: url(#hd3-ring-g); stroke-width: 2; }
+.hd3-edge .hd3-hair { stroke: rgba(243, 246, 236, 0.12); stroke-width: 2; }
+.hd3-lime path { fill: none; stroke: #D8FFA6; stroke-width: 2.5; }
+.hd3-lime { opacity: 0; transition: opacity 1.2s var(--hd3-ease); }
+.is-on .hd3-lime { opacity: 0.34; }
+/* a onda passa: o filete acende e assenta (uma vez) */
+.is-wave .hd3-lime { animation: hd3-lime 1.4s cubic-bezier(0.2, 0.6, 0.2, 1) both; }
+@keyframes hd3-lime {
+  0%   { opacity: 0; }
+  14%  { opacity: 0.95; }
+  100% { opacity: 0; }
+}
+.is-on.is-wave .hd3-lime { animation-name: hd3-lime-on; }
+@keyframes hd3-lime-on {
+  0%   { opacity: 0; }
+  14%  { opacity: 0.95; }
+  100% { opacity: 0.34; }
+}
+
+/* hover: o vidro aproxima um pouco (só a carta interna, 2D) */
+.hd3-3d .hd3-panel:hover .hd3-card { transform: scale(1.045); }
+.hd3-3d .hd3-panel:hover .hd3-lime { opacity: 0.6; }
+
+/* ============ Próxima seção ============ */
+
+.hd3-next {
+  position: relative;
+  z-index: 1;
+  min-height: 90vh;
+  display: grid;
+  place-items: center;
+  padding: 0 24px;
+  background: #010702;
+  overflow: hidden;
+}
+.hd3-next::before {
+  content: '';
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 70vw;
+  height: 46vh;
+  transform: translate(-50%, -50%);
+  background: radial-gradient(closest-side, rgba(168, 255, 53, 0.07), rgba(168, 255, 53, 0) 100%);
+  pointer-events: none;
+}
+.hd3-next-line {
+  position: relative;
+  text-align: center;
+  font-size: clamp(30px, 3.2vw, 50px);
+  font-weight: 500;
+  line-height: 1.08;
+  letter-spacing: -0.035em;
+  color: var(--text-hi);
+}
+.hd3-next-line span { color: var(--text-dim); }
+
+/* ============ Movimento reduzido: composição parada, em cor ============ */
+
+.hd3-rm .hd3-before { opacity: 0; }
+.hd3-rm .hd3-rim { opacity: 0.6; }
+.hd3-rm .hd3-bloom { opacity: 0.85; }
+.hd3-rm .hd3-gray { opacity: 0; }
+
+/* ============ Telas pequenas (fallback calmo) ============ */
+
+@media (max-width: 899px) {
+  .hd3 { padding-top: 120px; }
+  .hd3-stage { height: 60vh; }
+}

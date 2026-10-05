@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Opção C3 — Arquibancada</title>
+  <link rel="icon" href="../assets/img/igreen-logo.svg">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Instrument+Sans:wdth,wght@75..100,400..700&display=swap">
+  <link rel="stylesheet" href="../css/portalv2.css">
+  <link rel="stylesheet" href="hero-c3.css">
+  <script>
+    /* marca o modo antes da primeira pintura: com JS e movimento, o hero
+       nasce apagado e a entrada orquestrada o acende; sem movimento ou em
+       telas estreitas, a versão estática e colorida aparece direto */
+    document.documentElement.classList.add('hc3-js');
+    if (matchMedia('(prefers-reduced-motion: reduce), (max-width: 899px)').matches) {
+      document.documentElement.classList.add('hc3-static');
+    }
+  </script>
+</head>
+<body class="tone-green">
+
+  <!-- Menu fixo do topo (mesmo markup do site) -->
+  <header class="topnav">
+    <a class="topnav-logo" href="../index.html"><img src="../assets/img/igreen-logo.svg" alt="iGreen"></a>
+    <nav class="topnav-links" aria-label="Menu fixo">
+      <a href="../index.html">Início</a>
+      <a href="../index.html">Palestrantes</a>
+      <a href="../index.html#agenda">Agenda</a>
+      <a href="../index.html">FAQ</a>
+    </nav>
+    <div class="topnav-actions">
+      <a class="topnav-login" href="#">
+        <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><circle cx="12" cy="8" r="3.4" stroke="currentColor" stroke-width="1.5"/><path d="M5.2 19.4c.9-3.6 3.4-5.4 6.8-5.4s5.9 1.8 6.8 5.4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+        Entrar
+      </a>
+      <a class="topnav-cta" href="#">Cadastre-se</a>
+    </div>
+  </header>
+
+  <!-- ============================================================
+       Opção C3 — Arquibancada
+       Uma arena de vidas: abaixo e ao redor do título, fileiras de
+       cards em arcos suaves, como a arquibancada vista do palco. As
+       fileiras do fundo (no alto) são menores; as da frente, maiores —
+       tamanho real, sem distorcer nenhum card. Tudo começa cinza e
+       parado: a arena antes do show ("antes").
+       Então a carga atravessa a arena como uma "ola": cada card se
+       levanta, acende a borda, ganha cor e movimento e volta a sentar
+       ("depois"). O selo conta até +2.000 enquanto a onda passa e
+       "vidas de verdade" acende junto com ela. Uma vez só; depois, a
+       arena fica calma e viva (4 clipes em rodízio, o cursor levanta
+       quem ele toca). Na rolagem, as fileiras descem em profundidade e
+       entregam a página à próxima frase.
+       ============================================================ -->
+  <main class="hc3-hero" id="topo">
+
+    <!-- Fundo animado do site (estilos em portalv2.css) -->
+    <div class="rich-bg" aria-hidden="true">
+      <img class="aurora-base" src="../assets/img/aurora-base.webp" alt="">
+      <span class="wash"></span>
+      <span class="band band-l1"></span>
+      <span class="band band-l2"></span>
+      <span class="band band-d1"></span>
+      <span class="band band-d2"></span>
+      <span class="dots-base"></span>
+      <span class="dots"></span>
+    </div>
+
+    <!-- A arquibancada (montada pelo JS a partir das medidas do texto) -->
+    <div class="hc3-stands" aria-hidden="true"></div>
+
+    <!-- Luz e sombra -->
+    <div class="hc3-shade" aria-hidden="true"></div>
+    <div class="hc3-scrim" aria-hidden="true"></div>
+    <div class="hc3-curtain" aria-hidden="true"></div>
+
+    <div class="hc3-stage">
+      <!-- Hero copy (mesmo conteúdo do site) -->
+      <div class="hero-copy">
+        <div class="hero-badge">
+          <span class="avatars" aria-hidden="true">
+            <img src="../speakers/pedro-cut.png" alt="">
+            <img src="../speakers/carla-cut.png" alt="">
+            <img src="../speakers/ana-cut.png" alt="">
+            <img src="../speakers/bruno-cut.png" alt="">
+          </span>
+          <span><b class="hc3-count">+2.000</b> vidas transformadas</span>
+        </div>
+
+        <h1 class="title">
+          <span class="line">Renda recorrente</span>
+          <span class="line">que <span class="title-clip" aria-hidden="true"><video src="../assets/video/cards/sel-musgo3.mp4" poster="../assets/video/cards/sel-musgo3.jpg" muted loop autoplay playsinline></video></span> transforma</span>
+          <span class="line line-muted hc3-charge">vidas de verdade<span class="hc3-lit" aria-hidden="true"><span class="hc3-lit-in"><span class="hc3-lit-glow">vidas de verdade</span><span class="hc3-lit-txt">vidas de verdade</span></span><i class="hc3-lit-edge"></i></span></span>
+        </h1>
+
+        <p class="sub">Conheça as histórias de quem virou licenciado iGreen e construiu renda com energia por assinatura, telecom e seguros, todo mês.</p>
+
+        <div class="actions">
+          <a class="btn-primary" href="#">
+            Seja licenciado
+            <span class="chip chip-dark">
+              <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                <path d="M7 17L17 7M9 7h8v8" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+            </span>
+          </a>
+          <a class="btn-ghost" href="#">Ver histórias</a>
+        </div>
+
+        <a class="next-stop" href="../index.html#agenda">Próxima parada do tour: <b>Goiânia, 16 de agosto</b></a>
+      </div>
+    </div>
+
+  </main>
+
+  <!-- Simula a seção seguinte, para julgar a saída do hero -->
+  <section class="hc3-next" aria-label="Seção seguinte">
+    <p class="hc3-next-t"><span>Toda transformação</span> <span class="hc3-next-m">começa com uma decisão.</span></p>
+    <p class="hc3-next-note">Seção seguinte (opção C3)</p>
+  </section>
+
+  <script src="../assets/vendor/gsap.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.13.0/ScrollTrigger.min.js"></script>
+  <script src="hero-c3.js"></script>
+</body>
+</html>

@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Selos das seções — rodada 2</title>
+  <link rel="icon" href="../assets/img/igreen-logo.svg">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Instrument+Sans:wdth,wght@75..100,400..700&display=swap">
+  <link rel="stylesheet" href="../css/portalv2.css">
+  <link rel="stylesheet" href="badges-rodada2.css">
+</head>
+<body class="tone-green">
+
+  <!-- Menu fixo do topo (mesmo markup do site) -->
+  <header class="topnav">
+    <a class="topnav-logo" href="../index.html"><img src="../assets/img/igreen-logo.svg" alt="iGreen"></a>
+    <nav class="topnav-links" aria-label="Menu fixo">
+      <a href="../index.html">Início</a>
+      <a href="../index.html">Palestrantes</a>
+      <a href="../index.html#agenda">Agenda</a>
+      <a href="../index.html">FAQ</a>
+    </nav>
+    <div class="topnav-actions">
+      <a class="topnav-login" href="#">
+        <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><circle cx="12" cy="8" r="3.4" stroke="currentColor" stroke-width="1.5"/><path d="M5.2 19.4c.9-3.6 3.4-5.4 6.8-5.4s5.9 1.8 6.8 5.4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+        Entrar
+      </a>
+      <a class="topnav-cta" href="#">Cadastre-se</a>
+    </div>
+  </header>
+
+  <main class="bd-main">
+    <header class="bd-intro">
+      <h1>Selos das seções<br><span>rodada 2, no tamanho de hoje</span></h1>
+      <p>Saíram as propostas grandes e as que deixavam cada selo diferente do outro. Ficaram as cinco que você destacou, ajustadas, e entraram dez novas. Todas cabem na mesma pílula de hoje, os quatro selos seguem o mesmo padrão e a animação acontece uma vez, quando a seção aparece. Passe o mouse para ver de novo.</p>
+      <nav class="bd-index" aria-label="Propostas"></nav>
+    </header>
+
+    <!-- Each row: meta on the left, the four section heads on the right.
+         badges-rodada2.js renders the badge of each proposal into .bd-slot -->
+    <div class="bd-rows"></div>
+  </main>
+
+  <script src="../assets/vendor/gsap.min.js"></script>
+  <script src="badges-rodada2.js"></script>
+</body>
+</html>

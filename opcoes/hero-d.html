@@ -1,0 +1,298 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Hero D — Retrato</title>
+  <link rel="icon" href="../assets/img/igreen-logo.svg">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Instrument+Sans:wdth,wght@75..100,400..700&display=swap">
+  <link rel="stylesheet" href="../css/portalv2.css">
+  <link rel="stylesheet" href="hero-d.css">
+  <link rel="preload" as="image" href="../assets/img/hero-d/pessoa-antes.webp">
+  <link rel="preload" as="image" href="../assets/img/hero-d/pessoa-depois.webp">
+</head>
+<body class="tone-green">
+
+  <!-- Menu fixo do topo (mesmo markup do site) -->
+  <header class="topnav">
+    <a class="topnav-logo" href="../index.html"><img src="../assets/img/igreen-logo.svg" alt="iGreen"></a>
+    <nav class="topnav-links" aria-label="Menu fixo">
+      <a href="../index.html">Início</a>
+      <a href="../index.html">Palestrantes</a>
+      <a href="../index.html#agenda">Agenda</a>
+      <a href="../index.html">FAQ</a>
+    </nav>
+    <div class="topnav-actions">
+      <a class="topnav-login" href="#">
+        <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><circle cx="12" cy="8" r="3.4" stroke="currentColor" stroke-width="1.5"/><path d="M5.2 19.4c.9-3.6 3.4-5.4 6.8-5.4s5.9 1.8 6.8 5.4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+        Entrar
+      </a>
+      <a class="topnav-cta" href="#">Cadastre-se</a>
+    </div>
+  </header>
+
+  <!-- ============================================================
+       Hero D — Retrato
+       Uma licenciada ao lado do texto. Na chegada tudo está apagado:
+       ela em tons de cinza e, ao redor, um anel de painéis de vidro
+       curvos com fotos cinzas e paradas — as histórias de quem já mudou
+       de vida. Em seguida uma onda de luz percorre o anel: todos os
+       painéis ganham cor juntos e ela ganha cor ao mesmo tempo. Depois
+       o anel gira devagar; os painéis que passam na frente dela tocam
+       o vídeo (no máximo 4), os outros ficam em cor, parados. Ao rolar
+       (trecho curto), o anel gira, se abre para fora e entrega a cena
+       para a próxima seção.
+       Sem JS, abaixo de 900px ou com movimento reduzido: layout
+       estático e calmo.
+       ============================================================ -->
+  <main class="hero hd" id="hd">
+
+    <!-- fundo animado do site (estilos em portalv2.css) -->
+    <div class="rich-bg" aria-hidden="true">
+      <img class="aurora-base" src="../assets/img/aurora-base.webp" alt="">
+      <span class="wash"></span>
+      <span class="band band-l1"></span>
+      <span class="band band-l2"></span>
+      <span class="band band-d1"></span>
+      <span class="band band-d2"></span>
+      <span class="dots-base"></span>
+      <span class="dots"></span>
+    </div>
+
+    <!-- palco 3D: o retrato no plano z = 0 e o anel de painéis ao redor
+         dela (os de trás passam atrás do recorte, os da frente na frente).
+         data-k = formato (l paisagem · s quadrado · p retrato) ·
+         data-y = altura no anel (negativo acima · positivo abaixo; duas faixas alternadas) -->
+    <div class="hd-stage" aria-label="Histórias de licenciados em vídeo">
+      <!-- luz ambiente: fora do contexto 3D (plano chapado, atrás de tudo) -->
+      <span class="hd-bloom" aria-hidden="true"></span>
+      <div class="hd-scene">
+
+        <div class="hd-portrait" aria-hidden="true">
+          <img class="hd-after" src="../assets/img/hero-d/pessoa-depois.webp" alt="">
+          <img class="hd-before" src="../assets/img/hero-d/pessoa-antes.webp" alt="">
+          <img class="hd-rim" src="../assets/img/hero-d/pessoa-rim.webp" alt="">
+        </div>
+
+        <div class="hd-tilt">
+          <div class="hd-enter">
+            <div class="hd-roll">
+              <div class="hd-ring">
+
+                <figure class="hd-panel" data-k="s" data-y="-1">
+                  <div class="hd-face hd-front">
+                    <video src="../assets/video/cards/sel-carro.mp4" poster="../assets/video/cards/sel-carro.jpg" muted loop playsinline preload="metadata" aria-label="Licenciada sorrindo diante de um carro verde"></video>
+                    <img class="hd-gray" src="../assets/img/hero-d/sel-carro-g.jpg" alt="">
+                    <span class="hd-sheen"></span><span class="hd-sweep"></span>
+                  </div>
+                  <div class="hd-face hd-back"><img class="hd-color" src="../assets/video/cards/sel-carro.jpg" alt=""><img class="hd-gray" src="../assets/img/hero-d/sel-carro-g.jpg" alt=""><span class="hd-sheen"></span></div>
+                </figure>
+
+                <figure class="hd-panel" data-k="l" data-y="0.55">
+                  <div class="hd-face hd-front">
+                    <video src="../assets/video/cards/gen-podcast.mp4" poster="../assets/video/cards/gen-podcast.jpg" muted loop playsinline preload="metadata" aria-label="Licenciado gravando podcast em um estúdio de parede verde"></video>
+                    <img class="hd-gray" src="../assets/img/hero-d/gen-podcast-g.jpg" alt="">
+                    <span class="hd-sheen"></span><span class="hd-sweep"></span>
+                  </div>
+                  <div class="hd-face hd-back"><img class="hd-color" src="../assets/video/cards/gen-podcast.jpg" alt=""><img class="hd-gray" src="../assets/img/hero-d/gen-podcast-g.jpg" alt=""><span class="hd-sheen"></span></div>
+                </figure>
+
+                <figure class="hd-panel" data-k="p" data-y="-0.35">
+                  <div class="hd-face hd-front">
+                    <video src="../assets/video/cards/gen-executiva2.mp4" poster="../assets/video/cards/gen-executiva2.jpg" muted loop playsinline preload="metadata" aria-label="Executiva de blazer verde apresentando em um estúdio com luzes verdes"></video>
+                    <img class="hd-gray" src="../assets/img/hero-d/gen-executiva2-g.jpg" alt="">
+                    <span class="hd-sheen"></span><span class="hd-sweep"></span>
+                  </div>
+                  <div class="hd-face hd-back"><img class="hd-color" src="../assets/video/cards/gen-executiva2.jpg" alt=""><img class="hd-gray" src="../assets/img/hero-d/gen-executiva2-g.jpg" alt=""><span class="hd-sheen"></span></div>
+                </figure>
+
+                <figure class="hd-panel" data-k="l" data-y="0.7">
+                  <div class="hd-face hd-front">
+                    <video src="../assets/video/past/crowd-hands.mp4" poster="../assets/video/past/crowd-hands.jpg" muted loop playsinline preload="metadata" aria-label="Público vibrando com as mãos para o alto no evento"></video>
+                    <img class="hd-gray" src="../assets/img/hero-d/crowd-hands-g.jpg" alt="">
+                    <span class="hd-sheen"></span><span class="hd-sweep"></span>
+                  </div>
+                  <div class="hd-face hd-back"><img class="hd-color" src="../assets/video/past/crowd-hands.jpg" alt=""><img class="hd-gray" src="../assets/img/hero-d/crowd-hands-g.jpg" alt=""><span class="hd-sheen"></span></div>
+                </figure>
+
+                <figure class="hd-panel" data-k="s" data-y="-1.05">
+                  <div class="hd-face hd-front">
+                    <video src="../assets/video/cards/sel-jardim.mp4" poster="../assets/video/cards/sel-jardim.jpg" muted loop playsinline preload="metadata" aria-label="Licenciado com polo iGreen falando ao lado do jardim vertical"></video>
+                    <img class="hd-gray" src="../assets/img/hero-d/sel-jardim-g.jpg" alt="">
+                    <span class="hd-sheen"></span><span class="hd-sweep"></span>
+                  </div>
+                  <div class="hd-face hd-back"><img class="hd-color" src="../assets/video/cards/sel-jardim.jpg" alt=""><img class="hd-gray" src="../assets/img/hero-d/sel-jardim-g.jpg" alt=""><span class="hd-sheen"></span></div>
+                </figure>
+
+                <figure class="hd-panel" data-k="l" data-y="0.45">
+                  <div class="hd-face hd-front">
+                    <video src="../assets/video/cards/gen-walk.mp4" poster="../assets/video/cards/gen-walk.jpg" muted loop playsinline preload="metadata" aria-label="Executiva de blazer verde caminhando pelo escritório"></video>
+                    <img class="hd-gray" src="../assets/img/hero-d/gen-walk-g.jpg" alt="">
+                    <span class="hd-sheen"></span><span class="hd-sweep"></span>
+                  </div>
+                  <div class="hd-face hd-back"><img class="hd-color" src="../assets/video/cards/gen-walk.jpg" alt=""><img class="hd-gray" src="../assets/img/hero-d/gen-walk-g.jpg" alt=""><span class="hd-sheen"></span></div>
+                </figure>
+
+                <figure class="hd-panel" data-k="s" data-y="-0.95">
+                  <div class="hd-face hd-front">
+                    <video src="../assets/video/cards/sel-musgo1.mp4" poster="../assets/video/cards/sel-musgo1.jpg" muted loop playsinline preload="metadata" aria-label="Licenciado falando diante do logo iGreen no muro verde"></video>
+                    <img class="hd-gray" src="../assets/img/hero-d/sel-musgo1-g.jpg" alt="">
+                    <span class="hd-sheen"></span><span class="hd-sweep"></span>
+                  </div>
+                  <div class="hd-face hd-back"><img class="hd-color" src="../assets/video/cards/sel-musgo1.jpg" alt=""><img class="hd-gray" src="../assets/img/hero-d/sel-musgo1-g.jpg" alt=""><span class="hd-sheen"></span></div>
+                </figure>
+
+                <figure class="hd-panel" data-k="p" data-y="0.65">
+                  <div class="hd-face hd-front">
+                    <video src="../assets/video/cards/gen-kart.mp4" poster="../assets/video/cards/gen-kart.jpg" muted loop playsinline preload="metadata" aria-label="Piloto de kart com macacão e capacete verdes da iGreen"></video>
+                    <img class="hd-gray" src="../assets/img/hero-d/gen-kart-g.jpg" alt="">
+                    <span class="hd-sheen"></span><span class="hd-sweep"></span>
+                  </div>
+                  <div class="hd-face hd-back"><img class="hd-color" src="../assets/video/cards/gen-kart.jpg" alt=""><img class="hd-gray" src="../assets/img/hero-d/gen-kart-g.jpg" alt=""><span class="hd-sheen"></span></div>
+                </figure>
+
+                <figure class="hd-panel" data-k="l" data-y="-1.1">
+                  <div class="hd-face hd-front">
+                    <video src="../assets/video/past/stage-speaker.mp4" poster="../assets/video/past/stage-speaker.jpg" muted loop playsinline preload="metadata" aria-label="Palestrante no palco do iGreen Live"></video>
+                    <img class="hd-gray" src="../assets/img/hero-d/stage-speaker-g.jpg" alt="">
+                    <span class="hd-sheen"></span><span class="hd-sweep"></span>
+                  </div>
+                  <div class="hd-face hd-back"><img class="hd-color" src="../assets/video/past/stage-speaker.jpg" alt=""><img class="hd-gray" src="../assets/img/hero-d/stage-speaker-g.jpg" alt=""><span class="hd-sheen"></span></div>
+                </figure>
+
+                <figure class="hd-panel" data-k="s" data-y="0.5">
+                  <div class="hd-face hd-front">
+                    <video src="../assets/video/cards/sel-estudio.mp4" poster="../assets/video/cards/sel-estudio.jpg" muted loop playsinline preload="metadata" aria-label="Apresentadora em estúdio com telão de ondas verdes"></video>
+                    <img class="hd-gray" src="../assets/img/hero-d/sel-estudio-g.jpg" alt="">
+                    <span class="hd-sheen"></span><span class="hd-sweep"></span>
+                  </div>
+                  <div class="hd-face hd-back"><img class="hd-color" src="../assets/video/cards/sel-estudio.jpg" alt=""><img class="hd-gray" src="../assets/img/hero-d/sel-estudio-g.jpg" alt=""><span class="hd-sheen"></span></div>
+                </figure>
+
+                <figure class="hd-panel" data-k="p" data-y="-0.3">
+                  <div class="hd-face hd-front">
+                    <video src="../assets/video/cards/gen-reuniao.mp4" poster="../assets/video/cards/gen-reuniao.jpg" muted loop playsinline preload="metadata" aria-label="Executiva de blazer verde apresentando em uma sala de reunião"></video>
+                    <img class="hd-gray" src="../assets/img/hero-d/gen-reuniao-g.jpg" alt="">
+                    <span class="hd-sheen"></span><span class="hd-sweep"></span>
+                  </div>
+                  <div class="hd-face hd-back"><img class="hd-color" src="../assets/video/cards/gen-reuniao.jpg" alt=""><img class="hd-gray" src="../assets/img/hero-d/gen-reuniao-g.jpg" alt=""><span class="hd-sheen"></span></div>
+                </figure>
+
+                <figure class="hd-panel" data-k="s" data-y="0.7">
+                  <div class="hd-face hd-front">
+                    <video src="../assets/video/cards/sel-suv.mp4" poster="../assets/video/cards/sel-suv.jpg" muted loop playsinline preload="metadata" aria-label="Licenciado com o celular diante de um SUV verde"></video>
+                    <img class="hd-gray" src="../assets/img/hero-d/sel-suv-g.jpg" alt="">
+                    <span class="hd-sheen"></span><span class="hd-sweep"></span>
+                  </div>
+                  <div class="hd-face hd-back"><img class="hd-color" src="../assets/video/cards/sel-suv.jpg" alt=""><img class="hd-gray" src="../assets/img/hero-d/sel-suv-g.jpg" alt=""><span class="hd-sheen"></span></div>
+                </figure>
+
+                <figure class="hd-panel" data-k="l" data-y="-1">
+                  <div class="hd-face hd-front">
+                    <video src="../assets/video/past/arena-audience.mp4" poster="../assets/video/past/arena-audience.jpg" muted loop playsinline preload="metadata" aria-label="Plateia lotada na arena do iGreen Live"></video>
+                    <img class="hd-gray" src="../assets/img/hero-d/arena-audience-g.jpg" alt="">
+                    <span class="hd-sheen"></span><span class="hd-sweep"></span>
+                  </div>
+                  <div class="hd-face hd-back"><img class="hd-color" src="../assets/video/past/arena-audience.jpg" alt=""><img class="hd-gray" src="../assets/img/hero-d/arena-audience-g.jpg" alt=""><span class="hd-sheen"></span></div>
+                </figure>
+
+                <figure class="hd-panel" data-k="s" data-y="0.55">
+                  <div class="hd-face hd-front">
+                    <video src="../assets/video/cards/sel-escritorio.mp4" poster="../assets/video/cards/sel-escritorio.jpg" muted loop playsinline preload="metadata" aria-label="Licenciado de camiseta verde em um escritório moderno"></video>
+                    <img class="hd-gray" src="../assets/img/hero-d/sel-escritorio-g.jpg" alt="">
+                    <span class="hd-sheen"></span><span class="hd-sweep"></span>
+                  </div>
+                  <div class="hd-face hd-back"><img class="hd-color" src="../assets/video/cards/sel-escritorio.jpg" alt=""><img class="hd-gray" src="../assets/img/hero-d/sel-escritorio-g.jpg" alt=""><span class="hd-sheen"></span></div>
+                </figure>
+
+                <figure class="hd-panel" data-k="l" data-y="-1.05">
+                  <div class="hd-face hd-front">
+                    <video src="../assets/video/cards/gen-executiva1.mp4" poster="../assets/video/cards/gen-executiva1.jpg" muted loop playsinline preload="metadata" aria-label="Executiva de blazer verde sorrindo com o celular na mão"></video>
+                    <img class="hd-gray" src="../assets/img/hero-d/gen-executiva1-g.jpg" alt="">
+                    <span class="hd-sheen"></span><span class="hd-sweep"></span>
+                  </div>
+                  <div class="hd-face hd-back"><img class="hd-color" src="../assets/video/cards/gen-executiva1.jpg" alt=""><img class="hd-gray" src="../assets/img/hero-d/gen-executiva1-g.jpg" alt=""><span class="hd-sheen"></span></div>
+                </figure>
+
+                <figure class="hd-panel" data-k="s" data-y="0.6">
+                  <div class="hd-face hd-front">
+                    <video src="../assets/video/cards/sel-musgo2.mp4" poster="../assets/video/cards/sel-musgo2.jpg" muted loop playsinline preload="metadata" aria-label="Licenciado de óculos falando diante do logo iGreen"></video>
+                    <img class="hd-gray" src="../assets/img/hero-d/sel-musgo2-g.jpg" alt="">
+                    <span class="hd-sheen"></span><span class="hd-sweep"></span>
+                  </div>
+                  <div class="hd-face hd-back"><img class="hd-color" src="../assets/video/cards/sel-musgo2.jpg" alt=""><img class="hd-gray" src="../assets/img/hero-d/sel-musgo2-g.jpg" alt=""><span class="hd-sheen"></span></div>
+                </figure>
+
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- véu escuro suave atrás do texto: mantém a leitura quando um
+         painel passa por trás dele -->
+    <div class="hd-scrim" aria-hidden="true"></div>
+
+    <!-- Texto do hero (mesmo conteúdo do site) -->
+    <div class="hero-copy hd-copy">
+      <div class="hero-badge">
+        <span class="avatars" aria-hidden="true">
+          <img src="../speakers/pedro-cut.png" alt="">
+          <img src="../speakers/carla-cut.png" alt="">
+          <img src="../speakers/ana-cut.png" alt="">
+          <img src="../speakers/bruno-cut.png" alt="">
+        </span>
+        <span><b>+2.000</b> vidas transformadas</span>
+      </div>
+
+      <h1 class="title">
+        <span class="line">Renda recorrente</span>
+        <span class="line">que <span class="title-clip" aria-hidden="true"><video src="../assets/video/cards/sel-musgo3.mp4" poster="../assets/video/cards/sel-musgo3.jpg" muted loop autoplay playsinline></video></span> transforma</span>
+        <span class="line line-muted">vidas de verdade</span>
+      </h1>
+
+      <p class="sub">Conheça as histórias de quem virou licenciado iGreen e construiu renda com energia por assinatura, telecom e seguros, todo mês.</p>
+
+      <div class="actions">
+        <a class="btn-primary" href="#">
+          Seja licenciado
+          <span class="chip chip-dark">
+            <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+              <path d="M7 17L17 7M9 7h8v8" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </span>
+        </a>
+        <a class="btn-ghost" href="#">Ver histórias</a>
+      </div>
+
+      <a class="next-stop" href="#agenda">Próxima parada do tour: <b>Goiânia, 16 de agosto</b></a>
+    </div>
+
+    <!-- gradiente compartilhado pelas bordas dos painéis (overlay ring) -->
+    <svg class="hd-defs" width="0" height="0" aria-hidden="true" focusable="false">
+      <defs>
+        <linearGradient id="hd-ring-g" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0" stop-color="#fff" stop-opacity="0.1"/>
+          <stop offset="0.45" stop-color="#fff" stop-opacity="0.16"/>
+          <stop offset="0.78" stop-color="#fff" stop-opacity="0.38"/>
+          <stop offset="1" stop-color="#fff" stop-opacity="0.8"/>
+        </linearGradient>
+      </defs>
+    </svg>
+
+  </main>
+
+  <!-- Simula a seção seguinte (recebe a passagem do hero) -->
+  <section class="hd-next" aria-label="Próxima seção">
+    <p class="hd-next-line">Trabalho não é só renda —<br><span>ele muda a sua história.</span></p>
+  </section>
+
+  <script src="../assets/vendor/gsap.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.13.0/ScrollTrigger.min.js"></script>
+  <script src="hero-d.js"></script>
+</body>
+</html>

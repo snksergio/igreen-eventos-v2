@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Hero D4 — Dupla exposição</title>
+  <link rel="icon" href="../assets/img/igreen-logo.svg">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Instrument+Sans:wdth,wght@75..100,400..700&display=swap">
+  <link rel="stylesheet" href="../css/portalv2.css">
+  <link rel="stylesheet" href="hero-d4.css">
+  <script>
+    /* o hero nasce apagado (antes da primeira pintura) só quando vai animar;
+       se o JS não rodar, volta ao estático em cor */
+    (function () {
+      var d = document.documentElement;
+      if (matchMedia('(min-width: 900px)').matches && !matchMedia('(prefers-reduced-motion: reduce)').matches) {
+        d.classList.add('hd4-anim');
+        setTimeout(function () { if (!window.__hd4) d.classList.remove('hd4-anim'); }, 5000);
+      }
+    })();
+  </script>
+  <link rel="preload" as="image" href="../assets/img/hero-d4/sil.webp" crossorigin>
+  <link rel="preload" as="image" href="../assets/img/hero-d4/face-g.webp">
+  <link rel="preload" as="image" href="../assets/img/hero-d4/face-c.webp">
+</head>
+<body class="tone-green">
+
+  <!-- Menu fixo do topo (mesmo markup do site) -->
+  <header class="topnav">
+    <a class="topnav-logo" href="../index.html"><img src="../assets/img/igreen-logo.svg" alt="iGreen"></a>
+    <nav class="topnav-links" aria-label="Menu fixo">
+      <a href="../index.html">Início</a>
+      <a href="../index.html">Palestrantes</a>
+      <a href="../index.html#agenda">Agenda</a>
+      <a href="../index.html">FAQ</a>
+    </nav>
+    <div class="topnav-actions">
+      <a class="topnav-login" href="#">
+        <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><circle cx="12" cy="8" r="3.4" stroke="currentColor" stroke-width="1.5"/><path d="M5.2 19.4c.9-3.6 3.4-5.4 6.8-5.4s5.9 1.8 6.8 5.4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+        Entrar
+      </a>
+      <a class="topnav-cta" href="#">Cadastre-se</a>
+    </div>
+  </header>
+
+  <!-- ============================================================
+       Hero D4 — Dupla exposição
+       Uma licenciada em retrato. A silhueta dela é uma janela: por
+       dentro, um mosaico de dezenas de vidas transformadas (vídeos dos
+       licenciados e fotos dos eventos), como um cartaz de cinema em
+       dupla exposição: ela é feita dessas histórias.
+       Antes: silhueta cinza-escura, fotos cinzas e paradas, rosto
+       apagado. Uma vez só, uma luz sobe por dentro dela: as histórias
+       ganham cor de baixo para cima, quatro começam a tocar e, quando a
+       luz chega ao rosto, a cor real dela aparece. Depois, calma.
+       Ao rolar, a câmera entra na silhueta: o rosto se dissolve, as
+       histórias viram um mosaico legível e a cena termina numa frase.
+       Sem JS, abaixo de 900px ou com movimento reduzido: composição
+       estática, em cor.
+       ============================================================ -->
+  <main class="hd4" id="hd4">
+
+    <!-- fundo animado do site (estilos em portalv2.css) -->
+    <div class="rich-bg" aria-hidden="true">
+      <img class="aurora-base" src="../assets/img/aurora-base.webp" alt="">
+      <span class="wash"></span>
+      <span class="band band-l1"></span>
+      <span class="band band-l2"></span>
+      <span class="band band-d1"></span>
+      <span class="band band-d2"></span>
+      <span class="dots-base"></span>
+      <span class="dots"></span>
+    </div>
+
+    <!-- sombra larga atrás do texto (leitura sobre as faixas de luz do fundo) -->
+    <span class="hd4-shade" aria-hidden="true"></span>
+
+    <!-- palco: a câmera (.hd4-cam) só recebe transform; dentro dela o
+         retrato em unidades da imagem original (1328 × 1760, com 440 a
+         mais embaixo: o busto continua abaixo da dobra) -->
+    <div class="hd4-stage" role="img" aria-label="Retrato de uma licenciada cuja silhueta é formada por dezenas de histórias de outros licenciados">
+      <span class="hd4-bloom" aria-hidden="true"></span>
+      <div class="hd4-cam">
+        <div class="hd4-fig">
+
+          <!-- a silhueta (máscara) com o mosaico de vidas por dentro.
+               --x/--y/--h em unidades da imagem; largura fixa de 170 -->
+          <div class="hd4-sil">
+            <div class="hd4-mos">
+              <figure class="hd4-t" data-k="s" data-c="3" style="--x:471;--y:286;--h:170"><img class="hd4-c" src="../assets/img/hero-d4/c-moment-08.jpg" alt="" decoding="async"><img class="hd4-g" src="../assets/img/hero-d4/g-moment-08.jpg" alt="" decoding="async"></figure>
+              <figure class="hd4-t" data-k="f" data-c="4" style="--x:653;--y:300;--h:212"><img class="hd4-c" src="../assets/img/hero-d4/c-moment-06.jpg" alt="" decoding="async"><img class="hd4-g" src="../assets/img/hero-d4/g-moment-06.jpg" alt="" decoding="async"></figure>
+              <figure class="hd4-t" data-k="f" data-c="3" style="--x:471;--y:468;--h:212"><img class="hd4-c" src="../assets/img/hero-d4/c-moment-10.jpg" alt="" decoding="async"><img class="hd4-g" src="../assets/img/hero-d4/g-moment-10.jpg" alt="" decoding="async"></figure>
+              <figure class="hd4-t" data-k="f" data-c="2" style="--x:289;--y:512;--h:212"><img class="hd4-c" src="../assets/img/hero-d4/c-moment-05.jpg" alt="" decoding="async"><img class="hd4-g" src="../assets/img/hero-d4/g-moment-05.jpg" alt="" decoding="async"></figure>
+              <figure class="hd4-t" data-k="s" data-c="4" style="--x:653;--y:524;--h:170"><img class="hd4-c" src="../assets/img/hero-d4/c-moment-04.jpg" alt="" decoding="async"><img class="hd4-g" src="../assets/img/hero-d4/g-moment-04.jpg" alt="" decoding="async"></figure>
+              <figure class="hd4-t" data-k="s" data-c="5" style="--x:835;--y:560;--h:170"><video class="hd4-c" src="../assets/video/cards/sel-estudio.mp4" poster="../assets/video/cards/sel-estudio.jpg" muted loop playsinline preload="metadata" aria-label="Apresentadora em estúdio com telão de ondas verdes"></video><img class="hd4-g" src="../assets/img/hero-d4/g-sel-estudio.jpg" alt="" decoding="async"></figure>
+              <figure class="hd4-t" data-k="s" data-c="3" style="--x:471;--y:692;--h:170"><img class="hd4-c" src="../assets/img/hero-d4/c-moment-11.jpg" alt="" decoding="async"><img class="hd4-g" src="../assets/img/hero-d4/g-moment-11.jpg" alt="" decoding="async"></figure>
+              <figure class="hd4-t" data-k="l" data-c="4" style="--x:653;--y:706;--h:128"><img class="hd4-c" src="../assets/video/cards/sel-musgo3.jpg" alt="" decoding="async"><img class="hd4-g" src="../assets/img/hero-d4/g-sel-musgo3.jpg" alt="" decoding="async"></figure>
+              <figure class="hd4-t" data-k="l" data-c="2" style="--x:289;--y:736;--h:128"><img class="hd4-c" src="../assets/img/hero-d4/c-moment-09.jpg" alt="" decoding="async"><img class="hd4-g" src="../assets/img/hero-d4/g-moment-09.jpg" alt="" decoding="async"></figure>
+              <figure class="hd4-t" data-k="l" data-c="5" style="--x:835;--y:742;--h:128"><img class="hd4-c" src="../assets/img/hero-d4/c-moment-16.jpg" alt="" decoding="async"><img class="hd4-g" src="../assets/img/hero-d4/g-moment-16.jpg" alt="" decoding="async"></figure>
+              <figure class="hd4-t" data-k="f" data-c="4" style="--x:653;--y:846;--h:212"><img class="hd4-c" src="../assets/img/hero-d4/c-moment-03.jpg" alt="" decoding="async"><img class="hd4-g" src="../assets/img/hero-d4/g-moment-03.jpg" alt="" decoding="async"></figure>
+              <figure class="hd4-t" data-k="l" data-c="3" style="--x:471;--y:874;--h:128"><img class="hd4-c" src="../assets/img/hero-d4/c-moment-18.jpg" alt="" decoding="async"><img class="hd4-g" src="../assets/img/hero-d4/g-moment-18.jpg" alt="" decoding="async"></figure>
+              <figure class="hd4-t" data-k="t" data-c="2" style="--x:289;--y:876;--h:302"><video class="hd4-c" src="../assets/video/cards/gen-reuniao.mp4" poster="../assets/video/cards/gen-reuniao.jpg" muted loop playsinline preload="metadata" aria-label="Executiva de blazer verde apresentando em uma sala de reunião"></video><img class="hd4-g" src="../assets/img/hero-d4/g-gen-reuniao.jpg" alt="" decoding="async"></figure>
+              <figure class="hd4-t" data-k="f" data-c="5" style="--x:835;--y:882;--h:212"><video class="hd4-c" src="../assets/video/past/crowd-hands.mp4" poster="../assets/video/past/crowd-hands.jpg" muted loop playsinline preload="metadata" aria-label="Público vibrando com as mãos para o alto no evento"></video><img class="hd4-g" src="../assets/img/hero-d4/g-crowd-hands.jpg" alt="" decoding="async"></figure>
+              <figure class="hd4-t" data-k="f" data-c="3" style="--x:471;--y:1014;--h:212"><img class="hd4-c" src="../assets/video/past/arena-persistencia.jpg" alt="" decoding="async"><img class="hd4-g" src="../assets/img/hero-d4/g-arena-persistencia.jpg" alt="" decoding="async"></figure>
+              <figure class="hd4-t" data-k="s" data-c="4" style="--x:653;--y:1070;--h:170"><video class="hd4-c" src="../assets/video/cards/sel-musgo2.mp4" poster="../assets/video/cards/sel-musgo2.jpg" muted loop playsinline preload="metadata" aria-label="Licenciado de óculos falando diante do logo iGreen"></video><img class="hd4-g" src="../assets/img/hero-d4/g-sel-musgo2.jpg" alt="" decoding="async"></figure>
+              <figure class="hd4-t" data-k="l" data-c="5" style="--x:835;--y:1106;--h:128"><video class="hd4-c" src="../assets/video/past/expo-crowd.mp4" poster="../assets/video/past/expo-crowd.jpg" muted loop playsinline preload="metadata" aria-label="Público circulando na feira do evento"></video><img class="hd4-g" src="../assets/img/hero-d4/g-expo-crowd.jpg" alt="" decoding="async"></figure>
+              <figure class="hd4-t" data-k="l" data-c="1" style="--x:107;--y:1124;--h:128"><img class="hd4-c" src="../assets/img/hero-d4/c-moment-12.jpg" alt="" decoding="async"><img class="hd4-g" src="../assets/img/hero-d4/g-moment-12.jpg" alt="" decoding="async"></figure>
+              <figure class="hd4-t" data-k="s" data-c="2" style="--x:289;--y:1190;--h:170"><video class="hd4-c" src="../assets/video/cards/sel-musgo1.mp4" poster="../assets/video/cards/sel-musgo1.jpg" muted loop playsinline preload="metadata" aria-label="Licenciado falando diante do logo iGreen no muro verde"></video><img class="hd4-g" src="../assets/img/hero-d4/g-sel-musgo1.jpg" alt="" decoding="async"></figure>
+              <figure class="hd4-t" data-k="t" data-c="3" style="--x:471;--y:1238;--h:302"><video class="hd4-c" src="../assets/video/cards/gen-executiva2.mp4" poster="../assets/video/cards/gen-executiva2.jpg" muted loop playsinline preload="metadata" aria-label="Executiva de blazer verde apresentando em um estúdio com luzes verdes"></video><img class="hd4-g" src="../assets/img/hero-d4/g-gen-executiva2.jpg" alt="" decoding="async"></figure>
+              <figure class="hd4-t" data-k="t" data-c="5" style="--x:835;--y:1246;--h:302"><img class="hd4-c" src="../assets/img/past/moment-01.jpg" alt="" decoding="async"><img class="hd4-g" src="../assets/img/hero-d4/g-moment-01.jpg" alt="" decoding="async"></figure>
+              <figure class="hd4-t" data-k="t" data-c="4" style="--x:653;--y:1252;--h:302"><img class="hd4-c" src="../assets/img/past/moment-14.jpg" alt="" decoding="async"><img class="hd4-g" src="../assets/img/hero-d4/g-moment-14.jpg" alt="" decoding="async"></figure>
+              <figure class="hd4-t" data-k="s" data-c="1" style="--x:107;--y:1264;--h:170"><video class="hd4-c" src="../assets/video/cards/sel-jardim.mp4" poster="../assets/video/cards/sel-jardim.jpg" muted loop playsinline preload="metadata" aria-label="Licenciado com polo iGreen falando ao lado do jardim vertical"></video><img class="hd4-g" src="../assets/img/hero-d4/g-sel-jardim.jpg" alt="" decoding="async"></figure>
+              <figure class="hd4-t" data-k="f" data-c="2" style="--x:289;--y:1372;--h:212"><img class="hd4-c" src="../assets/img/past/moment-02.jpg" alt="" decoding="async"><img class="hd4-g" src="../assets/img/hero-d4/g-moment-02.jpg" alt="" decoding="async"></figure>
+              <figure class="hd4-t" data-k="l" data-c="1" style="--x:107;--y:1446;--h:128"><video class="hd4-c" src="../assets/video/past/stage-speaker.mp4" poster="../assets/video/past/stage-speaker.jpg" muted loop playsinline preload="metadata" aria-label="Palestrante no palco do iGreen Live"></video><img class="hd4-g" src="../assets/img/hero-d4/g-stage-speaker.jpg" alt="" decoding="async"></figure>
+              <figure class="hd4-t" data-k="s" data-c="3" style="--x:471;--y:1552;--h:170"><video class="hd4-c" src="../assets/video/cards/sel-escritorio.mp4" poster="../assets/video/cards/sel-escritorio.jpg" muted loop playsinline preload="metadata" aria-label="Licenciado de camiseta verde em um escritório moderno"></video><img class="hd4-g" src="../assets/img/hero-d4/g-sel-escritorio.jpg" alt="" decoding="async"></figure>
+              <figure class="hd4-t" data-k="s" data-c="6" style="--x:1017;--y:1556;--h:170"><img class="hd4-c" src="../assets/img/past/moment-09.jpg" alt="" decoding="async"><img class="hd4-g" src="../assets/img/hero-d4/g-moment-09.jpg" alt="" decoding="async"></figure>
+              <figure class="hd4-t" data-k="s" data-c="5" style="--x:835;--y:1560;--h:170"><video class="hd4-c" src="../assets/video/cards/gen-walk.mp4" poster="../assets/video/cards/gen-walk.jpg" muted loop playsinline preload="metadata" aria-label="Executiva de blazer verde caminhando pelo escritório"></video><img class="hd4-g" src="../assets/img/hero-d4/g-gen-walk.jpg" alt="" decoding="async"></figure>
+              <figure class="hd4-t" data-k="l" data-c="4" style="--x:653;--y:1566;--h:128"><video class="hd4-c" src="../assets/video/cards/gen-executiva1.mp4" poster="../assets/video/cards/gen-executiva1.jpg" muted loop playsinline preload="metadata" aria-label="Executiva de blazer verde sorrindo com o celular na mão"></video><img class="hd4-g" src="../assets/img/hero-d4/g-gen-executiva1.jpg" alt="" decoding="async"></figure>
+              <figure class="hd4-t" data-k="t" data-c="1" style="--x:107;--y:1586;--h:302"><video class="hd4-c" src="../assets/video/cards/gen-kart.mp4" poster="../assets/video/cards/gen-kart.jpg" muted loop playsinline preload="metadata" aria-label="Piloto de kart com macacão e capacete verdes da iGreen"></video><img class="hd4-g" src="../assets/img/hero-d4/g-gen-kart.jpg" alt="" decoding="async"></figure>
+              <figure class="hd4-t" data-k="l" data-c="2" style="--x:289;--y:1596;--h:128"><video class="hd4-c" src="../assets/video/cards/gen-podcast.mp4" poster="../assets/video/cards/gen-podcast.jpg" muted loop playsinline preload="metadata" aria-label="Licenciado gravando podcast em um estúdio de parede verde"></video><img class="hd4-g" src="../assets/img/hero-d4/g-gen-podcast.jpg" alt="" decoding="async"></figure>
+              <figure class="hd4-t" data-k="f" data-c="0" style="--x:-75;--y:1686;--h:212"><img class="hd4-c" src="../assets/img/past/moment-21.jpg" alt="" decoding="async"><img class="hd4-g" src="../assets/img/hero-d4/g-moment-21.jpg" alt="" decoding="async"></figure>
+              <figure class="hd4-t" data-k="s" data-c="4" style="--x:653;--y:1706;--h:170"><video class="hd4-c" src="../assets/video/cards/sel-suv.mp4" poster="../assets/video/cards/sel-suv.jpg" muted loop playsinline preload="metadata" aria-label="Licenciado com o celular diante de um SUV verde"></video><img class="hd4-g" src="../assets/img/hero-d4/g-sel-suv.jpg" alt="" decoding="async"></figure>
+              <figure class="hd4-t" data-k="f" data-c="3" style="--x:471;--y:1734;--h:212"><img class="hd4-c" src="../assets/img/past/moment-15.jpg" alt="" decoding="async"><img class="hd4-g" src="../assets/img/hero-d4/g-moment-15.jpg" alt="" decoding="async"></figure>
+              <figure class="hd4-t" data-k="s" data-c="2" style="--x:289;--y:1736;--h:170"><video class="hd4-c" src="../assets/video/cards/sel-carro.mp4" poster="../assets/video/cards/sel-carro.jpg" muted loop playsinline preload="metadata" aria-label="Licenciada sorrindo diante de um carro verde"></video><img class="hd4-g" src="../assets/img/hero-d4/g-sel-carro.jpg" alt="" decoding="async"></figure>
+              <figure class="hd4-t" data-k="f" data-c="6" style="--x:1017;--y:1738;--h:212"><img class="hd4-c" src="../assets/img/past/moment-17.jpg" alt="" decoding="async"><img class="hd4-g" src="../assets/img/hero-d4/g-moment-17.jpg" alt="" decoding="async"></figure>
+              <figure class="hd4-t" data-k="l" data-c="5" style="--x:835;--y:1742;--h:128"><img class="hd4-c" src="../assets/video/past/car-reveal.jpg" alt="" decoding="async"><img class="hd4-g" src="../assets/img/hero-d4/g-car-reveal.jpg" alt="" decoding="async"></figure>
+              <figure class="hd4-t" data-k="f" data-c="5" style="--x:835;--y:1882;--h:212"><img class="hd4-c" src="../assets/img/past/moment-22.jpg" alt="" decoding="async"><img class="hd4-g" src="../assets/img/hero-d4/g-moment-22.jpg" alt="" decoding="async"></figure>
+              <figure class="hd4-t" data-k="f" data-c="4" style="--x:653;--y:1888;--h:212"><img class="hd4-c" src="../assets/img/past/moment-23.jpg" alt="" decoding="async"><img class="hd4-g" src="../assets/img/hero-d4/g-moment-23.jpg" alt="" decoding="async"></figure>
+              <figure class="hd4-t" data-k="s" data-c="1" style="--x:107;--y:1900;--h:170"><img class="hd4-c" src="../assets/img/past/moment-13.jpg" alt="" decoding="async"><img class="hd4-g" src="../assets/img/hero-d4/g-moment-13.jpg" alt="" decoding="async"></figure>
+              <figure class="hd4-t" data-k="l" data-c="0" style="--x:-75;--y:1910;--h:128"><img class="hd4-c" src="../assets/img/past/moment-17.jpg" alt="" decoding="async"><img class="hd4-g" src="../assets/img/hero-d4/g-moment-17.jpg" alt="" decoding="async"></figure>
+              <figure class="hd4-t" data-k="f" data-c="2" style="--x:289;--y:1918;--h:212"><img class="hd4-c" src="../assets/img/past/moment-20.jpg" alt="" decoding="async"><img class="hd4-g" src="../assets/img/hero-d4/g-moment-20.jpg" alt="" decoding="async"></figure>
+              <figure class="hd4-t" data-k="l" data-c="3" style="--x:471;--y:1958;--h:128"><video class="hd4-c" src="../assets/video/past/arena-audience.mp4" poster="../assets/video/past/arena-audience.jpg" muted loop playsinline preload="metadata" aria-label="Plateia lotada na arena do iGreen Live"></video><img class="hd4-g" src="../assets/img/hero-d4/g-arena-audience.jpg" alt="" decoding="async"></figure>
+              <figure class="hd4-t" data-k="l" data-c="6" style="--x:1017;--y:1962;--h:128"><img class="hd4-c" src="../assets/img/past/moment-05.jpg" alt="" decoding="async"><img class="hd4-g" src="../assets/img/hero-d4/g-moment-05.jpg" alt="" decoding="async"></figure>
+            </div>
+            <span class="hd4-front" aria-hidden="true"></span>
+          </div>
+
+          <!-- o rosto dela por cima, só onde importa (o resto da imagem é
+               transparente e deixa ver as histórias) + a luz de contorno -->
+          <div class="hd4-faces">
+            <img class="hd4-face hd4-face-c" src="../assets/img/hero-d4/face-c.webp" alt="">
+            <img class="hd4-face hd4-face-g" src="../assets/img/hero-d4/face-g.webp" alt="">
+            <img class="hd4-rim" src="../assets/img/hero-d4/rim.webp" alt="">
+          </div>
+
+          <!-- uma história sai da silhueta sob o cursor (carta inteira) -->
+          <div class="hd4-lift"><span class="hd4-shadow" aria-hidden="true"></span></div>
+
+        </div>
+      </div>
+    </div>
+
+    <!-- Texto do hero (mesmo conteúdo do site) -->
+    <div class="hd4-wrap">
+      <div class="hero-copy hd4-copy">
+        <div class="hero-badge">
+          <span class="avatars" aria-hidden="true">
+            <img src="../speakers/pedro-cut.png" alt="">
+            <img src="../speakers/carla-cut.png" alt="">
+            <img src="../speakers/ana-cut.png" alt="">
+            <img src="../speakers/bruno-cut.png" alt="">
+          </span>
+          <span><b>+2.000</b> vidas transformadas</span>
+        </div>
+
+        <h1 class="title">
+          <span class="line">Renda recorrente</span>
+          <span class="line">que <span class="title-clip" aria-hidden="true"><video src="../assets/video/cards/sel-musgo3.mp4" poster="../assets/video/cards/sel-musgo3.jpg" muted loop autoplay playsinline></video></span> transforma</span>
+          <span class="line line-muted">vidas de verdade</span>
+        </h1>
+
+        <p class="sub">Conheça as histórias de quem virou licenciado iGreen e construiu renda com energia por assinatura, telecom e seguros, todo mês.</p>
+
+        <div class="actions">
+          <a class="btn-primary" href="#">
+            Seja licenciado
+            <span class="chip chip-dark">
+              <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                <path d="M7 17L17 7M9 7h8v8" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+            </span>
+          </a>
+          <a class="btn-ghost" href="#">Ver histórias</a>
+        </div>
+
+        <a class="next-stop" href="#agenda">Próxima parada do tour: <b>Goiânia, 16 de agosto</b></a>
+      </div>
+    </div>
+
+    <!-- fim da rolagem: dentro dela, as histórias legíveis e a frase -->
+    <div class="hd4-end">
+      <span class="hd4-veil" aria-hidden="true"></span>
+      <span class="hd4-melt" aria-hidden="true"></span>
+      <p class="hd4-phrase"><span>Uma vida transformada</span><span>transforma muitas outras.</span></p>
+    </div>
+
+  </main>
+
+  <!-- Simula a seção seguinte (recebe a passagem do hero) -->
+  <section class="hd4-next" aria-label="Próxima seção">
+    <p class="hd4-next-line">Cada história começou com uma decisão.<br><span>Conheça algumas delas.</span></p>
+  </section>
+
+  <script src="../assets/vendor/gsap.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.13.0/ScrollTrigger.min.js"></script>
+  <script src="hero-d4.js"></script>
+</body>
+</html>

@@ -1,0 +1,379 @@
+/* ============================================================
+   Hero G3 — Mosaico de vidas, versão "a multidão"
+   Repouso igual ao G2 (uma frase só, com o número feito de pessoas
+   no meio). A rolagem desfaz o número numa multidão de tela cheia,
+   que depois se abre ao meio para quatro vídeos e uma frase.
+   Aqui ficam o layout, a entrada do texto e as camadas leves que o
+   JS move só com transform/opacity.
+   ============================================================ */
+
+:root {
+  --hg3-lime: #A8FF35;
+  --hg3-lime-soft: #D8FFA6;
+  --hg3-ink: #F3F6EC;
+  --hg3-base: #06110A;
+  --hg3-bg: #010702;
+  --hg3-pin: 130vh;
+  --hg3-ease: cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/* ============ Palco preso ============ */
+
+.hg3 {
+  position: relative;
+  height: calc(100vh + var(--hg3-pin));
+  background: var(--hg3-bg);
+}
+.hg3-stage {
+  position: sticky;
+  top: 0;
+  height: 100vh;
+  overflow: hidden;
+  isolation: isolate;
+  background: linear-gradient(180deg, #010D03 0%, var(--hg3-bg) 70%);
+  -webkit-user-select: none;
+  user-select: none;
+}
+.hg3-canvas {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  width: 100%;
+  height: 100%;
+  display: block;
+  pointer-events: none;
+}
+/* ============ As quatro pessoas que viram vídeo ============ */
+
+.hg3-vids {
+  position: absolute;
+  inset: 0;
+  z-index: 3;
+  pointer-events: none;
+}
+.hg3-vid {
+  position: absolute;
+  left: 0;
+  top: 0;
+  overflow: hidden;
+  opacity: 0;
+  visibility: hidden;
+  border-radius: 16px;
+  background: var(--hg3-base);
+  box-shadow: 0 24px 60px rgba(0, 0, 0, 0.45);
+  will-change: opacity;
+}
+.hg3-vid video {
+  position: absolute;
+  display: block;
+  max-width: none;
+}
+.hg3-vid::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  border-radius: inherit;
+  padding: 1px;
+  pointer-events: none;
+  mix-blend-mode: overlay;
+  background: linear-gradient(to top, rgba(255, 255, 255, 0.85) 0%, rgba(255, 255, 255, 0.24) 24%, rgba(255, 255, 255, 0.08) 46%, transparent 62%);
+  -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor;
+  mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+  mask-composite: exclude;
+}
+
+/* ============ Texto: uma coluna, uma frase ============ */
+
+.hg3 .hg3-copy {
+  position: absolute;
+  top: 104px;                      /* o JS recentraliza na dobra */
+  left: 0;
+  right: 0;
+  z-index: 4;
+  width: min(1240px, 100% - 2 * max(5vw, 32px));
+  margin: 0 auto;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+}
+
+/* aviso do tour: pílula fina com o ponto lima (como o .kicker do site) */
+.hg3-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 9px;
+  height: 34px;
+  padding: 0 15px 0 13px;
+  border-radius: 999px;
+  border: 1px solid rgba(243, 246, 236, 0.14);
+  background: rgba(243, 246, 236, 0.03);
+  font-size: 14px;
+  line-height: 1;
+  color: rgba(243, 246, 236, 0.66);
+  transition: border-color 0.25s ease, background-color 0.25s ease;
+}
+.hg3-chip::before {
+  content: '';
+  width: 6px;
+  height: 6px;
+  flex-shrink: 0;
+  border-radius: 50%;
+  background: var(--hg3-lime);
+  box-shadow: 0 0 8px rgba(168, 255, 53, 0.6);
+}
+.hg3-chip b {
+  font-weight: 500;
+  color: var(--hg3-lime-soft);
+}
+.hg3-chip:hover {
+  border-color: rgba(243, 246, 236, 0.28);
+  background: rgba(243, 246, 236, 0.06);
+}
+
+.hg3 .title {
+  width: 100%;
+  margin-top: clamp(16px, 2.2vh, 26px);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  font-size: clamp(44px, 4.45vw, 64px);
+  line-height: 1.03;
+  letter-spacing: -0.038em;
+}
+.hg3 .title .line {
+  width: auto;
+  margin: 0;
+  white-space: nowrap;
+}
+.hg3-in-line { display: inline-block; }
+
+/* o lugar do número (desenhado no canvas por baixo) */
+.hg3-slot {
+  position: relative;
+  display: block;
+  width: 100%;
+  height: 0;
+  margin: clamp(10px, 1.6vh, 18px) 0 clamp(8px, 1.2vh, 14px);
+}
+.hg3-plus {
+  position: absolute;
+  top: 0;
+  left: 0;
+  font-weight: 500;
+  line-height: 0.8;
+  letter-spacing: 0;
+  color: var(--hg3-lime-soft);
+  opacity: 0;
+  text-shadow: 0 0 24px rgba(168, 255, 53, 0.35);
+}
+.hg3-sr {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+}
+
+.hg3 .sub {
+  margin-top: clamp(14px, 2vh, 22px);
+  max-width: 74ch;
+  font-size: clamp(16px, 1.16vw, 18.5px);
+}
+.hg3 .actions {
+  margin-top: clamp(18px, 2.6vh, 28px);
+  justify-content: center;
+}
+
+/* o clipe da frase é o gerador da onda */
+.hg3 .title-clip {
+  position: relative;
+  overflow: visible;
+  background: transparent;
+  box-shadow: none;
+}
+.hg3 .title-clip video {
+  position: relative;
+  z-index: 1;
+  border-radius: 999px;
+  background: #0E2A17;
+  box-shadow: 0 0 0 1px rgba(243, 246, 236, 0.16), 0 12px 32px rgba(0, 0, 0, 0.35);
+}
+.hg3 .title-clip::before,
+.hg3 .title-clip::after {
+  content: '';
+  position: absolute;
+  inset: -1px;
+  border-radius: 999px;
+  pointer-events: none;
+  opacity: 0;
+}
+.hg3 .title-clip::before {
+  z-index: 0;
+  inset: -10px -14px;
+  background: radial-gradient(closest-side, rgba(168, 255, 53, 0.55), rgba(168, 255, 53, 0.16) 55%, rgba(168, 255, 53, 0) 100%);
+}
+.hg3 .title-clip::after {
+  z-index: 2;
+  box-shadow: 0 0 0 1.5px rgba(216, 255, 166, 0.9), 0 0 18px 2px rgba(168, 255, 53, 0.45);
+}
+.hg3.hg3-fire .title-clip::before { animation: hg3-halo 1.6s var(--hg3-ease) both; }
+.hg3.hg3-fire .title-clip::after { animation: hg3-ring 1.4s var(--hg3-ease) both; }
+@keyframes hg3-halo {
+  0%   { opacity: 0; transform: scale(0.8); }
+  14%  { opacity: 1; transform: scale(1.05); }
+  100% { opacity: 0; transform: scale(1.25); }
+}
+@keyframes hg3-ring {
+  0%   { opacity: 0; transform: scale(1); }
+  10%  { opacity: 1; }
+  100% { opacity: 0; transform: scale(1.75, 2.1); }
+}
+
+/* ============ Entrada do texto (uma vez) ============ */
+
+.hg3-js .hg3 .hg3-rise,
+.hg3-js .hg3 .hg3-in-line {
+  opacity: 0;
+  transform: translate3d(0, 20px, 0);
+}
+.hg3-js .hg3 .hg3-in-line { transform: translate3d(0, 0.4em, 0); }
+.hg3.hg3-in .hg3-rise,
+.hg3.hg3-in .hg3-in-line {
+  animation: hg3-rise 1.15s var(--hg3-ease) both;
+}
+.hg3-in-line { --hg3-from: translate3d(0, 0.4em, 0); }
+.hg3.hg3-in .hg3-chip { animation-delay: 0.04s; }
+.hg3.hg3-in .hg3-l1 .hg3-in-line { animation-delay: 0.14s; }
+.hg3.hg3-in .hg3-l3 .hg3-in-line { animation-delay: 0.5s; }
+.hg3.hg3-in .sub { animation-delay: 0.6s; }
+.hg3.hg3-in .actions { animation-delay: 0.68s; }
+/* o "+" chega quando a onda termina de acender o número */
+.hg3.hg3-lit .hg3-plus { animation: hg3-plus 1s var(--hg3-ease) both; }
+@keyframes hg3-rise {
+  from { opacity: 0; transform: var(--hg3-from, translate3d(0, 20px, 0)); }
+  to   { opacity: 1; transform: none; }
+}
+@keyframes hg3-plus {
+  from { opacity: 0; transform: translate3d(0, 12px, 0) scale(0.8); }
+  to   { opacity: 1; transform: none; }
+}
+
+/* ============ Fecho do mergulho ============ */
+
+.hg3-end {
+  position: absolute;
+  left: 50%;
+  top: 50%;                        /* o JS centraliza na faixa aberta */
+  z-index: 4;
+  width: max-content;
+  margin: 0;
+  padding: 0;
+  text-align: center;
+  font-family: var(--font-display);
+  font-weight: 500;
+  font-size: clamp(34px, 3.1vw, 58px);
+  line-height: 1.1;
+  letter-spacing: -0.032em;
+  color: var(--hg3-ink);
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+  will-change: transform, opacity;
+}
+.hg3-end span { display: block; position: relative; }
+.hg3-end-b { color: rgba(243, 246, 236, 0.52); }
+/* véu escuro só atrás da frase: o mesh continua, a leitura fica firme */
+.hg3-end::before {
+  content: '';
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: calc(100% + 220px);
+  height: calc(100% + 160px);
+  transform: translate(-50%, -50%);
+  background: radial-gradient(closest-side, rgba(1, 7, 2, 0.62) 0%, rgba(1, 7, 2, 0.36) 55%, rgba(1, 7, 2, 0) 100%);
+  pointer-events: none;
+}
+
+.hg3-fade {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 5;
+  height: 9vh;
+  pointer-events: none;
+  opacity: 0;
+  background: linear-gradient(to bottom, rgba(1, 7, 2, 0) 0%, rgba(1, 7, 2, 0.7) 60%, var(--hg3-bg) 100%);
+}
+
+.hg3-next {
+  position: relative;
+  z-index: 1;
+  min-height: 90vh;
+  display: grid;
+  place-items: center;
+  padding: 0 24px;
+  background: var(--hg3-bg);
+}
+.hg3-next-line {
+  font-family: var(--font-display);
+  font-weight: 500;
+  font-size: clamp(30px, 3.1vw, 50px);
+  line-height: 1.1;
+  letter-spacing: -0.032em;
+  text-align: center;
+  color: var(--hg3-ink);
+}
+.hg3-next-line span { color: rgba(243, 246, 236, 0.4); }
+
+/* ============ Pausa ============ */
+
+.hg3.hg3-paused .rich-bg .band,
+.hg3.hg3-paused .title-clip::before,
+.hg3.hg3-paused .title-clip::after { animation-play-state: paused; }
+
+/* ============ Movimento reduzido ============ */
+
+@media (prefers-reduced-motion: reduce) {
+  .hg3 { height: 100vh; }
+  .hg3-js .hg3 .hg3-rise,
+  .hg3-js .hg3 .hg3-in-line {
+    opacity: 1;
+    transform: none;
+    animation: none;
+  }
+  .hg3 .hg3-plus { opacity: 1; animation: none; }
+  .hg3 .title-clip::before,
+  .hg3 .title-clip::after { display: none; }
+}
+
+/* ============ Telas pequenas: versão estática simples ============ */
+
+@media (max-width: 899px) {
+  .hg3 { height: auto; }
+  .hg3-stage {
+    position: relative;
+    height: auto;
+    min-height: 100vh;
+    padding: 112px 0 56px;
+  }
+  .hg3 .hg3-copy { position: relative; top: 0 !important; }
+  .hg3 .title .line { white-space: normal; }
+  .hg3-vids,
+  .hg3-vignette,
+  .hg3-end,
+  .hg3-fade { display: none; }
+  .hg3-js .hg3 .hg3-rise,
+  .hg3-js .hg3 .hg3-in-line {
+    opacity: 1;
+    transform: none;
+    animation: none;
+  }
+  .hg3 .hg3-plus { opacity: 1; }
+}

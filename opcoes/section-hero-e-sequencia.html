@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Hero E + Statement — Sequência</title>
+  <link rel="icon" href="../assets/img/igreen-logo.svg">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Instrument+Sans:wdth,wght@75..100,400..700&display=swap">
+  <link rel="stylesheet" href="../css/portalv2.css">
+  <link rel="stylesheet" href="section-hero-e-sequencia.css">
+  <script>
+    /* marca o modo antes da primeira pintura: com JS e movimento, o hero
+       nasce apagado e a entrada orquestrada o acende; sem movimento ou em
+       telas estreitas, as duas seções aparecem paradas, uma abaixo da outra */
+    document.documentElement.classList.add('shes-js');
+    if (matchMedia('(prefers-reduced-motion: reduce), (max-width: 899px)').matches) {
+      document.documentElement.classList.add('shes-static');
+    }
+  </script>
+</head>
+<body class="tone-green">
+
+  <!-- Menu fixo do topo (mesmo markup do site) -->
+  <header class="topnav">
+    <a class="topnav-logo" href="../index.html"><img src="../assets/img/igreen-logo.svg" alt="iGreen"></a>
+    <nav class="topnav-links" aria-label="Menu fixo">
+      <a href="../index.html">Início</a>
+      <a href="../index.html">Palestrantes</a>
+      <a href="../index.html#agenda">Agenda</a>
+      <a href="../index.html">FAQ</a>
+    </nav>
+    <div class="topnav-actions">
+      <a class="topnav-login" href="#">
+        <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><circle cx="12" cy="8" r="3.4" stroke="currentColor" stroke-width="1.5"/><path d="M5.2 19.4c.9-3.6 3.4-5.4 6.8-5.4s5.9 1.8 6.8 5.4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+        Entrar
+      </a>
+      <a class="topnav-cta" href="#">Cadastre-se</a>
+    </div>
+  </header>
+
+  <!-- ============================================================
+       Sequência: Hero E ("Correnteza") → Statement, sem emenda
+       Um único palco preso na rolagem conta a história inteira:
+       1. as vidas correm à direita do texto (o hero E);
+       2. o texto sai, as vidas se reúnem ao centro e a frase
+          "Cada uma dessas vidas começou com uma decisão." aparece;
+       3. a frase sobe e dá lugar à do statement; o conjunto se desfaz:
+          quatro vidas viram as quatro mídias do statement e as outras
+          se recolhem nos quadradinhos de luz;
+       4. o statement segue como no site: a frase preenche palavra por
+          palavra, as mídias sobem por trás (texto em "difference") e o
+          fechamento com o botão encerra a sequência.
+       ============================================================ -->
+  <div class="shes-seq">
+
+    <main class="shes-hero" id="topo">
+
+      <!-- Fundo animado do site (estilos em portalv2.css) -->
+      <div class="rich-bg" aria-hidden="true">
+        <img class="aurora-base" src="../assets/img/aurora-base.webp" alt="">
+        <span class="wash"></span>
+        <span class="band band-l1"></span>
+        <span class="band band-l2"></span>
+        <span class="band band-d1"></span>
+        <span class="band band-d2"></span>
+        <span class="dots-base"></span>
+        <span class="dots"></span>
+      </div>
+
+      <!-- sombra suave sob o texto -->
+      <div class="shes-shade" aria-hidden="true"></div>
+      <!-- luz que fica atrás das colunas depois da carga -->
+      <div class="shes-aura" aria-hidden="true"></div>
+
+      <!-- As colunas de vidas (montadas pelo JS), numa janela que começa
+           abaixo do menu: borda limpa, sem desvanecer os cards -->
+      <div class="shes-window">
+        <div class="shes-win-in">
+          <div class="shes-reel" aria-label="Histórias de licenciados em vídeo"></div>
+        </div>
+      </div>
+
+      <!-- A frente de luz da transformação (passa uma vez) -->
+      <div class="shes-beam" aria-hidden="true"><span class="shes-beam-in"></span></div>
+
+      <!-- véu da reunião -->
+      <div class="shes-veil" aria-hidden="true"></div>
+
+      <div class="shes-wrap">
+        <!-- Hero copy (mesmo conteúdo do site) -->
+        <div class="hero-copy shes-copy">
+          <div class="hero-badge">
+            <span class="avatars" aria-hidden="true">
+              <img src="../speakers/pedro-cut.png" alt="">
+              <img src="../speakers/carla-cut.png" alt="">
+              <img src="../speakers/ana-cut.png" alt="">
+              <img src="../speakers/bruno-cut.png" alt="">
+            </span>
+            <span><b>+2.000</b> vidas transformadas</span>
+          </div>
+
+          <h1 class="title">
+            <span class="line">Renda recorrente</span>
+            <span class="line">que <span class="title-clip" aria-hidden="true"><video src="../assets/video/cards/sel-musgo3.mp4" poster="../assets/video/cards/sel-musgo3.jpg" muted loop autoplay playsinline></video></span> transforma</span>
+            <span class="line line-muted">vidas de verdade</span>
+          </h1>
+
+          <p class="sub">Conheça as histórias de quem virou licenciado iGreen e construiu renda com energia por assinatura, telecom e seguros, todo mês.</p>
+
+          <div class="actions">
+            <a class="btn-primary" href="#">
+              Seja licenciado
+              <span class="chip chip-dark">
+                <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                  <path d="M7 17L17 7M9 7h8v8" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+              </span>
+            </a>
+            <a class="btn-ghost" href="#">Ver histórias</a>
+          </div>
+
+          <a class="next-stop" href="../index.html#agenda">Próxima parada do tour: <b>Goiânia, 16 de agosto</b></a>
+        </div>
+
+        <!-- telas estreitas: três cards parados, coloridos -->
+        <div class="shes-strip" aria-hidden="true">
+          <figure><img src="../assets/video/cards/sel-carro.jpg" alt="" loading="lazy"></figure>
+          <figure><img src="../assets/video/cards/gen-executiva2.jpg" alt="" loading="lazy"></figure>
+          <figure><img src="../assets/video/cards/sel-suv.jpg" alt="" loading="lazy"></figure>
+        </div>
+      </div>
+
+      <!-- a frase da reunião: entrega a palavra ao statement -->
+      <p class="shes-coda">
+        <span class="shes-coda-l"><span>Cada</span> <span>uma</span> <span>dessas</span> <span>vidas</span></span>
+        <span class="shes-coda-l shes-coda-m"><span>começou</span> <span>com</span> <span>uma</span> <span>decisão.</span></span>
+      </p>
+
+    </main>
+
+    <!-- Statement (cópia fiel da seção do site, com prefixo próprio):
+         a frase preenche com a rolagem enquanto mídias e quadrados
+         atravessam por trás -->
+    <section class="shes-st" aria-label="Trabalho não é só renda">
+      <div class="shes-st-media" aria-hidden="true">
+        <figure class="shes-bm shes-bm-1" data-range="820"><img src="../assets/img/blend-energia.jpg" alt=""></figure>
+        <figure class="shes-bm shes-bm-2" data-range="900"><img src="../assets/img/blend-seguro.jpg" alt=""></figure>
+        <figure class="shes-bm shes-bm-5" data-range="1400"><video src="../assets/video/blend-atendimento.mp4" poster="../assets/video/blend-atendimento.jpg" muted loop preload="metadata" playsinline></video></figure>
+        <figure class="shes-bm shes-bm-4" data-range="1480"><img src="../assets/img/blend-telecom.jpg" alt=""></figure>
+        <span class="shes-bsq shes-bsq-1 back" data-range="1700"></span>
+        <span class="shes-bsq shes-bsq-2 front" data-range="2050"></span>
+        <span class="shes-bsq shes-bsq-3 back" data-range="1450"></span>
+        <span class="shes-bsq shes-bsq-4 front" data-range="2350"></span>
+        <span class="shes-bsq shes-bsq-5 back" data-range="1900"></span>
+        <span class="shes-bsq shes-bsq-6 front" data-range="1600"></span>
+        <span class="shes-bsq shes-bsq-7 back" data-range="2200"></span>
+        <span class="shes-bsq shes-bsq-8 front" data-range="1350"></span>
+        <span class="shes-bsq shes-bsq-9 back" data-range="2500"></span>
+        <span class="shes-bsq shes-bsq-10 front" data-range="1750"></span>
+      </div>
+      <h2 class="shes-st-h" aria-label="Trabalho não é só renda — ele muda a sua história. Ele liberta, ele constrói, ele transforma quem decide começar.">
+        <span class="shes-sl"><span class="shes-sw">Trabalho</span> <span class="shes-sw">não</span> <span class="shes-sw">é</span> <span class="shes-sw">só</span></span>
+        <span class="shes-sl"><span class="shes-sw">renda</span> <span class="shes-sw">&mdash;</span> <span class="shes-sw">ele</span> <span class="shes-sw">muda</span></span>
+        <span class="shes-sl"><span class="shes-sw">a</span> <span class="shes-sw">sua</span> <span class="shes-sw">história.</span></span>
+        <span class="shes-sl"><span class="shes-sw">Ele</span> <span class="shes-sw">liberta,</span> <span class="shes-sw">ele</span> <span class="shes-sw">constrói,</span></span>
+        <span class="shes-sl"><span class="shes-sw">ele</span> <span class="shes-sw">transforma</span> <span class="shes-sw">quem</span></span>
+        <span class="shes-sl"><span class="shes-sw">decide</span> <span class="shes-sw">começar.</span></span>
+      </h2>
+      <div class="shes-outro">
+        <p>Energia por assinatura, telecom 5G e seguros — três produtos em uma <b>carteira que rende todo mês</b> para quem assina e para quem indica.</p>
+        <a class="btn-primary shes-cta" href="#">
+          Conhecer os produtos
+          <span class="chip chip-dark">
+            <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+              <path d="M16.5 7.5L6 18" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+              <path d="M8 6.18791C8 6.18791 16.0479 5.50949 17.2692 6.73079C18.4906 7.95209 17.812 16 17.812 16" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </span>
+        </a>
+      </div>
+    </section>
+
+  </div>
+
+  <!-- o que vem depois no site (só para a sequência terminar rolando) -->
+  <section class="shes-tail" aria-label="Seção seguinte">
+    <p class="shes-tail-note">Seção seguinte do site: palestrantes</p>
+  </section>
+
+  <script src="../assets/vendor/gsap.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.13.0/ScrollTrigger.min.js"></script>
+  <script src="section-hero-e-sequencia.js"></script>
+</body>
+</html>

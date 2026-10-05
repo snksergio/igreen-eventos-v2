@@ -1,0 +1,368 @@
+/* ============================================================
+   Seção hero — F2 Soltos
+   Os cards da F2, soltos: sem a tela fechada, flutuam numa composição
+   arejada sobre o plano inclinado (colunas em escada, tamanhos que
+   crescem para o centro). Posições em % do campo, geradas uma vez.
+   Uma tela panorâmica (proporção de cinema) feita de cards separados,
+   com o acabamento dos cards do hero do site. Medidas no estado "de
+   frente"; inclinação, escala e frente de luz são transforms do JS.
+   Por quadro só mudam transform e opacity.
+   ============================================================ */
+
+:root {
+  --shfs-pw: min(88vw, 1720px);                                   /* largura da tela */
+  --shfs-ph: calc(var(--shfs-pw) / 2.6309);                         /* altura da composição (gerada) */
+  --shfs-tr: 16px;
+  --shfs-lime: #A8FF35;
+  --shfs-lime-soft: #D8FFA6;
+  --shfs-ease: cubic-bezier(0.2, 0.7, 0.2, 1);
+}
+
+/* ============ Hero ============ */
+
+.shfs-hero {
+  position: relative;
+  overflow: clip;
+  /* respiro acima do título: o selo começa bem abaixo do menu */
+  padding: clamp(128px, 15.5vh, 190px) 0 0;
+  background: linear-gradient(180deg, #010D03 0%, var(--bg) 70%);
+  -webkit-user-select: none;
+  user-select: none;
+}
+.shfs-hero > .rich-bg { z-index: 0; }
+.shfs-off .rich-bg .band { animation-play-state: paused; }
+
+/* pé do hero: derrete na seção seguinte */
+.shfs-hero::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 30vh;
+  z-index: 5;
+  background: linear-gradient(to bottom, rgba(1, 7, 2, 0) 0%, rgba(1, 7, 2, 0.7) 60%, #010702 100%);
+  pointer-events: none;
+}
+
+/* ============ Texto ============ */
+
+.shfs-copy {
+  position: relative;
+  z-index: 4;
+  pointer-events: none;
+  will-change: transform, opacity;
+}
+.shfs-copy .hero-copy { padding: 0 24px; }
+.shfs-copy .title {
+  margin-top: 16px;
+  font-size: clamp(40px, 4.2vw, 64px);
+  line-height: 1.02;
+  letter-spacing: -0.04em;
+}
+.shfs-copy .title-clip { box-shadow: 0 0 0 1px rgba(243, 246, 236, 0.16), 0 10px 26px rgba(0, 0, 0, 0.4); }
+.shfs-copy .sub {
+  margin-top: 14px;
+  max-width: 50ch;
+  font-size: clamp(15.5px, 1.08vw, 18px);
+}
+.shfs-copy .actions { margin-top: 22px; }
+.shfs-copy .next-stop { margin-top: 12px; }
+
+/* ============ Palco (fica preso no centro durante o fechamento) ============ */
+
+.shfs-stage {
+  position: sticky;
+  z-index: 2;
+  top: calc((100vh - var(--shfs-ph)) / 2);
+  width: var(--shfs-pw);
+  height: var(--shfs-ph);
+  /* respiro abaixo do texto, antes da tela */
+  margin: clamp(48px, 6.2vh, 88px) auto 0;
+}
+/* espaço do fechamento: a tela fica parada enquanto a frase aparece */
+.shfs-hold { height: 75vh; }
+
+.shfs-tilt {
+  position: absolute;
+  inset: 0;
+  transform-origin: 50% 0;
+  will-change: transform;
+}
+
+/* o campo: sem moldura, só os cards soltos no plano inclinado */
+.shfs-field {
+  position: absolute;
+  inset: 0;
+}
+.shfs-layer {
+  position: absolute;
+  inset: 0;
+}
+
+/* cards: o mesmo acabamento do hero do site */
+.shfs-cell {
+  position: absolute;
+  margin: 0;
+  border-radius: var(--shfs-tr);
+  overflow: hidden;
+  background: #0C2414;
+  box-shadow: 0 22px 44px rgba(0, 0, 0, 0.42);
+}
+.shfs-tile {
+  position: relative;
+  margin: 0;
+  min-width: 0;
+  min-height: 0;
+  border-radius: var(--shfs-tr);
+  overflow: hidden;
+  background: #0C2414;
+}
+.shfs-cell img,
+.shfs-tile video {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+/* véu leve da marca */
+.shfs-cell::before,
+.shfs-tile::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  background: linear-gradient(180deg, rgba(120, 200, 60, 0.07) 0%, rgba(6, 24, 13, 0) 45%, rgba(4, 16, 8, 0.32) 100%);
+  pointer-events: none;
+}
+/* filete */
+.shfs-cell::after,
+.shfs-tile::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: 3;
+  border-radius: inherit;
+  box-shadow: inset 0 0 0 1px rgba(243, 246, 236, 0.08);
+  transition: box-shadow 0.5s ease;
+  pointer-events: none;
+}
+.shfs-cell::before { background: linear-gradient(180deg, rgba(1, 7, 2, 0.12) 0%, rgba(1, 7, 2, 0.4) 100%); }
+
+.shfs-gray {
+  position: absolute;
+  inset: 0;
+}
+.shfs-lit .shfs-gray,
+.shfs-lit .shfs-beamwrap { visibility: hidden; }
+
+/* a frente leva a janela circular; dentro, os cards em cor ficam parados */
+.shfs-front {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 0;
+  height: 100%;
+  will-change: transform;
+}
+.shfs-clip {
+  position: absolute;
+  left: 0;
+  top: calc(50% - var(--shfs-pw) * 0.66);
+  width: calc(var(--shfs-pw) * 1.32);
+  height: calc(var(--shfs-pw) * 1.32);
+  border-radius: 50%;
+  overflow: hidden;
+}
+.shfs-after {
+  position: absolute;
+  left: 0;
+  top: calc(var(--shfs-pw) * 0.66 - var(--shfs-ph) / 2);
+  width: var(--shfs-pw);
+  height: var(--shfs-ph);
+  will-change: transform;
+}
+
+.shfs-slot {
+  position: absolute;
+  display: grid;
+}
+.shfs-slot > .shfs-tile { grid-area: 1 / 1; }
+/* luz que o card aceso derrama sobre a tela */
+.shfs-glow {
+  position: absolute;
+  inset: -18% -22%;
+  border-radius: 50%;
+  background: radial-gradient(closest-side, rgba(168, 255, 53, 0.34) 0%, rgba(168, 255, 53, 0.12) 48%, rgba(168, 255, 53, 0) 100%);
+  opacity: 0;
+  transition: opacity 0.7s ease;
+  pointer-events: none;
+}
+.shfs-tile {
+  box-shadow: 0 22px 44px rgba(0, 0, 0, 0.42);
+  transition: transform 0.6s var(--shfs-ease), opacity 0.5s ease, box-shadow 0.6s var(--shfs-ease);
+  will-change: transform;
+}
+.shfs-ping {
+  position: absolute;
+  inset: 0;
+  z-index: 4;
+  border-radius: inherit;
+  box-shadow: inset 0 0 0 1.5px rgba(216, 255, 166, 0.9), 0 0 24px rgba(168, 255, 53, 0.35);
+  opacity: 0;
+  pointer-events: none;
+}
+
+/* hover: o card salta da tela, acende o anel e derrama luz */
+.shfs-slot.is-hover { z-index: 5; }
+.shfs-slot.is-hover .shfs-glow { opacity: 1; }
+.shfs-slot.is-hover .shfs-tile {
+  transform: translate3d(0, -10px, 0) scale(1.06);
+  box-shadow: 0 30px 60px rgba(0, 0, 0, 0.55);
+}
+.shfs-slot.is-hover .shfs-tile::after { box-shadow: inset 0 0 0 1.5px rgba(216, 255, 166, 0.85); }
+.shfs-layer.is-focus .shfs-slot:not(.is-hover) .shfs-tile { opacity: 0.66; }
+.shfs-scrolling .shfs-stage { pointer-events: none; }
+
+/* feixe: arco desenhado no SVG (filtros estáticos, só transform se move) */
+.shfs-beamwrap {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  pointer-events: none;
+  /* sem moldura: o feixe some suave em cima e embaixo */
+  -webkit-mask-image: linear-gradient(to bottom, transparent 0%, #000 12%, #000 88%, transparent 100%);
+  mask-image: linear-gradient(to bottom, transparent 0%, #000 12%, #000 88%, transparent 100%);
+}
+.shfs-beam {
+  position: absolute;
+  top: 0;
+  height: 100%;
+  will-change: transform;
+}
+.shfs-beam-svg {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+}
+.shfs-tag {
+  position: absolute;
+  top: 16px;
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  height: 30px;
+  padding: 0 13px;
+  border-radius: 999px;
+  font-size: 14px;
+  font-weight: 500;
+  line-height: 1;
+  white-space: nowrap;
+  transform: scale(var(--shfs-tag-k, 1));
+  transform-origin: 0 0;
+}
+.shfs-tag--antes {
+  transform-origin: 100% 0;
+  color: rgba(243, 246, 236, 0.8);
+  background: rgba(6, 12, 8, 0.74);
+  box-shadow: inset 0 0 0 1px rgba(243, 246, 236, 0.16);
+}
+.shfs-tag--depois {
+  color: #0A1F12;
+  background: var(--shfs-lime-soft);
+  box-shadow: 0 6px 22px rgba(168, 255, 53, 0.3);
+}
+.shfs-tag--depois i {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: #2E7D12;
+}
+
+
+/* ============ Fechamento ============ */
+
+.shfs-phrase {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  z-index: 7;
+  width: max-content;
+  max-width: 90vw;
+  transform: translate(-50%, -50%);
+  text-align: center;
+  font-size: clamp(36px, 3.9vw, 62px);
+  font-weight: 500;
+  line-height: 1.05;
+  letter-spacing: -0.038em;
+  color: var(--text-hi);
+  pointer-events: none;
+}
+.shfs-phrase-l {
+  display: block;
+  opacity: 0;
+  will-change: transform, opacity;
+}
+.shfs-phrase-m { color: rgba(243, 246, 236, 0.5); }
+
+/* ============ Seção seguinte (simulada) ============ */
+
+.shfs-next {
+  position: relative;
+  z-index: 1;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 22px;
+  padding: 120px 24px;
+  background: var(--bg);
+  text-align: center;
+}
+.shfs-next-t {
+  max-width: 20ch;
+  font-size: clamp(34px, 3.6vw, 56px);
+  font-weight: 500;
+  line-height: 1.06;
+  letter-spacing: -0.035em;
+  color: var(--text-hi);
+}
+.shfs-next-m { color: var(--text-dim); }
+.shfs-next-note { font-size: 13px; color: rgba(243, 246, 236, 0.3); }
+
+/* ============ Antes da entrada ============ */
+
+.shfs-js:not(.shfs-static):not(.shfs-go) .shfs-copy .hero-copy > *,
+.shfs-js:not(.shfs-static):not(.shfs-go) .shfs-stage { opacity: 0; }
+
+/* ============ Versão estática ============ */
+
+.shfs-static .shfs-stage { position: relative; top: auto; margin-bottom: 120px; }
+.shfs-static .shfs-hold,
+.shfs-static .shfs-phrase,
+.shfs-static .shfs-gray,
+.shfs-static .shfs-beamwrap { display: none; }
+.shfs-static .shfs-front { width: 100%; }
+.shfs-static .shfs-clip,
+.shfs-static .shfs-after {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  border-radius: 0;
+  overflow: visible;
+}
+
+@media (max-width: 899px) {
+  :root {
+    --shfs-pw: calc(100vw - 24px);
+    --shfs-tr: 7px;
+  }
+  .shfs-copy .title { font-size: clamp(34px, 9vw, 52px); }
+}

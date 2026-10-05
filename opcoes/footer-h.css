@@ -1,0 +1,263 @@
+/* ============================================================
+   Rodapé H — "Telão de LED"
+   Um painel de LEDs de ponta a ponta (um canvas, footer-h.js) é a
+   única peça barulhenta; o resto é editorial e quieto: frase em dois
+   tons, próxima parada com os botões, colunas e a barra final.
+   ============================================================ */
+
+.fh-footer {
+  --fh-ink: #F3F6EC;
+  --fh-mute: rgba(243, 246, 236, 0.4);
+  --fh-soft: rgba(243, 246, 236, 0.62);
+  --fh-lime: #A8FF35;
+  --fh-lime-soft: #D8FFA6;
+  position: relative;
+  background: var(--bg);
+  padding-top: 24px;
+  overflow: hidden;
+}
+
+/* ---------- statement + next stop ---------- */
+
+.fh-top {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  align-items: end;
+  gap: 64px;
+  width: min(1240px, calc(100% - 80px));
+  margin: 0 auto;
+  padding: 0 0 clamp(56px, 6vw, 96px);
+}
+.fh-title {
+  margin: 0;
+  font-family: var(--font-display);
+  font-weight: 500;
+  font-size: clamp(64px, 6.2vw, 116px);
+  line-height: 0.98;
+  letter-spacing: -0.042em;
+  color: var(--fh-ink);
+}
+.fh-line {
+  display: block;
+  overflow: hidden;
+  white-space: nowrap;
+  padding-bottom: 0.07em;
+  margin-bottom: -0.07em;
+}
+.fh-line-in { display: block; }
+.fh-line-muted { color: var(--fh-mute); }
+
+.fh-next {
+  width: 400px;
+  padding-bottom: 0.4em;
+}
+.fh-next-label {
+  margin: 0;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 15px;
+  letter-spacing: -0.005em;
+  color: var(--fh-mute);
+}
+/* a single lit LED next to the label */
+.fh-next-label::before {
+  content: '';
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--fh-lime);
+  box-shadow: 0 0 0 3px rgba(168, 255, 53, 0.12), 0 0 12px rgba(168, 255, 53, 0.55);
+}
+.fh-next-city {
+  margin: 12px 0 0;
+  font-family: var(--font-display);
+  font-weight: 500;
+  font-size: 32px;
+  line-height: 1.1;
+  letter-spacing: -0.03em;
+  color: var(--fh-ink);
+}
+.fh-next-meta {
+  margin: 8px 0 0;
+  font-size: 15px;
+  line-height: 1.5;
+  letter-spacing: -0.005em;
+  color: var(--fh-soft);
+}
+.fh-actions {
+  display: flex;
+  gap: 12px;
+  margin-top: 28px;
+}
+.fh-cta { will-change: transform; }
+.fh-ghost {
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
+}
+
+/* ---------- the LED wall ---------- */
+
+.fh-wall {
+  position: relative;
+  display: block;
+  /* the script sets the exact height from rows x pitch */
+  height: clamp(216px, 17.5vw, 432px);
+  background: #000301;
+  box-shadow:
+    inset 0 1px 0 rgba(243, 246, 236, 0.07),
+    inset 0 -1px 0 rgba(243, 246, 236, 0.07);
+}
+/* the light of the wall spilling onto the floor and the ceiling (static) */
+.fh-wall::before,
+.fh-wall::after {
+  content: '';
+  position: absolute;
+  left: 8%;
+  right: 8%;
+  height: 120px;
+  pointer-events: none;
+  background: radial-gradient(50% 100% at 50% 0%, rgba(150, 236, 60, 0.12), rgba(150, 236, 60, 0) 100%);
+  opacity: 0;
+  transition: opacity 1.6s cubic-bezier(0.22, 1, 0.36, 1);
+}
+.fh-wall::after { top: 100%; }
+.fh-wall::before {
+  bottom: 100%;
+  transform: scaleY(-1);
+  height: 70px;
+}
+.fh-wall.is-on::before,
+.fh-wall.is-on::after { opacity: 1; }
+.fh-led {
+  display: block;
+}
+/* the wall is built from cabinets: hairline seams every 16 x 12 LEDs,
+   sized and aligned to the LED grid by the script (static) */
+.fh-seams {
+  position: absolute;
+  top: 0;
+  left: 0;
+  pointer-events: none;
+  --fh-cx: 112px;
+  --fh-cy: 84px;
+  background:
+    linear-gradient(to right, rgba(0, 2, 1, 0.75) 1px, transparent 1px) 0 0 / var(--fh-cx) 100%,
+    linear-gradient(to bottom, rgba(0, 2, 1, 0.75) 1px, transparent 1px) 0 0 / 100% var(--fh-cy);
+}
+
+/* ---------- columns ---------- */
+
+.fh-base {
+  display: grid;
+  grid-template-columns: 1.55fr 0.8fr 1.15fr 1.35fr 0.75fr;
+  gap: 40px;
+  width: min(1240px, calc(100% - 80px));
+  margin: 0 auto;
+  padding-top: clamp(64px, 6vw, 96px);
+}
+.fh-logo {
+  display: block;
+  height: 30px;
+  width: auto;
+}
+.fh-brand p {
+  margin: 20px 0 0;
+  max-width: 31ch;
+  font-size: 14.5px;
+  line-height: 1.6;
+  color: rgba(243, 246, 236, 0.5);
+}
+.fh-col h3 {
+  margin: 4px 0 18px;
+  font-family: var(--font-display);
+  font-weight: 500;
+  font-size: 15px;
+  letter-spacing: -0.01em;
+  color: var(--fh-mute);
+}
+.fh-link {
+  display: table;
+  margin-bottom: 11px;
+  font-size: 15.5px;
+  line-height: 1.35;
+  letter-spacing: -0.012em;
+  color: rgba(243, 246, 236, 0.82);
+  transition: color 0.35s ease;
+}
+.fh-link span {
+  background: linear-gradient(currentColor, currentColor) no-repeat right 100% / 0 1px;
+  padding-bottom: 2px;
+  transition: background-size 0.5s cubic-bezier(0.19, 1, 0.22, 1);
+}
+.fh-link:hover { color: var(--fh-lime-soft); }
+.fh-link:hover span {
+  background-position: left 100%;
+  background-size: 100% 1px;
+}
+.fh-addr {
+  margin: 4px 0 0;
+  font-size: 14px;
+  line-height: 1.55;
+  color: var(--fh-mute);
+}
+
+.fh-bar {
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  align-items: center;
+  gap: 24px;
+  width: min(1240px, calc(100% - 80px));
+  margin: clamp(56px, 5vw, 80px) auto 0;
+  padding: 24px 0 34px;
+  border-top: 1px solid rgba(243, 246, 236, 0.08);
+  font-size: 14px;
+  letter-spacing: -0.005em;
+  color: var(--fh-mute);
+}
+.fh-bar p { margin: 0; }
+.fh-bar-mid { text-align: center; }
+.fh-top-link {
+  justify-self: end;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  color: rgba(243, 246, 236, 0.62);
+  transition: color 0.3s ease;
+}
+.fh-top-link svg {
+  width: 16px;
+  height: 16px;
+  transition: transform 0.5s cubic-bezier(0.19, 1, 0.22, 1);
+}
+.fh-top-link:hover { color: var(--fh-lime-soft); }
+.fh-top-link:hover svg { transform: translateY(-3px); }
+
+/* ---------- entrance states (only with motion, set by the script) ---------- */
+
+.fh-js .fh-line-in { transform: translateY(105%); }
+.fh-js .fh-next,
+.fh-js .fh-brand,
+.fh-js .fh-col,
+.fh-js .fh-bar { opacity: 0; }
+
+/* ---------- smaller screens: calm static fallback ---------- */
+
+@media (max-width: 900px) {
+  .fh-top { grid-template-columns: 1fr; gap: 40px; width: calc(100% - 48px); }
+  .fh-title { font-size: clamp(42px, 10vw, 64px); }
+  .fh-next { width: auto; }
+  .fh-base { grid-template-columns: 1fr 1fr; gap: 36px 24px; width: calc(100% - 48px); }
+  .fh-brand { grid-column: 1 / -1; }
+  .fh-bar { grid-template-columns: 1fr; gap: 8px; width: calc(100% - 48px); margin-top: 48px; }
+  .fh-bar-mid { text-align: left; }
+  .fh-top-link { justify-self: start; }
+  .fh-js .fh-line-in { transform: none; }
+  .fh-js .fh-next, .fh-js .fh-brand, .fh-js .fh-col, .fh-js .fh-bar { opacity: 1; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .fh-js .fh-line-in { transform: none; }
+  .fh-js .fh-next, .fh-js .fh-brand, .fh-js .fh-col, .fh-js .fh-bar { opacity: 1; }
+  .fh-wall::before, .fh-wall::after { transition: none; }
+}

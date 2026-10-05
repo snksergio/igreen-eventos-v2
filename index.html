@@ -1,0 +1,911 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>iGreen Live — O evento que transforma vidas</title>
+  <link rel="icon" href="assets/img/igreen-logo.svg">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Instrument+Sans:wdth,wght@75..100,400..700&display=swap">
+  <link rel="stylesheet" href="css/portalv2.css">
+  <link rel="stylesheet" href="css/hero-c.css">
+  <link rel="stylesheet" href="css/edicoes.css">
+  <link rel="stylesheet" href="css/kicker.css">
+  <link rel="stylesheet" href="css/footer.css">
+  <script>
+    /* footer: with JS and motion the statement waits below its masks and the
+       credential above the room; reduced motion or narrow screens get the
+       calm final state straight away */
+    document.documentElement.classList.add(
+      matchMedia('(prefers-reduced-motion: reduce), (max-width: 900px)').matches ? 'ft-static' : 'ft-js'
+    );
+  </script>
+  <script>
+    /* marca o modo antes da primeira pintura: com JS e movimento, o hero
+       nasce apagado e a entrada orquestrada o acende; sem movimento ou em
+       telas estreitas, a versão estática e colorida aparece direto */
+    document.documentElement.classList.add('shcr-js');
+    if (matchMedia('(prefers-reduced-motion: reduce), (max-width: 899px)').matches) {
+      document.documentElement.classList.add('shcr-static');
+    }
+  </script>
+</head>
+<body class="tone-green">
+
+  <!-- Menu fixo do topo -->
+  <header class="topnav">
+    <a class="topnav-logo" href="#"><img src="assets/img/igreen-logo.svg" alt="iGreen"></a>
+    <nav class="topnav-links" aria-label="Menu fixo">
+      <a href="#">Início</a>
+      <a href="#">Palestrantes</a>
+      <a href="#">Agenda</a>
+      <a href="#">FAQ</a>
+    </nav>
+    <div class="topnav-actions">
+      <a class="topnav-login" href="#">
+        <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><circle cx="12" cy="8" r="3.4" stroke="currentColor" stroke-width="1.5"/><path d="M5.2 19.4c.9-3.6 3.4-5.4 6.8-5.4s5.9 1.8 6.8 5.4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+        Entrar
+      </a>
+      <a class="topnav-cta" href="#">Cadastre-se</a>
+    </div>
+  </header>
+
+  <main class="shcr-hero" id="topo">
+
+    <!-- Fundo animado do site (estilos em portalv2.css) -->
+    <div class="rich-bg" aria-hidden="true">
+      <img class="aurora-base" src="assets/img/aurora-base.webp" alt="">
+      <span class="wash"></span>
+      <span class="band band-l1"></span>
+      <span class="band band-l2"></span>
+      <span class="band band-d1"></span>
+      <span class="band band-d2"></span>
+      <span class="dots-base"></span>
+      <span class="dots"></span>
+    </div>
+
+    <!-- Parede de histórias (montada pelo JS): a camada cinza fica embaixo,
+         a colorida mora numa janela circular que cresce a partir do clipe -->
+    <div class="shcr-wall" aria-hidden="true">
+      <div class="shcr-layer shcr-layer--gray"></div>
+      <div class="shcr-win">
+        <div class="shcr-win-in">
+          <div class="shcr-layer shcr-layer--color"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- A onda: aro lima e o brilho da ignição -->
+    <span class="shcr-ring" aria-hidden="true"></span>
+    <span class="shcr-spark" aria-hidden="true"></span>
+
+    <!-- Luz e sombra para a leitura do texto -->
+    <div class="shcr-shade" aria-hidden="true"></div>
+    <div class="shcr-scrim" aria-hidden="true"></div>
+    <div class="shcr-curtain" aria-hidden="true"></div>
+
+    <div class="shcr-stage">
+      <!-- véu atrás do texto: desfoque suave e sombra, só na área do texto -->
+      <div class="shcr-veil" aria-hidden="true"></div>
+
+      <!-- Hero copy (mesmo conteúdo do site) -->
+      <div class="hero-copy">
+        <div class="hero-badge">
+          <span class="avatars" aria-hidden="true">
+            <img src="speakers/pedro-cut.png" alt="">
+            <img src="speakers/carla-cut.png" alt="">
+            <img src="speakers/ana-cut.png" alt="">
+            <img src="speakers/bruno-cut.png" alt="">
+          </span>
+          <span><b>+2.000</b> vidas transformadas</span>
+        </div>
+
+        <h1 class="title">
+          <span class="line">Renda recorrente</span>
+          <span class="line">que <span class="title-clip" aria-hidden="true"><video src="assets/video/cards/sel-musgo3.mp4" poster="assets/video/cards/sel-musgo3.jpg" muted loop autoplay playsinline></video></span> transforma</span>
+          <span class="line line-muted shcr-charge">vidas de verdade<span class="shcr-lit" aria-hidden="true"><span class="shcr-lit-in"><span class="shcr-lit-glow">vidas de verdade</span><span class="shcr-lit-txt">vidas de verdade</span></span></span><span class="shcr-sweep" aria-hidden="true"><span class="shcr-sweep-in">vidas de verdade</span></span></span>
+        </h1>
+
+        <p class="sub">Conheça as histórias de quem virou licenciado iGreen e construiu renda com energia por assinatura, telecom e seguros, todo mês.</p>
+
+        <div class="actions">
+          <a class="btn-primary" href="#">
+            Seja licenciado
+            <span class="chip chip-dark">
+              <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                <path d="M7 17L17 7M9 7h8v8" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+            </span>
+          </a>
+          <a class="btn-ghost" href="#">Ver histórias</a>
+        </div>
+
+        <a class="next-stop" href="index.html#agenda">Próxima parada do tour: <b>Goiânia, 16 de agosto</b></a>
+      </div>
+    </div>
+
+  </main>
+
+  <!-- Statement section: words light up as you scroll -->
+  <section class="shcr-st" aria-label="Trabalho não é só renda">
+   <div class="shcr-st-stage">
+    <div class="shcr-st-media" aria-hidden="true">
+      <!-- as mídias são as mesmas vidas da parede do hero: na rolagem, o JS
+           troca cada uma pelo clipe do card que chega nela (ou que estava à
+           vista); estes pôsteres valem para a versão sem movimento -->
+      <figure class="shcr-bm shcr-bm-1" data-range="820"><img src="assets/video/cards/sel-carro.jpg" alt=""></figure>
+      <figure class="shcr-bm shcr-bm-2" data-range="900"><img src="assets/video/cards/gen-executiva2.jpg" alt=""></figure>
+      <figure class="shcr-bm shcr-bm-5" data-range="1400"><video src="assets/video/blend-atendimento.mp4" poster="assets/video/blend-atendimento.jpg" muted loop preload="metadata" playsinline></video></figure>
+      <figure class="shcr-bm shcr-bm-4" data-range="1480"><img src="assets/video/cards/sel-suv.jpg" alt=""></figure>
+      <span class="shcr-bsq shcr-bsq-1 back" data-range="1700"></span>
+      <span class="shcr-bsq shcr-bsq-2 front" data-range="2050"></span>
+      <span class="shcr-bsq shcr-bsq-3 back" data-range="1450"></span>
+      <span class="shcr-bsq shcr-bsq-4 front" data-range="2350"></span>
+      <span class="shcr-bsq shcr-bsq-5 back" data-range="1900"></span>
+      <span class="shcr-bsq shcr-bsq-6 front" data-range="1600"></span>
+      <span class="shcr-bsq shcr-bsq-7 back" data-range="2200"></span>
+      <span class="shcr-bsq shcr-bsq-8 front" data-range="1350"></span>
+      <span class="shcr-bsq shcr-bsq-9 back" data-range="2500"></span>
+      <span class="shcr-bsq shcr-bsq-10 front" data-range="1750"></span>
+    </div>
+    <h2 class="shcr-st-h" aria-label="Trabalho não é só renda — ele muda a sua história. Ele liberta, ele constrói, ele transforma quem decide começar.">
+      <span class="shcr-sl"><span class="shcr-sw">Trabalho</span> <span class="shcr-sw">não</span> <span class="shcr-sw">é</span> <span class="shcr-sw">só</span></span>
+      <span class="shcr-sl"><span class="shcr-sw">renda</span> <span class="shcr-sw">&mdash;</span> <span class="shcr-sw">ele</span> <span class="shcr-sw">muda</span></span>
+      <span class="shcr-sl"><span class="shcr-sw">a</span> <span class="shcr-sw">sua</span> <span class="shcr-sw">história.</span></span>
+      <span class="shcr-sl"><span class="shcr-sw">Ele</span> <span class="shcr-sw">liberta,</span> <span class="shcr-sw">ele</span> <span class="shcr-sw">constrói,</span></span>
+      <span class="shcr-sl"><span class="shcr-sw">ele</span> <span class="shcr-sw">transforma</span> <span class="shcr-sw">quem</span></span>
+      <span class="shcr-sl"><span class="shcr-sw">decide</span> <span class="shcr-sw">começar.</span></span>
+    </h2>
+    <div class="shcr-outro">
+      <p>Energia por assinatura, telecom 5G e seguros — três produtos em uma <b>carteira que rende todo mês</b> para quem assina e para quem indica.</p>
+      <a class="btn-primary shcr-cta" href="#">
+        Conhecer os produtos
+        <span class="chip chip-dark">
+          <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+            <path d="M16.5 7.5L6 18" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+            <path d="M8 6.18791C8 6.18791 16.0479 5.50949 17.2692 6.73079C18.4906 7.95209 17.812 16 17.812 16" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </span>
+      </a>
+    </div>
+   </div>
+  </section>
+
+  <!-- os cards do hero em viagem até o statement (preenchido pelo JS) -->
+  <div class="shcr-flyers" aria-hidden="true"></div>
+
+  <!-- Speakers section -->
+  <section class="speakers">
+    <canvas class="speakers-particles" aria-hidden="true"></canvas>
+    <div class="speakers-inner">
+      <div class="speakers-head">
+        <div class="kicker kicker3d" data-k="spk"><p class="kp-pill"><span class="kp-light" aria-hidden="true"></span><span class="kp-in"><span class="kp-charge" aria-hidden="true"></span><span class="kp-t"><b>8</b> palestrantes confirmados</span></span></p><span class="kp-pop" aria-hidden="true"><span class="kp-glow"></span><span class="kp-obj"><img src="assets/img/badges/obj3d-spk.png" alt="" width="29" height="46"></span></span></div>
+        <h2>As vozes<br><span>por trás do palco</span></h2>
+        <p class="speakers-sub">Sócios e líderes que vivem a iGreen todos os dias —<br>e transformam oportunidade em resultado real.</p>
+        <div class="speakers-cta">
+          <a class="btn-primary" href="#">
+            Participe do evento
+            <span class="chip chip-dark">
+              <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                <path d="M16.5 7.5L6 18" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+                <path d="M8 6.18791C8 6.18791 16.0479 5.50949 17.2692 6.73079C18.4906 7.95209 17.812 16 17.812 16" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+            </span>
+          </a>
+        </div>
+      </div>
+    </div>
+    <div class="speakers-carousel">
+      <div class="speakers-track">
+        <article class="speaker">
+          <span class="speaker-panel"></span>
+          <img class="speaker-photo" src="speakers/thiago-cut.png" alt="Thiago">
+          <span class="speaker-blur"></span>
+          <span class="speaker-fade"></span>
+          <div class="speaker-info">
+            <h3>Thiago</h3>
+            <p>CEO &amp; Fundador</p>
+          </div>
+        </article>
+        <article class="speaker">
+          <span class="speaker-panel"></span>
+          <img class="speaker-photo" src="speakers/rafael-cut.png" alt="Rafael Costa">
+          <span class="speaker-blur"></span>
+          <span class="speaker-fade"></span>
+          <div class="speaker-info">
+            <h3>Rafael Costa</h3>
+            <p>Diretor de Estratégia</p>
+          </div>
+        </article>
+        <article class="speaker">
+          <span class="speaker-panel"></span>
+          <img class="speaker-photo" src="speakers/amanda-cut.png" alt="Amanda">
+          <span class="speaker-blur"></span>
+          <span class="speaker-fade"></span>
+          <div class="speaker-info">
+            <h3>Amanda</h3>
+            <p>Head de Marketing</p>
+          </div>
+        </article>
+        <article class="speaker">
+          <span class="speaker-panel"></span>
+          <img class="speaker-photo" src="speakers/ana-cut.png" alt="Ana Beltrão">
+          <span class="speaker-blur"></span>
+          <span class="speaker-fade"></span>
+          <div class="speaker-info">
+            <h3>Ana Beltrão</h3>
+            <p>Head de Expansão</p>
+          </div>
+        </article>
+        <article class="speaker">
+          <span class="speaker-panel"></span>
+          <img class="speaker-photo" src="speakers/carla-cut.png" alt="Carla Mendes">
+          <span class="speaker-blur"></span>
+          <span class="speaker-fade"></span>
+          <div class="speaker-info">
+            <h3>Carla Mendes</h3>
+            <p>Head de Comunidade</p>
+          </div>
+        </article>
+        <article class="speaker">
+          <span class="speaker-panel"></span>
+          <img class="speaker-photo" src="speakers/bruno-cut.png" alt="Bruno Sales">
+          <span class="speaker-blur"></span>
+          <span class="speaker-fade"></span>
+          <div class="speaker-info">
+            <h3>Bruno Sales</h3>
+            <p>Diretor Comercial</p>
+          </div>
+        </article>
+        <article class="speaker">
+          <span class="speaker-panel"></span>
+          <img class="speaker-photo" src="speakers/juliana-cut.png" alt="Juliana Reis">
+          <span class="speaker-blur"></span>
+          <span class="speaker-fade"></span>
+          <div class="speaker-info">
+            <h3>Juliana Reis</h3>
+            <p>Head de Treinamento</p>
+          </div>
+        </article>
+        <article class="speaker">
+          <span class="speaker-panel"></span>
+          <img class="speaker-photo" src="speakers/pedro-cut.png" alt="Pedro Rocha">
+          <span class="speaker-blur"></span>
+          <span class="speaker-fade"></span>
+          <div class="speaker-info">
+            <h3>Pedro Rocha</h3>
+            <p>Head de Telecom</p>
+          </div>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <!-- Upcoming events / tour -->
+  <section class="tour" id="agenda">
+    <div class="tour-inner">
+      <div class="tour-head">
+        <div class="kicker kicker3d" data-k="tour"><p class="kp-pill"><span class="kp-light" aria-hidden="true"></span><span class="kp-in"><span class="kp-charge" aria-hidden="true"></span><span class="kp-t"><b>6</b> cidades entre agosto e setembro</span></span></p><span class="kp-pop" aria-hidden="true"><span class="kp-glow"></span><span class="kp-obj"><img src="assets/img/badges/obj3d-tour.png" alt="" width="33" height="46"></span></span></div>
+        <h2 class="tour-title">Pelo Brasil — <span>garanta seu lugar na próxima cidade</span></h2>
+        <div class="tour-subrow">
+          <p class="tour-sub">Seis cidades, um propósito. Horários, locais e o palestrante<br>VIP de cada data — escolha a sua e garanta o lugar.</p>
+          <a class="btn-primary" href="#">
+            Garantir ingresso
+            <span class="chip chip-dark">
+              <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                <path d="M16.5 7.5L6 18" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+                <path d="M8 6.18791C8 6.18791 16.0479 5.50949 17.2692 6.73079C18.4906 7.95209 17.812 16 17.812 16" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+            </span>
+          </a>
+        </div>
+      </div>
+      <div class="tour-list"></div>
+      <div class="tour-float" aria-hidden="true">
+        <span class="tour-float-panel"></span>
+        <img class="tour-float-img" src="" alt="">
+      </div>
+    </div>
+  </section>
+
+  <!-- Cinema band: pinned video behind a text-mask, scroll zooms the words away -->
+  <section class="cine">
+    <div class="cine-frame">
+      <video class="cine-video" src="assets/video/experience.mp4" data-autoplay preload="metadata" muted loop playsinline></video>
+      <span class="cine-dim" aria-hidden="true"></span>
+      <svg class="cine-mask" viewBox="0 0 1600 900" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
+        <defs>
+          <mask id="cine-txt">
+            <rect width="1600" height="900" fill="#fff"/>
+            <g class="cine-zoom">
+              <!-- phrase outlined as paths (frase.svg, 959x173) — measured dynamically by JS (getBBox);
+                   the transform is recomputed by JS to cap the on-screen width at 835px -->
+              <g class="cine-phrase" transform="translate(384 364)">
+                <path fill="#000" d="M46.1207 59.614H37.1007V0.984011H47.4327L74.6568 46.084H74.8207V0.984011H83.9227V59.614H73.5908L46.2847 14.514H46.1207V59.614ZM102.137 10.988H96.725C96.725 4.83801 99.677 2.29601 103.039 2.29601C107.221 2.29601 110.911 5.33001 113.371 5.33001C115.175 5.33001 115.421 3.69001 115.421 2.46001H120.833C120.833 8.77401 117.881 11.152 114.519 11.152C110.419 11.152 106.647 8.11801 104.269 8.11801C102.383 8.11801 102.137 9.92201 102.137 10.988ZM102.547 60.762C94.183 60.762 88.853 55.924 88.853 48.79C88.853 39.442 95.905 36.654 106.319 34.686C112.879 33.456 116.897 32.636 116.897 28.536C116.897 25.502 115.093 22.96 108.943 22.96C101.645 22.96 99.431 25.256 99.021 30.832H90.821C91.231 22.796 96.479 16.482 109.271 16.482C117.881 16.482 124.769 20.09 124.769 30.914V50.102C124.769 53.136 125.179 54.694 126.737 54.694C126.983 54.694 127.229 54.694 127.721 54.612V59.532C126.327 59.86 124.933 60.024 123.621 60.024C119.603 60.024 117.471 58.466 116.979 53.71H116.815C114.109 58.056 109.353 60.762 102.547 60.762ZM104.351 54.284C111.567 54.284 116.897 50.594 116.897 43.296V37.31C115.585 38.54 111.977 39.442 107.713 40.344C100.333 41.82 97.217 43.87 97.217 48.216C97.217 52.152 99.349 54.284 104.351 54.284ZM150.383 60.844C137.345 60.844 129.473 51.824 129.473 38.704C129.473 25.666 137.345 16.482 150.465 16.482C163.421 16.482 171.293 25.584 171.293 38.622C171.293 51.742 163.421 60.844 150.383 60.844ZM150.465 54.202C158.993 54.202 162.929 47.396 162.929 38.704C162.929 29.93 158.993 23.206 150.465 23.206C141.773 23.206 137.837 29.93 137.837 38.704C137.837 47.396 141.773 54.202 150.465 54.202ZM208.717 60.844C196.253 60.844 188.135 51.824 188.135 38.704C188.135 25.584 196.253 16.564 208.635 16.564C219.377 16.564 226.511 23.534 227.495 32.964H219.213C218.803 28.618 216.343 23.206 208.717 23.206C199.779 23.206 196.499 30.832 196.499 38.704C196.499 46.576 199.779 54.12 208.717 54.12C216.425 54.12 218.803 48.872 219.213 44.116H227.495C226.921 53.71 219.459 60.844 208.717 60.844ZM250.886 16.81C252.362 16.81 253.51 16.892 254.74 17.056V24.764C253.756 24.6 253.018 24.518 252.034 24.518C244.736 24.518 239.488 30.012 239.488 37.966V59.614H231.452V17.794H239.488V25.748H239.652C241.866 20.5 245.228 16.81 250.886 16.81ZM266.109 10.332H257.007V1.64001H266.109V10.332ZM265.535 59.614H257.499V17.794H265.535V59.614ZM283.658 60.762C275.294 60.762 269.964 55.924 269.964 48.79C269.964 39.442 277.016 36.654 287.43 34.686C293.99 33.456 298.008 32.636 298.008 28.536C298.008 25.502 296.204 22.96 290.054 22.96C282.756 22.96 280.542 25.256 280.132 30.832H271.932C272.342 22.796 277.59 16.482 290.382 16.482C298.992 16.482 305.88 20.09 305.88 30.914V50.102C305.88 53.136 306.29 54.694 307.848 54.694C308.094 54.694 308.34 54.694 308.832 54.612V59.532C307.438 59.86 306.044 60.024 304.732 60.024C300.714 60.024 298.582 58.466 298.09 53.71H297.926C295.22 58.056 290.464 60.762 283.658 60.762ZM285.462 54.284C292.678 54.284 298.008 50.594 298.008 43.296V37.31C296.696 38.54 293.088 39.442 288.824 40.344C281.444 41.82 278.328 43.87 278.328 48.216C278.328 52.152 280.46 54.284 285.462 54.284ZM358.709 16.564C367.155 16.564 371.419 21.648 371.419 30.586V59.614H363.383V32.8C363.383 27.224 362.235 23.452 356.085 23.452C350.099 23.452 346.327 27.634 346.327 33.948V59.614H338.291V32.8C338.291 27.224 337.143 23.452 330.993 23.452C325.007 23.452 321.235 27.634 321.235 33.948V59.614H313.199V17.794H321.235V23.042H321.399C323.613 19.844 327.467 16.564 333.781 16.564C339.603 16.564 343.211 19.188 344.851 23.862H345.015C348.049 19.844 352.313 16.564 358.709 16.564ZM396.46 60.844C383.422 60.844 375.55 51.824 375.55 38.704C375.55 25.666 383.422 16.482 396.542 16.482C409.498 16.482 417.37 25.584 417.37 38.622C417.37 51.742 409.498 60.844 396.46 60.844ZM396.542 54.202C405.07 54.202 409.006 47.396 409.006 38.704C409.006 29.93 405.07 23.206 396.542 23.206C387.85 23.206 383.914 29.93 383.914 38.704C383.914 47.396 387.85 54.202 396.542 54.202ZM438.231 60.762C425.521 60.762 419.207 54.202 418.961 45.674H427.079C427.407 50.512 430.359 54.284 438.149 54.284C445.201 54.284 447.087 51.168 447.087 48.134C447.087 42.886 441.511 42.312 436.099 41.164C428.801 39.442 420.437 37.31 420.437 28.618C420.437 21.402 426.259 16.564 436.345 16.564C447.825 16.564 453.319 22.714 453.893 29.93H445.775C445.201 26.732 443.479 23.042 436.509 23.042C431.097 23.042 428.801 25.174 428.801 28.29C428.801 32.636 433.475 33.046 439.379 34.358C447.087 36.162 455.451 38.376 455.451 47.724C455.451 55.842 449.219 60.762 438.231 60.762ZM490.487 60.762C477.777 60.762 471.463 54.202 471.217 45.674H479.335C479.663 50.512 482.615 54.284 490.405 54.284C497.457 54.284 499.343 51.168 499.343 48.134C499.343 42.886 493.767 42.312 488.355 41.164C481.057 39.442 472.693 37.31 472.693 28.618C472.693 21.402 478.515 16.564 488.601 16.564C500.081 16.564 505.575 22.714 506.149 29.93H498.031C497.457 26.732 495.735 23.042 488.765 23.042C483.353 23.042 481.057 25.174 481.057 28.29C481.057 32.636 485.731 33.046 491.635 34.358C499.343 36.162 507.707 38.376 507.707 47.724C507.707 55.842 501.475 60.762 490.487 60.762ZM532.822 11.316H526.426L531.264 8.9407e-06H540.694L532.822 11.316ZM530.28 60.844C517.242 60.844 509.37 51.824 509.37 38.704C509.37 25.666 517.242 16.482 530.362 16.482C543.318 16.482 551.19 25.584 551.19 38.622C551.19 51.742 543.318 60.844 530.28 60.844ZM530.362 54.202C538.89 54.202 542.826 47.396 542.826 38.704C542.826 29.93 538.89 23.206 530.362 23.206C521.67 23.206 517.734 29.93 517.734 38.704C517.734 47.396 521.67 54.202 530.362 54.202ZM615.756 16.564C624.202 16.564 628.466 21.648 628.466 30.586V59.614H620.43V32.8C620.43 27.224 619.282 23.452 613.132 23.452C607.146 23.452 603.374 27.634 603.374 33.948V59.614H595.338V32.8C595.338 27.224 594.19 23.452 588.04 23.452C582.054 23.452 578.282 27.634 578.282 33.948V59.614H570.246V17.794H578.282V23.042H578.446C580.66 19.844 584.514 16.564 590.828 16.564C596.65 16.564 600.258 19.188 601.898 23.862H602.062C605.096 19.844 609.36 16.564 615.756 16.564ZM653.508 60.844C640.47 60.844 632.598 51.824 632.598 38.704C632.598 25.666 640.47 16.482 653.59 16.482C666.546 16.482 674.418 25.584 674.418 38.622C674.418 51.742 666.546 60.844 653.508 60.844ZM653.59 54.202C662.118 54.202 666.054 47.396 666.054 38.704C666.054 29.93 662.118 23.206 653.59 23.206C644.898 23.206 640.962 29.93 640.962 38.704C640.962 47.396 644.898 54.202 653.59 54.202ZM724.307 16.564C732.753 16.564 737.017 21.648 737.017 30.586V59.614H728.981V32.8C728.981 27.224 727.833 23.452 721.683 23.452C715.697 23.452 711.925 27.634 711.925 33.948V59.614H703.889V32.8C703.889 27.224 702.741 23.452 696.591 23.452C690.605 23.452 686.833 27.634 686.833 33.948V59.614H678.797V17.794H686.833V23.042H686.997C689.211 19.844 693.065 16.564 699.379 16.564C705.201 16.564 708.809 19.188 710.449 23.862H710.613C713.647 19.844 717.911 16.564 724.307 16.564ZM781.738 37.802C781.738 38.95 781.738 40.18 781.656 40.836H749.512C749.676 47.806 753.776 54.284 762.058 54.284C769.438 54.284 772.308 49.528 773.046 46.74H781.246C779.032 54.776 772.882 60.844 761.894 60.844C748.61 60.844 741.23 51.414 741.23 38.622C741.23 25.502 749.102 16.482 761.894 16.482C774.604 16.482 781.738 24.846 781.738 37.802ZM749.512 34.522H773.374C773.374 27.962 768.782 23.042 761.648 23.042C754.924 23.042 750.004 27.634 749.512 34.522ZM808.042 16.564C815.75 16.564 821.982 20.992 821.982 30.586V59.614H813.946V32.8C813.946 27.224 811.486 23.452 805.418 23.452C798.53 23.452 794.102 27.634 794.102 33.948V59.614H786.066V17.794H794.102V23.042H794.266C796.48 19.844 800.826 16.564 808.042 16.564ZM843.225 53.464C844.619 53.464 845.275 53.382 846.669 53.136V59.614C844.619 60.024 843.307 60.106 841.585 60.106C834.697 60.106 830.515 57.482 830.515 47.806V24.436H824.447V17.794H830.515V4.34601H838.551V17.794H846.587V24.436H838.551V48.052C838.551 52.48 839.781 53.464 843.225 53.464ZM868.629 60.844C855.591 60.844 847.719 51.824 847.719 38.704C847.719 25.666 855.591 16.482 868.711 16.482C881.667 16.482 889.539 25.584 889.539 38.622C889.539 51.742 881.667 60.844 868.629 60.844ZM868.711 54.202C877.239 54.202 881.175 47.396 881.175 38.704C881.175 29.93 877.239 23.206 868.711 23.206C860.019 23.206 856.083 29.93 856.083 38.704C856.083 47.396 860.019 54.202 868.711 54.202ZM910.401 60.762C897.691 60.762 891.377 54.202 891.131 45.674H899.249C899.577 50.512 902.529 54.284 910.319 54.284C917.371 54.284 919.257 51.168 919.257 48.134C919.257 42.886 913.681 42.312 908.269 41.164C900.971 39.442 892.607 37.31 892.607 28.618C892.607 21.402 898.429 16.564 908.515 16.564C919.995 16.564 925.489 22.714 926.063 29.93H917.945C917.371 26.732 915.649 23.042 908.679 23.042C903.267 23.042 900.971 25.174 900.971 28.29C900.971 32.636 905.645 33.046 911.549 34.358C919.257 36.162 927.621 38.376 927.621 47.724C927.621 55.842 921.389 60.762 910.401 60.762ZM20.5816 158.844C8.11758 158.844 -0.000417165 149.824 -0.000417165 136.704C-0.000417165 123.584 8.11758 114.564 20.4996 114.564C31.2416 114.564 38.3756 121.534 39.3596 130.964H31.0776C30.6676 126.618 28.2076 121.206 20.5816 121.206C11.6436 121.206 8.36358 128.832 8.36358 136.704C8.36358 144.576 11.6436 152.12 20.5816 152.12C28.2896 152.12 30.6676 146.872 31.0776 142.116H39.3596C38.7856 151.71 31.3236 158.844 20.5816 158.844ZM62.7501 114.81C64.2261 114.81 65.3741 114.892 66.6041 115.056V122.764C65.6201 122.6 64.8821 122.518 63.8981 122.518C56.6001 122.518 51.3521 128.012 51.3521 135.966V157.614H43.3161V115.794H51.3521V123.748H51.5161C53.7301 118.5 57.0921 114.81 62.7501 114.81ZM77.9739 108.332H68.8719V99.64H77.9739V108.332ZM77.3999 157.614H69.3639V115.794H77.3999V157.614ZM95.5225 158.762C87.1585 158.762 81.8285 153.924 81.8285 146.79C81.8285 137.442 88.8805 134.654 99.2945 132.686C105.855 131.456 109.873 130.636 109.873 126.536C109.873 123.502 108.069 120.96 101.919 120.96C94.6205 120.96 92.4065 123.256 91.9965 128.832H83.7965C84.2065 120.796 89.4545 114.482 102.247 114.482C110.857 114.482 117.745 118.09 117.745 128.914V148.102C117.745 151.136 118.155 152.694 119.713 152.694C119.959 152.694 120.205 152.694 120.697 152.612V157.532C119.303 157.86 117.909 158.024 116.597 158.024C112.579 158.024 110.447 156.466 109.955 151.71H109.791C107.085 156.056 102.329 158.762 95.5225 158.762ZM97.3265 152.284C104.543 152.284 109.873 148.594 109.873 141.296V135.31C108.561 136.54 104.953 137.442 100.689 138.344C93.3085 139.82 90.1925 141.87 90.1925 146.216C90.1925 150.152 92.3245 152.284 97.3265 152.284ZM170.573 114.564C179.019 114.564 183.283 119.648 183.283 128.586V157.614H175.247V130.8C175.247 125.224 174.099 121.452 167.949 121.452C161.963 121.452 158.191 125.634 158.191 131.948V157.614H150.155V130.8C150.155 125.224 149.007 121.452 142.857 121.452C136.871 121.452 133.099 125.634 133.099 131.948V157.614H125.063V115.794H133.099V121.042H133.263C135.477 117.844 139.331 114.564 145.645 114.564C151.467 114.564 155.075 117.188 156.715 121.862H156.879C159.913 117.844 164.177 114.564 170.573 114.564ZM208.324 158.844C195.286 158.844 187.414 149.824 187.414 136.704C187.414 123.666 195.286 114.482 208.406 114.482C221.362 114.482 229.234 123.584 229.234 136.622C229.234 149.742 221.362 158.844 208.324 158.844ZM208.406 152.202C216.934 152.202 220.87 145.396 220.87 136.704C220.87 127.93 216.934 121.206 208.406 121.206C199.714 121.206 195.778 127.93 195.778 136.704C195.778 145.396 199.714 152.202 208.406 152.202ZM250.096 158.762C237.386 158.762 231.072 152.202 230.826 143.674H238.944C239.272 148.512 242.224 152.284 250.014 152.284C257.066 152.284 258.952 149.168 258.952 146.134C258.952 140.886 253.376 140.312 247.964 139.164C240.666 137.442 232.302 135.31 232.302 126.618C232.302 119.402 238.124 114.564 248.21 114.564C259.69 114.564 265.184 120.714 265.758 127.93H257.64C257.066 124.732 255.344 121.042 248.374 121.042C242.962 121.042 240.666 123.174 240.666 126.29C240.666 130.636 245.34 131.046 251.244 132.358C258.952 134.162 267.316 136.376 267.316 145.724C267.316 153.842 261.084 158.762 250.096 158.762ZM331.38 114.564C339.826 114.564 344.09 119.648 344.09 128.586V157.614H336.054V130.8C336.054 125.224 334.906 121.452 328.756 121.452C322.77 121.452 318.998 125.634 318.998 131.948V157.614H310.962V130.8C310.962 125.224 309.814 121.452 303.664 121.452C297.678 121.452 293.906 125.634 293.906 131.948V157.614H285.87V115.794H293.906V121.042H294.07C296.284 117.844 300.138 114.564 306.452 114.564C312.274 114.564 315.882 117.188 317.522 121.862H317.686C320.72 117.844 324.984 114.564 331.38 114.564ZM388.811 135.802C388.811 136.95 388.811 138.18 388.729 138.836H356.585C356.749 145.806 360.849 152.284 369.131 152.284C376.511 152.284 379.381 147.528 380.119 144.74H388.319C386.105 152.776 379.955 158.844 368.967 158.844C355.683 158.844 348.303 149.414 348.303 136.622C348.303 123.502 356.175 114.482 368.967 114.482C381.677 114.482 388.811 122.846 388.811 135.802ZM356.585 132.522H380.447C380.447 125.962 375.855 121.042 368.721 121.042C361.997 121.042 357.077 125.634 356.585 132.522ZM438.649 114.564C447.095 114.564 451.359 119.648 451.359 128.586V157.614H443.323V130.8C443.323 125.224 442.175 121.452 436.025 121.452C430.039 121.452 426.267 125.634 426.267 131.948V157.614H418.231V130.8C418.231 125.224 417.083 121.452 410.933 121.452C404.947 121.452 401.175 125.634 401.175 131.948V157.614H393.139V115.794H401.175V121.042H401.339C403.553 117.844 407.407 114.564 413.721 114.564C419.543 114.564 423.151 117.188 424.791 121.862H424.955C427.989 117.844 432.253 114.564 438.649 114.564ZM478.942 109.316H472.546L477.384 98H486.814L478.942 109.316ZM476.4 158.844C463.362 158.844 455.49 149.824 455.49 136.704C455.49 123.666 463.362 114.482 476.482 114.482C489.438 114.482 497.31 123.584 497.31 136.622C497.31 149.742 489.438 158.844 476.4 158.844ZM476.482 152.202C485.01 152.202 488.946 145.396 488.946 136.704C488.946 127.93 485.01 121.206 476.482 121.206C467.79 121.206 463.854 127.93 463.854 136.704C463.854 145.396 467.79 152.202 476.482 152.202ZM521.124 114.81C522.6 114.81 523.748 114.892 524.978 115.056V122.764C523.994 122.6 523.256 122.518 522.272 122.518C514.974 122.518 509.726 128.012 509.726 135.966V157.614H501.69V115.794H509.726V123.748H509.89C512.104 118.5 515.466 114.81 521.124 114.81ZM536.348 108.332H527.246V99.64H536.348V108.332ZM535.774 157.614H527.738V115.794H535.774V157.614ZM553.896 158.762C545.532 158.762 540.202 153.924 540.202 146.79C540.202 137.442 547.254 134.654 557.668 132.686C564.228 131.456 568.246 130.636 568.246 126.536C568.246 123.502 566.442 120.96 560.292 120.96C552.994 120.96 550.78 123.256 550.37 128.832H542.17C542.58 120.796 547.828 114.482 560.62 114.482C569.23 114.482 576.118 118.09 576.118 128.914V148.102C576.118 151.136 576.528 152.694 578.086 152.694C578.332 152.694 578.578 152.694 579.07 152.612V157.532C577.676 157.86 576.282 158.024 574.97 158.024C570.952 158.024 568.82 156.466 568.328 151.71H568.164C565.458 156.056 560.702 158.762 553.896 158.762ZM555.7 152.284C562.916 152.284 568.246 148.594 568.246 141.296V135.31C566.934 136.54 563.326 137.442 559.062 138.344C551.682 139.82 548.566 141.87 548.566 146.216C548.566 150.152 550.698 152.284 555.7 152.284ZM599.919 158.762C587.209 158.762 580.895 152.202 580.649 143.674H588.767C589.095 148.512 592.047 152.284 599.837 152.284C606.889 152.284 608.775 149.168 608.775 146.134C608.775 140.886 603.199 140.312 597.787 139.164C590.489 137.442 582.125 135.31 582.125 126.618C582.125 119.402 587.947 114.564 598.033 114.564C609.513 114.564 615.007 120.714 615.581 127.93H607.463C606.889 124.732 605.167 121.042 598.197 121.042C592.785 121.042 590.489 123.174 590.489 126.29C590.489 130.636 595.163 131.046 601.067 132.358C608.775 134.162 617.139 136.376 617.139 145.724C617.139 153.842 610.907 158.762 599.919 158.762ZM665.376 120.878V115.794H673.412V172.128H665.376V152.694H665.212C662.916 155.646 658.898 158.762 652.338 158.762C641.678 158.762 633.56 150.48 633.56 136.704C633.56 122.928 641.678 114.564 652.338 114.564C658.898 114.564 662.916 117.598 665.212 120.878H665.376ZM653.65 152.12C660.866 152.12 665.294 146.134 665.294 136.704C665.294 127.192 660.866 121.288 653.65 121.288C645.778 121.288 641.924 128.504 641.924 136.704C641.924 144.904 645.778 152.12 653.65 152.12ZM707.47 141.46V115.794H715.506V157.614H707.47V152.366H707.306C705.092 155.564 700.746 158.762 693.53 158.762C685.822 158.762 679.59 154.334 679.59 144.74V115.794H687.626V142.526C687.626 148.184 690.086 151.956 696.154 151.956C703.042 151.956 707.47 147.774 707.47 141.46ZM760.438 135.802C760.438 136.95 760.438 138.18 760.356 138.836H728.212C728.376 145.806 732.476 152.284 740.758 152.284C748.138 152.284 751.008 147.528 751.746 144.74H759.946C757.732 152.776 751.582 158.844 740.594 158.844C727.31 158.844 719.93 149.414 719.93 136.622C719.93 123.502 727.802 114.482 740.594 114.482C753.304 114.482 760.438 122.846 760.438 135.802ZM728.212 132.522H752.074C752.074 125.962 747.482 121.042 740.348 121.042C733.624 121.042 728.704 125.634 728.212 132.522ZM782.394 115.794V110.71C782.394 101.034 786.412 98.41 793.218 98.41C794.776 98.41 796.006 98.574 798.302 98.902V105.38C796.662 105.216 796.006 105.134 794.858 105.134C791.496 105.134 790.512 106.118 790.512 110.546V115.794H798.302V122.436H790.512V157.614H782.394V122.436H776.654V115.794H782.394ZM803.222 108.332V99.64H812.242V108.332H803.222ZM811.75 157.614H803.714V115.794H811.75V157.614ZM836.671 158.844C824.207 158.844 816.089 149.824 816.089 136.704C816.089 123.584 824.207 114.564 836.589 114.564C847.331 114.564 854.465 121.534 855.449 130.964H847.167C846.757 126.618 844.297 121.206 836.671 121.206C827.733 121.206 824.453 128.832 824.453 136.704C824.453 144.576 827.733 152.12 836.671 152.12C844.379 152.12 846.757 146.872 847.167 142.116H855.449C854.875 151.71 847.413 158.844 836.671 158.844ZM870.967 158.762C862.603 158.762 857.273 153.924 857.273 146.79C857.273 137.442 864.325 134.654 874.739 132.686C881.299 131.456 885.317 130.636 885.317 126.536C885.317 123.502 883.513 120.96 877.363 120.96C870.065 120.96 867.851 123.256 867.441 128.832H859.241C859.651 120.796 864.899 114.482 877.691 114.482C886.301 114.482 893.189 118.09 893.189 128.914V148.102C893.189 151.136 893.599 152.694 895.157 152.694C895.403 152.694 895.649 152.694 896.141 152.612V157.532C894.747 157.86 893.353 158.024 892.041 158.024C888.023 158.024 885.891 156.466 885.399 151.71H885.235C882.529 156.056 877.773 158.762 870.967 158.762ZM872.771 152.284C879.987 152.284 885.317 148.594 885.317 141.296V135.31C884.005 136.54 880.397 137.442 876.133 138.344C868.753 139.82 865.637 141.87 865.637 146.216C865.637 150.152 867.769 152.284 872.771 152.284ZM946.018 114.564C954.464 114.564 958.728 119.648 958.728 128.586V157.614H950.692V130.8C950.692 125.224 949.544 121.452 943.394 121.452C937.408 121.452 933.636 125.634 933.636 131.948V157.614H925.6V130.8C925.6 125.224 924.452 121.452 918.302 121.452C912.316 121.452 908.544 125.634 908.544 131.948V157.614H900.508V115.794H908.544V121.042H908.708C910.922 117.844 914.776 114.564 921.09 114.564C926.912 114.564 930.52 117.188 932.16 121.862H932.324C935.358 117.844 939.622 114.564 946.018 114.564Z"/>
+              </g>
+            </g>
+          </mask>
+        </defs>
+        <rect class="cine-shade" width="1600" height="900" fill="#010702" mask="url(#cine-txt)"/>
+      </svg>
+      <div class="cine-footer">
+        <span class="cine-foot-blur"></span>
+        <span class="cine-foot-fade"></span>
+        <div class="cine-foot-inner">
+          <div class="cine-foot-left">
+            <div class="cine-foot-social">
+              <span class="cine-avatars-pill">
+                <span class="cine-avatars">
+                  <img src="speakers/amanda-cut.png" alt="">
+                  <img src="speakers/pedro-cut.png" alt="">
+                  <img src="speakers/carla-cut.png" alt="">
+                </span>
+              </span>
+              <span class="cine-foot-trust">
+                <b>Mais de 12.000 pessoas impactadas pelo Brasil</b>
+                <i>
+                  <em class="cine-stars">
+                    <svg viewBox="0 0 16 16" aria-hidden="true"><path d="M8 1.3l2 4.1 4.5.7-3.3 3.2.8 4.5L8 11.7l-4 2.1.8-4.5L1.5 6.1 6 5.4 8 1.3z" fill="#A8FF35"/></svg>
+                    <svg viewBox="0 0 16 16" aria-hidden="true"><path d="M8 1.3l2 4.1 4.5.7-3.3 3.2.8 4.5L8 11.7l-4 2.1.8-4.5L1.5 6.1 6 5.4 8 1.3z" fill="#A8FF35"/></svg>
+                    <svg viewBox="0 0 16 16" aria-hidden="true"><path d="M8 1.3l2 4.1 4.5.7-3.3 3.2.8 4.5L8 11.7l-4 2.1.8-4.5L1.5 6.1 6 5.4 8 1.3z" fill="#A8FF35"/></svg>
+                    <svg viewBox="0 0 16 16" aria-hidden="true"><path d="M8 1.3l2 4.1 4.5.7-3.3 3.2.8 4.5L8 11.7l-4 2.1.8-4.5L1.5 6.1 6 5.4 8 1.3z" fill="#A8FF35"/></svg>
+                  </em>
+                  Nota média 4.9 de 5.0
+                </i>
+              </span>
+            </div>
+            <p class="cine-foot-title">Um palco, incontáveis histórias<br>e milhares de vidas transformadas</p>
+          </div>
+          <a class="cine-watch" href="#">
+            <span class="cine-watch-thumb">
+              <img src="assets/img/video-thumb.jpg" alt="Capa do aftermovie">
+              <span class="cine-watch-play">
+                <svg viewBox="0 0 16 16" aria-hidden="true"><path d="M5 4.6c0-1.2 1.3-1.9 2.3-1.3l5.4 3.1c1 .6 1 2 0 2.6l-5.4 3.1c-1 .6-2.3-.1-2.3-1.3V4.6z" fill="#F5F9F0"/></svg>
+              </span>
+            </span>
+            <span class="cine-watch-title">Assista ao vídeo completo</span>
+            <span class="cine-watch-sub">Aftermovie oficial — Tour pelo Brasil</span>
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Numbers + testimonials — variant C: split header left, quote right -->
+  <section class="proof3">
+    <div class="proof2-stats">
+      <div class="proof2-stat">
+        <p class="proof-num"><span>+</span><b class="pn" data-n="12" data-suf="K">12K</b></p>
+        <p class="proof-name">Ingressos vendidos</p>
+        <p class="proof-desc">Em seis cidades e um palco inesquecível rodando o Brasil.</p>
+      </div>
+      <div class="proof2-stat">
+        <p class="proof-num"><b class="pn" data-n="98">98</b><span>%</span></p>
+        <p class="proof-name">Voltariam de novo</p>
+        <p class="proof-desc">Satisfação medida na pesquisa realizada após cada evento.</p>
+      </div>
+      <div class="proof2-stat">
+        <p class="proof-num"><b class="pn" data-n="4.9" data-dec="1">4.9</b></p>
+        <p class="proof-name">Nota média</p>
+        <p class="proof-desc">Coletada entre três mil avaliações verificadas do público.</p>
+      </div>
+      <div class="proof2-stat">
+        <p class="proof-num"><b class="pn" data-n="3">3</b><span>x</span></p>
+        <p class="proof-name">Mais crescimento</p>
+        <p class="proof-desc">Relatado por licenciados que aplicam o método no dia a dia.</p>
+      </div>
+    </div>
+    <div class="testi testi--split" data-focus="left">
+      <div class="p3-grid">
+        <div class="p3-left">
+          <div class="kicker kicker3d" data-k="rate"><p class="kp-pill"><span class="kp-light" aria-hidden="true"></span><span class="kp-in"><span class="kp-charge" aria-hidden="true"></span><span class="kp-t">Nota <b>4,9</b> em 3 mil avaliações</span></span></p><span class="kp-pop" aria-hidden="true"><span class="kp-glow"></span><span class="kp-obj"><img src="assets/img/badges/obj3d-rate.png" alt="" width="46" height="46"></span></span></div>
+          <h2>Direto de<br><span>quem viveu isso</span></h2>
+          <p class="p3-sub">Relatos reais de quem transformou um fim<br>de semana de evento em um novo começo.</p>
+          <div class="p3-cta">
+            <a class="btn-primary" href="#">
+              Garantir ingresso
+              <span class="chip chip-dark">
+                <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                  <path d="M16.5 7.5L6 18" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+                  <path d="M8 6.18791C8 6.18791 16.0479 5.50949 17.2692 6.73079C18.4906 7.95209 17.812 16 17.812 16" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+              </span>
+            </a>
+          </div>
+        </div>
+        <div class="testi-wrap">
+          <span class="p3-mark" aria-hidden="true">&ldquo;</span>
+          <blockquote class="testi-quote"></blockquote>
+          <div class="testi-meta">
+            <div class="testi-who">
+              <div class="testi-stars" aria-hidden="true">
+                <svg viewBox="0 0 16 16"><path d="M8 1.3l2 4.1 4.5.7-3.3 3.2.8 4.5L8 11.7l-4 2.1.8-4.5L1.5 6.1 6 5.4 8 1.3z" fill="#A8FF35"/></svg>
+                <svg viewBox="0 0 16 16"><path d="M8 1.3l2 4.1 4.5.7-3.3 3.2.8 4.5L8 11.7l-4 2.1.8-4.5L1.5 6.1 6 5.4 8 1.3z" fill="#A8FF35"/></svg>
+                <svg viewBox="0 0 16 16"><path d="M8 1.3l2 4.1 4.5.7-3.3 3.2.8 4.5L8 11.7l-4 2.1.8-4.5L1.5 6.1 6 5.4 8 1.3z" fill="#A8FF35"/></svg>
+                <svg viewBox="0 0 16 16"><path d="M8 1.3l2 4.1 4.5.7-3.3 3.2.8 4.5L8 11.7l-4 2.1.8-4.5L1.5 6.1 6 5.4 8 1.3z" fill="#A8FF35"/></svg>
+              </div>
+              <p class="testi-person"></p>
+              <p class="testi-role"></p>
+            </div>
+            <div class="testi-nav">
+              <button class="testi-btn testi-prev" type="button" aria-label="Depoimento anterior">
+                <svg viewBox="0 0 24 24" fill="none"><path d="M15 5l-7 7 7 7" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              </button>
+              <button class="testi-btn testi-next" type="button" aria-label="Próximo depoimento">
+                <svg viewBox="0 0 24 24" fill="none"><path d="M9 5l7 7-7 7" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="testi-strip-shell">
+        <div class="testi-strip"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================================
+       Edições que marcaram história — mural vivo
+       Um palco fixo dentro de uma seção alta. Uma linha do tempo única,
+       presa à rolagem, conta a história: os cards saem do ponto de fuga
+       (warp), pousam num mural inclinado que respira, cada edição se
+       levanta do mural como um painel, e no fim tudo implode de volta
+       para o centro, deixando a frase final.
+       Sem JS, com movimento reduzido ou em telas pequenas: layout
+       estático e calmo (.od-static).
+       ============================================================ -->
+  <section class="od" id="edicoes" aria-label="Edições que marcaram história" data-base="">
+
+    <div class="od-stage">
+      <div class="od-frame">
+
+        <!-- campo de fundo: aurora sussurrada, luz do ponto de fuga e malha de pontos -->
+        <div class="od-bg" aria-hidden="true">
+          <img class="od-bg-aurora" src="assets/img/aurora-base.webp" alt="">
+          <span class="od-bg-core"></span>
+          <span class="od-bg-dots"></span>
+          <span class="od-bg-veil"></span>
+        </div>
+
+        <!-- mundo 3D: o mural inclinado e o fluxo do warp (montados pelo JS) -->
+        <div class="od-world" aria-hidden="true">
+          <div class="od-plane"></div>
+          <div class="od-stream"></div>
+        </div>
+
+        <!-- camadas de luz e profundidade -->
+        <div class="od-dof od-dof--tilt" aria-hidden="true"></div>
+        <div class="od-dof od-dof--core" aria-hidden="true"></div>
+        <div class="od-dim" aria-hidden="true"></div>
+        <div class="od-edges" aria-hidden="true"></div>
+        <div class="od-scrim od-scrim--center" aria-hidden="true"></div>
+        <div class="od-scrim od-scrim--left" aria-hidden="true"></div>
+        <div class="od-afterglow" aria-hidden="true"></div>
+
+        <!-- abertura: título fixo no centro enquanto o warp acontece -->
+        <header class="od-head">
+          <div class="od-head-in">
+          <div class="od-m"><div class="kicker kicker3d od-l" data-k="ed"><p class="kp-pill"><span class="kp-light" aria-hidden="true"></span><span class="kp-in"><span class="kp-charge" aria-hidden="true"></span><span class="kp-t"><b>3</b> edições desde 2024</span></span></p><span class="kp-pop" aria-hidden="true"><span class="kp-glow"></span><span class="kp-obj"><img src="assets/img/badges/obj3d-ed.png" alt="" width="48" height="46"></span></span></div></div>
+          <h2 class="od-head-title">
+            <span class="od-m"><span class="od-l">Edições que</span></span>
+            <span class="od-m"><span class="od-l od-muted">marcaram história</span></span>
+          </h2>
+          <p class="od-head-sub od-split">Cada parada nos ensinou algo novo — essa é a história que construímos até aqui.</p>
+          </div>
+        </header>
+
+        <!-- painéis de destaque: um por edição, levantam do mural -->
+        <div class="od-feats" aria-hidden="true">
+          <figure class="od-feat" data-ch="0">
+            <div class="od-feat-media">
+              <img class="od-feat-glow" src="assets/img/past/glow-moment-01.jpg" alt="">
+              <div class="od-feat-clip"><img class="od-feat-img" src="assets/img/past/moment-01.jpg" alt=""></div>
+            <span class="od-feat-shade"></span>
+            </div>
+            <figcaption class="od-feat-cap"><span>Recife · PE</span><span>Março de 2024</span></figcaption>
+          </figure>
+          <figure class="od-feat" data-ch="1">
+            <div class="od-feat-media">
+              <img class="od-feat-glow" src="assets/img/past/glow-stage-speaker.jpg" alt="">
+              <div class="od-feat-clip"><video class="od-feat-img" data-src="assets/video/past/stage-speaker.mp4" poster="assets/video/past/stage-speaker.jpg" muted loop playsinline preload="none"></video></div>
+            <span class="od-feat-shade"></span>
+            </div>
+            <figcaption class="od-feat-cap"><span>Curitiba · PR</span><span>Setembro de 2024</span></figcaption>
+          </figure>
+          <figure class="od-feat" data-ch="2">
+            <div class="od-feat-media">
+              <img class="od-feat-glow" src="assets/img/past/glow-arena-audience.jpg" alt="">
+              <div class="od-feat-clip"><video class="od-feat-img" data-src="assets/video/past/arena-audience.mp4" poster="assets/video/past/arena-audience.jpg" muted loop playsinline preload="none"></video></div>
+            <span class="od-feat-shade"></span>
+            </div>
+            <figcaption class="od-feat-cap"><span>São Paulo · SP</span><span>Agosto de 2025</span></figcaption>
+          </figure>
+        </div>
+
+        <!-- textos das edições (lidos por leitores de tela na ordem) -->
+        <div class="od-chs">
+          <article class="od-ch" data-ch="0">
+            <p class="od-ch-label"><span class="od-m"><span class="od-l"><b>01</b><i aria-hidden="true"></i>Recife, 2024</span></span></p>
+            <h3 class="od-ch-title"><span class="od-m"><span class="od-l">A primeira</span></span> <span class="od-m"><span class="od-l">caravana</span></span></h3>
+            <p class="od-ch-desc od-split">Onde o tour nasceu — uma van, seis palestrantes e um litoral de histórias que se transformou em um movimento.</p>
+            <p class="od-ch-meta"><span class="od-m"><span class="od-l"><span>Quando</span>Março de 2024</span></span></p>
+          </article>
+          <article class="od-ch" data-ch="1">
+            <p class="od-ch-label"><span class="od-m"><span class="od-l"><b>02</b><i aria-hidden="true"></i>Curitiba, 2024</span></span></p>
+            <h3 class="od-ch-title"><span class="od-m"><span class="od-l">As turmas</span></span> <span class="od-m"><span class="od-l">práticas</span></span></h3>
+            <p class="od-ch-desc od-split">A edição mão na massa: casos reais no telão, turmas menores e o método que hoje conduz o tour inteiro pelo país.</p>
+            <p class="od-ch-meta"><span class="od-m"><span class="od-l"><span>Quando</span>Setembro de 2024</span></span></p>
+          </article>
+          <article class="od-ch" data-ch="2">
+            <p class="od-ch-label"><span class="od-m"><span class="od-l"><b>03</b><i aria-hidden="true"></i>São Paulo, 2025</span></span></p>
+            <h3 class="od-ch-title"><span class="od-m"><span class="od-l">A edição</span></span> <span class="od-m"><span class="od-l">arena</span></span></h3>
+            <p class="od-ch-desc od-split">Doze mil pessoas sob o mesmo teto — nosso maior palco, o público mais vibrante e um encerramento que bateu recordes.</p>
+            <p class="od-ch-meta"><span class="od-m"><span class="od-l"><span>Quando</span>Agosto de 2025</span></span></p>
+          </article>
+        </div>
+
+        <!-- indicador de capítulo: 01 / 03 com a linha de progresso -->
+        <div class="od-prog" aria-hidden="true">
+          <span class="od-prog-n"><span class="od-prog-roll"><span>01</span><span>02</span><span>03</span></span></span>
+          <span class="od-prog-of">/ 03</span>
+          <span class="od-prog-bar"><i></i></span>
+        </div>
+
+        <!-- desfecho -->
+        <div class="od-final">
+          <p class="od-final-t">
+            <span class="od-m"><span class="od-l">Doze mil pessoas</span></span>
+            <span class="od-m"><span class="od-l">já viveram isso.</span></span>
+            <span class="od-m"><span class="od-l od-muted">Falta você.</span></span>
+          </p>
+          <div class="od-final-cta">
+            <a class="btn-primary" href="#agenda">Garantir meu lugar<span class="chip chip-dark"><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M7 17L17 7M9 7h8v8" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></span></a>
+            <p class="od-final-next">Próxima parada do tour: <b>Goiânia, 16 de agosto</b></p>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- Versão estática: sem JS, movimento reduzido ou telas pequenas -->
+    <div class="od-static">
+      <div class="od-static-head">
+        <div class="kicker kicker3d" data-k="ed"><p class="kp-pill"><span class="kp-light" aria-hidden="true"></span><span class="kp-in"><span class="kp-charge" aria-hidden="true"></span><span class="kp-t"><b>3</b> edições desde 2024</span></span></p><span class="kp-pop" aria-hidden="true"><span class="kp-glow"></span><span class="kp-obj"><img src="assets/img/badges/obj3d-ed.png" alt="" width="48" height="46"></span></span></div>
+        <h2>Edições que<br><span>marcaram história</span></h2>
+        <p class="od-static-sub">Cada parada nos ensinou algo novo — essa é a história que construímos até aqui.</p>
+      </div>
+      <div class="past-grid od-static-grid">
+        <article class="past-card">
+          <div class="past-photo"><img src="assets/img/past/moment-01.jpg" alt="Equipe entrando no palco da primeira edição, em Recife" loading="lazy"></div>
+          <span class="past-tag">Recife · 2024</span>
+          <h3>A primeira caravana</h3>
+          <p>Onde o tour nasceu — uma van, seis palestrantes e um litoral de histórias que se transformou em um movimento.</p>
+          <span class="past-date">Março de 2024</span>
+        </article>
+        <article class="past-card">
+          <div class="past-photo"><img src="assets/img/past/moment-11.jpg" alt="Palestrante diante dos telões com dados, em Curitiba" loading="lazy"></div>
+          <span class="past-tag">Curitiba · 2024</span>
+          <h3>As turmas práticas</h3>
+          <p>A edição mão na massa: casos reais no telão, turmas menores e o método que hoje conduz o tour inteiro pelo país.</p>
+          <span class="past-date">Setembro de 2024</span>
+        </article>
+        <article class="past-card">
+          <div class="past-photo"><img src="assets/img/past/moment-17.jpg" alt="Arena lotada sob luzes verdes, em São Paulo" loading="lazy"></div>
+          <span class="past-tag">São Paulo · 2025</span>
+          <h3>A edição arena</h3>
+          <p>Doze mil pessoas sob o mesmo teto — nosso maior palco, o público mais vibrante e um encerramento que bateu recordes.</p>
+          <span class="past-date">Agosto de 2025</span>
+        </article>
+      </div>
+      <div class="od-static-row">
+        <div class="od-static-stat"><p class="od-static-n"><span>+</span>12K</p><p>Ingressos vendidos</p></div>
+        <div class="od-static-stat"><p class="od-static-n">98<span>%</span></p><p>Voltariam de novo</p></div>
+        <div class="od-static-stat"><p class="od-static-n">4,9</p><p>Nota média em 3 mil avaliações</p></div>
+        <figure class="od-static-quote">
+          <blockquote>“Fui ao evento por curiosidade e saí com um plano que sigo até hoje.”</blockquote>
+          <figcaption>Marina Castro, Goiânia</figcaption>
+        </figure>
+      </div>
+      <div class="od-static-final">
+        <p>Doze mil pessoas já viveram isso.<br><span>Falta você.</span></p>
+        <a class="btn-primary" href="#agenda">Garantir meu lugar<span class="chip chip-dark"><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M7 17L17 7M9 7h8v8" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></span></a>
+      </div>
+    </div>
+
+  </section>
+
+  <!-- FAQ -->
+  <section class="faq">
+    <div class="faq-inner">
+      <div class="faq-left">
+        <h2>Perguntas de quem<br><span>vai pela primeira vez</span></h2>
+        <p class="faq-sub">Ingresso, troca de cidade, gravações e reembolso: o essencial para chegar tranquilo no dia.</p>
+        <div class="faq-contact">
+          <div>
+            <h3>Ainda tem dúvidas?</h3>
+            <p>Fale com o time — respondemos em até um dia útil.</p>
+          </div>
+          <a class="btn-primary" href="#">
+            Fale conosco
+            <span class="chip chip-dark">
+              <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                <path d="M16.5 7.5L6 18" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+                <path d="M8 6.18791C8 6.18791 16.0479 5.50949 17.2692 6.73079C18.4906 7.95209 17.812 16 17.812 16" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+            </span>
+          </a>
+        </div>
+      </div>
+      <div class="faq-list">
+        <div class="faq-item">
+          <div class="faq-q" role="button" tabindex="0" aria-expanded="false">
+            <h3>O que é o iGreen Live exatamente?</h3>
+            <span class="faq-plus"><svg viewBox="0 0 14 14" fill="none"><path d="M7 1v12M1 7h12" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg></span>
+          </div>
+          <div class="faq-a"><p>Um evento itinerante de um dia onde sócios e líderes da iGreen mostram como funciona a energia por assinatura, o telecom e os seguros — ao vivo, com histórias reais e números reais no telão.</p></div>
+        </div>
+        <div class="faq-item">
+          <div class="faq-q" role="button" tabindex="0" aria-expanded="false">
+            <h3>O ingresso dá acesso a todas as palestras?</h3>
+            <span class="faq-plus"><svg viewBox="0 0 14 14" fill="none"><path d="M7 1v12M1 7h12" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg></span>
+          </div>
+          <div class="faq-a"><p>Sim. Todo ingresso dá acesso completo ao palco principal, às sessões práticas e ao espaço de networking na sua cidade.</p></div>
+        </div>
+        <div class="faq-item">
+          <div class="faq-q" role="button" tabindex="0" aria-expanded="false">
+            <h3>Posso trocar meu ingresso de cidade?</h3>
+            <span class="faq-plus"><svg viewBox="0 0 14 14" fill="none"><path d="M7 1v12M1 7h12" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg></span>
+          </div>
+          <div class="faq-a"><p>Você pode transferir seu ingresso para qualquer cidade do mesmo tour, sem custo, até sete dias antes da data do evento.</p></div>
+        </div>
+        <div class="faq-item">
+          <div class="faq-q" role="button" tabindex="0" aria-expanded="false">
+            <h3>As palestras são gravadas?</h3>
+            <span class="faq-plus"><svg viewBox="0 0 14 14" fill="none"><path d="M7 1v12M1 7h12" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg></span>
+          </div>
+          <div class="faq-a"><p>As palestras principais são gravadas e enviadas aos participantes após o tour. As sessões práticas são só ao vivo — é aí que estar na sala faz diferença.</p></div>
+        </div>
+        <div class="faq-item">
+          <div class="faq-q" role="button" tabindex="0" aria-expanded="false">
+            <h3>Existe política de reembolso?</h3>
+            <span class="faq-plus"><svg viewBox="0 0 14 14" fill="none"><path d="M7 1v12M1 7h12" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg></span>
+          </div>
+          <div class="faq-a"><p>Reembolso integral até quatorze dias antes do evento e de cinquenta por cento até quarenta e oito horas antes da abertura. Transferir o ingresso para um amigo é sempre gratuito.</p></div>
+        </div>
+        <div class="faq-item">
+          <div class="faq-q" role="button" tabindex="0" aria-expanded="false">
+            <h3>Como me torno um licenciado iGreen?</h3>
+            <span class="faq-plus"><svg viewBox="0 0 14 14" fill="none"><path d="M7 1v12M1 7h12" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg></span>
+          </div>
+          <div class="faq-a"><p>Participe do evento e converse com o time no espaço de atendimento. Você recebe treinamento, suporte e materiais para conquistar seus primeiros clientes.</p></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Pre-footer: the stage scene melting out of the page background -->
+  <!-- ============================================================
+       Rodapé — "Seu nome no crachá" (proposta G4)
+       Um rodapé aberto, escuro, na grade de 12 colunas do site. À
+       esquerda, a frase e um campo: "Como você quer ser chamado?". À
+       direita, a credencial do iGreen Live desce de cima da tela num
+       cordão; o nome digitado é impresso nela ao vivo e ela balança um
+       pouco a cada letra. Pode ser agarrada e arremessada.
+       ============================================================ -->
+  <footer class="ft-footer" id="ft-footer">
+
+    <!-- the room: deep dark, a low aurora and the hero's dot matrix (static layers) -->
+    <div class="ft-room" aria-hidden="true">
+      <div class="ft-aurora">
+        <img class="ft-ribbon" src="assets/img/aurora-base.webp" alt="" width="2108" height="1292" decoding="async">
+        <span class="ft-haze"></span>
+        <span class="ft-floor"></span>
+      </div>
+      <span class="ft-back"></span>
+      <span class="ft-dots-base"></span>
+      <span class="ft-dots"></span>
+    </div>
+
+    <div class="ft-wrap">
+
+      <div class="ft-head">
+        <h2 class="ft-st">
+          <span class="ft-l"><span class="ft-li">A próxima história</span></span>
+          <span class="ft-l ft-l-mute"><span class="ft-li">pode ter o seu nome.</span></span>
+        </h2>
+
+        <div class="ft-ask ft-rv">
+          <label class="ft-k" for="ft-name">Como você quer ser chamado?</label>
+          <div class="ft-field">
+            <input class="ft-input" id="ft-name" type="text" name="nome" maxlength="22" placeholder="Seu nome" autocomplete="off" autocapitalize="words" spellcheck="false" enterkeyhint="done">
+          </div>
+        </div>
+
+        <div class="ft-cta ft-rv">
+          <a class="btn-primary ft-mag" href="#">
+            <span>Garantir meu lugar</span>
+            <span class="chip chip-dark">
+              <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M7 17L17 7M9 7h8v8" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </span>
+          </a>
+          <a class="btn-ghost ft-ghost" href="#">Falar com a equipe</a>
+        </div>
+      </div>
+
+      <div class="ft-grid">
+        <span class="ft-rule" aria-hidden="true"></span>
+
+        <div class="ft-col ft-stop ft-rv">
+          <p class="ft-h"><span class="ft-dot" aria-hidden="true"></span>Próxima parada</p>
+          <p class="ft-city">Goiânia</p>
+          <p class="ft-when">16 de agosto · check-in 14h00</p>
+          <p class="ft-venue">Centro de Convenções de Goiânia</p>
+          <a class="ft-u ft-more" href="#agenda">Ver as seis datas do tour</a>
+        </div>
+
+        <nav class="ft-col ft-event ft-rv" aria-label="Evento">
+          <p class="ft-h">Evento</p>
+          <ul class="ft-list">
+            <li><a class="ft-u" href="#">Palestrantes</a></li>
+            <li><a class="ft-u" href="#">Agenda</a></li>
+            <li><a class="ft-u" href="#">Edições</a></li>
+            <li><a class="ft-u" href="#">Depoimentos</a></li>
+            <li><a class="ft-u" href="#">FAQ</a></li>
+          </ul>
+        </nav>
+
+        <div class="ft-col ft-contact ft-rv">
+          <p class="ft-h">Contato</p>
+          <a class="ft-u ft-mail" href="mailto:contato@igreenlive.com.br">contato@igreenlive.com.br</a>
+          <a class="ft-u ft-phone" href="tel:+556230000000">+55 62 3000-0000</a>
+          <p class="ft-addr">iGreen Energy · Goiânia — GO</p>
+          <ul class="ft-social" aria-label="Redes sociais">
+            <li><a class="ft-u" href="#">Instagram</a></li>
+            <li><a class="ft-u" href="#">YouTube</a></li>
+            <li><a class="ft-u" href="#">LinkedIn</a></li>
+            <li><a class="ft-u" href="#">WhatsApp</a></li>
+          </ul>
+        </div>
+
+        <!-- the credential's bay (measured by the script) -->
+        <span class="ft-bay" aria-hidden="true"></span>
+      </div>
+
+      <div class="ft-bar ft-rv">
+        <p class="ft-copy">© 2026 iGreen Energy</p>
+        <p class="ft-made">Feito na estrada</p>
+        <nav class="ft-legal" aria-label="Legal">
+          <a class="ft-u" href="#">Política de privacidade</a>
+          <a class="ft-u" href="#">Termos de uso</a>
+          <a class="ft-u" href="#">Uso de dados</a>
+        </nav>
+        <a class="ft-up" href="#" aria-label="Voltar ao topo">
+          <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M12 19V5M6 11l6-6 6 6" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </a>
+      </div>
+
+    </div>
+
+    <!-- the lanyard: one canvas for the strap, a DOM card on its end -->
+    <div class="ft-stage">
+      <canvas class="ft-strap" aria-hidden="true"></canvas>
+      <div class="ft-card" role="img" aria-label="Credencial iGreen Live 2026 em nome de Você. Próxima parada: Goiânia, 16 de agosto, check-in às 14h00.">
+        <div class="ft-face" aria-hidden="true">
+          <span class="ft-hole"></span>
+          <div class="ft-card-top">
+            <img class="ft-card-logo" src="assets/img/igreen-logo.svg" alt="" width="279" height="82">
+            <span class="ft-card-ed">Live <i>2026</i></span>
+          </div>
+          <div class="ft-photo">
+            <img src="assets/img/footer-g/credencial-retrato.jpg" alt="" width="480" height="540" draggable="false" decoding="async">
+            <span class="ft-seal"><span class="ft-seal-foil"></span><svg viewBox="0 0 16 16"><path d="M8 0C8.6 4.4 11.6 7.4 16 8C11.6 8.6 8.6 11.6 8 16C7.4 11.6 4.4 8.6 0 8C4.4 7.4 7.4 4.4 8 0Z" fill="currentColor"/></svg></span>
+          </div>
+          <div class="ft-id">
+            <p class="ft-name"><span class="ft-name-in">Você</span></p>
+            <p class="ft-meta">Próxima parada <span>Goiânia · 16 ago</span></p>
+          </div>
+          <div class="ft-card-foot">
+            <svg class="ft-qr" viewBox="0 0 25 25" aria-hidden="true"></svg>
+            <dl class="ft-facts">
+              <div><dt>Setor</dt><dd>Plateia A</dd></div>
+              <div><dt>Check-in</dt><dd>14h00</dd></div>
+            </dl>
+          </div>
+          <div class="ft-strip"><span>Acesso total</span><span class="ft-strip-n">Nº 0816</span></div>
+          <span class="ft-holo"><span class="ft-holo-in"></span></span>
+        </div>
+      </div>
+      <!-- crosses into view when the credential's resting place is on screen -->
+      <span class="ft-cue" aria-hidden="true"></span>
+    </div>
+
+  </footer>
+
+  <!-- Speaker detail overlay -->
+  <div class="spk-modal" aria-hidden="true">
+    <div class="spk-veil"></div>
+    <div class="spk-panel">
+    <div class="spk-backdrop"></div>
+    <h3 class="spk-first">First</h3>
+    <div class="spk-photo-wrap"><img class="spk-photo" src="" alt=""></div>
+    <span class="spk-footer-blur"></span>
+    <span class="spk-footer-fade"></span>
+    <h3 class="spk-last">Last</h3>
+    <div class="spk-info">
+      <div class="spk-stats">
+        <div class="spk-stat">
+          <p class="spk-stat-num"><span class="spk-stat-val">0</span><span class="spk-stat-tail"></span></p>
+          <p class="spk-stat-label"></p>
+        </div>
+        <span class="spk-stat-div"></span>
+        <div class="spk-stat">
+          <p class="spk-stat-num"><span class="spk-stat-val">0</span><span class="spk-stat-tail"></span></p>
+          <p class="spk-stat-label"></p>
+        </div>
+      </div>
+      <span class="spk-info-div"></span>
+      <p class="spk-desc"></p>
+      <p class="spk-role"></p>
+    </div>
+    <div class="spk-seal" aria-hidden="true">
+      <svg class="spk-seal-ring" viewBox="0 0 120 120">
+        <defs>
+          <path id="spk-seal-circ" d="M60,60 m-46,0 a46,46 0 1,1 92,0 a46,46 0 1,1 -92,0" fill="none"/>
+        </defs>
+        <text><textPath href="#spk-seal-circ">IGREEN PLATINUM &bull; IGREEN PLATINUM &bull;</textPath></text>
+      </svg>
+      <svg class="spk-seal-star" viewBox="0 0 16 16">
+        <path d="M8 0C8.6 4.4 11.6 7.4 16 8C11.6 8.6 8.6 11.6 8 16C7.4 11.6 4.4 8.6 0 8C4.4 7.4 7.4 4.4 8 0Z" fill="#A8FF35"/>
+      </svg>
+    </div>
+    <div class="spk-agenda">
+      <div class="spk-socials">
+        <a href="#" class="spk-soc" aria-label="Instagram">
+          <svg viewBox="0 0 24 24" fill="none"><rect x="3.2" y="3.2" width="17.6" height="17.6" rx="5" stroke="currentColor" stroke-width="1.5"/><circle cx="12" cy="12" r="4.1" stroke="currentColor" stroke-width="1.5"/><circle cx="17.1" cy="6.9" r="1.15" fill="currentColor"/></svg>
+        </a>
+        <a href="#" class="spk-soc" aria-label="YouTube">
+          <svg viewBox="0 0 24 24" fill="none"><rect x="2.6" y="5.6" width="18.8" height="12.8" rx="3.4" stroke="currentColor" stroke-width="1.5"/><path d="M10.2 9.4v5.2l4.7-2.6z" fill="currentColor"/></svg>
+        </a>
+        <a href="#" class="spk-soc" aria-label="X">
+          <svg viewBox="0 0 24 24" fill="none"><path d="M4.5 4.5l15 15M19.5 4.5l-15 15" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>
+        </a>
+      </div>
+      <p class="spk-agenda-title">No palco</p>
+      <p class="spk-agenda-talk"></p>
+      <div class="spk-agenda-row">
+        <span class="spk-ico">
+          <svg viewBox="0 0 24 24" fill="none"><rect x="3.5" y="5" width="17" height="15.5" rx="3" stroke="currentColor" stroke-width="1.5"/><path d="M3.5 9.8h17M8 3v4M16 3v4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+        </span>
+        <span class="spk-agenda-when"></span>
+      </div>
+      <div class="spk-agenda-row">
+        <span class="spk-ico">
+          <svg viewBox="0 0 24 24" fill="none"><path d="M12 21s-6.5-5.4-6.5-10.2A6.5 6.5 0 0 1 12 4.3a6.5 6.5 0 0 1 6.5 6.5C18.5 15.6 12 21 12 21z" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/><circle cx="12" cy="10.8" r="2.3" stroke="currentColor" stroke-width="1.5"/></svg>
+        </span>
+        <span class="spk-agenda-where"></span>
+      </div>
+      <p class="spk-agenda-addr"></p>
+      <div class="spk-actions">
+        <a class="btn-primary spk-btn" href="#">Garantir ingresso</a>
+        <a class="btn-ghost spk-btn" href="#">Ver no mapa</a>
+      </div>
+    </div>
+    <button class="spk-close" aria-label="Fechar">
+      <svg viewBox="0 0 24 24" fill="none"><path d="M6.5 6.5l11 11M17.5 6.5l-11 11" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+    </button>
+    </div>
+  </div>
+
+  <script src="assets/vendor/gsap.min.js"></script>
+  <script src="assets/vendor/Draggable.min.js"></script>
+  <script src="assets/vendor/InertiaPlugin.min.js"></script>
+  <script src="js/portal.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.13.0/ScrollTrigger.min.js"></script>
+  <script src="js/hero-c.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.13.0/SplitText.min.js"></script>
+  <script src="js/edicoes.js"></script>
+  <script src="js/kicker.js"></script>
+  <script src="js/footer.js"></script>
+</body>
+</html>

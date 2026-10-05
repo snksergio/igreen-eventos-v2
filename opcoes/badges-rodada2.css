@@ -1,0 +1,857 @@
+/* ============================================================
+   Selos das seções — rodada 2 (página de comparação)
+   Prefix bd-. Tokens from the site: #010702 · #F3F6EC · lime #A8FF35
+   · lime-soft #D8FFA6. Every badge keeps today's 34px pill footprint;
+   motion plays once when the row arrives (hover replays it).
+   ============================================================ */
+
+/* ---------- page ---------- */
+
+.bd-main {
+  max-width: 1304px;
+  margin: 0 auto;
+  padding: 168px 32px 180px;
+}
+.bd-intro h1 {
+  font-family: var(--font-display);
+  font-weight: 500;
+  font-size: 64px;
+  line-height: 1.04;
+  letter-spacing: -0.03em;
+  color: #F5F9F0;
+}
+.bd-intro h1 span { color: var(--text-dim); }
+.bd-intro > p {
+  margin-top: 24px;
+  max-width: 58ch;
+  font-size: 17px;
+  line-height: 1.6;
+  color: var(--text-mid);
+}
+.bd-index {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+  margin-top: 40px;
+}
+.bd-index-sep {
+  flex-basis: 100%;
+  margin-top: 10px;
+  font-size: 13px;
+  color: var(--text-dim);
+}
+.bd-index-sep:first-child { margin-top: 0; }
+.bd-index a {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  height: 34px;
+  padding: 0 14px;
+  border-radius: 999px;
+  border: 1px solid rgba(243, 246, 236, 0.1);
+  font-size: 14px;
+  color: var(--text-soft);
+  text-decoration: none;
+  transition: border-color 0.3s, background-color 0.3s;
+}
+.bd-index a span {
+  font-size: 12.5px;
+  color: var(--lime);
+  font-variant-numeric: tabular-nums;
+}
+.bd-index a:hover {
+  border-color: rgba(168, 255, 53, 0.4);
+  background: rgba(168, 255, 53, 0.05);
+}
+
+.bd-rows { margin-top: 96px; }
+.bd-group {
+  padding: 120px 0 8px;
+  font-family: var(--font-display);
+  font-weight: 500;
+  font-size: 44px;
+  line-height: 1.06;
+  letter-spacing: -0.025em;
+  color: #F5F9F0;
+}
+.bd-group span { color: var(--text-dim); }
+.bd-row {
+  display: grid;
+  grid-template-columns: 300px minmax(0, 1fr);
+  gap: 64px;
+  padding: 72px 0;
+  border-top: 1px solid rgba(243, 246, 236, 0.08);
+  scroll-margin-top: 80px;
+}
+.bd-group + .bd-row { margin-top: 40px; }
+.bd-num {
+  font-size: 14px;
+  color: var(--lime);
+  font-variant-numeric: tabular-nums;
+}
+.bd-row--now .bd-num { color: var(--text-dim); }
+.bd-name {
+  margin-top: 14px;
+  font-family: var(--font-display);
+  font-weight: 500;
+  font-size: 30px;
+  line-height: 1.1;
+  letter-spacing: -0.02em;
+  color: #F5F9F0;
+}
+.bd-change {
+  margin-top: 14px;
+  padding-left: 12px;
+  border-left: 2px solid rgba(168, 255, 53, 0.5);
+  font-size: 14.5px;
+  line-height: 1.55;
+  color: var(--lime-soft);
+}
+.bd-desc {
+  margin-top: 14px;
+  font-size: 15px;
+  line-height: 1.6;
+  color: var(--text-mid);
+}
+.bd-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 56px 48px;
+}
+.bd-cell {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 20px;
+  min-width: 0;
+}
+.bd-slot {
+  display: flex;
+  align-items: flex-end;
+  min-height: 36px;
+}
+.bd-h {
+  font-family: var(--font-display);
+  font-weight: 500;
+  font-size: 36px;
+  line-height: 1.08;
+  letter-spacing: -0.025em;
+  color: #F5F9F0;
+}
+.bd-h span { color: var(--text-dim); }
+
+/* every badge arrives once, staggered across the four cells */
+.bd-row:not(.is-in) .bd-slot > * { opacity: 0; }
+.bd-row.is-in .bd-slot > * { animation: bd-in 0.9s cubic-bezier(0.16, 1, 0.3, 1) backwards; }
+.bd-cell:nth-child(2) .bd-slot > * { animation-delay: 0.08s; }
+.bd-cell:nth-child(3) .bd-slot > * { animation-delay: 0.16s; }
+.bd-cell:nth-child(4) .bd-slot > * { animation-delay: 0.24s; }
+@keyframes bd-in { from { opacity: 0; translate: 0 10px; } }
+
+/* the kept loop (01) holds still while its row is off screen */
+.bd-row:not(.is-on) *,
+.bd-row:not(.is-on) *::before,
+.bd-row:not(.is-on) *::after { animation-play-state: paused !important; }
+
+@keyframes bd-draw { to { stroke-dashoffset: 0; } }
+
+/* hover replay: animations inside a badge are switched off for one style pass */
+.bd-reset *,
+.bd-reset *::before,
+.bd-reset *::after { animation: none !important; }
+
+/* ---------- the shared pill: today's footprint ---------- */
+
+.bd-pill {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  gap: 9px;
+  height: 34px;
+  padding: 0 15px 0 11px;
+  border-radius: 999px;
+  border: 1px solid rgba(243, 246, 236, 0.14);
+  background: rgba(243, 246, 236, 0.03);
+  font-size: 14px;
+  line-height: 1;
+  color: rgba(243, 246, 236, 0.78);
+  white-space: nowrap;
+}
+.bd-pill b,
+.bd9 b,
+.bd19 b {
+  font-weight: 500;
+  color: #F5F9F0;
+}
+.bd-ico {
+  flex: none;
+  width: 18px;
+  height: 18px;
+}
+
+/* ============================================================
+   01 — Glifo vivo (kept as approved)
+   ============================================================ */
+
+.bd1 {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  height: 36px;
+  padding: 0 16px 0 10px;
+  border-radius: 999px;
+  border: 1px solid rgba(243, 246, 236, 0.14);
+  background: rgba(243, 246, 236, 0.03);
+  font-size: 14px;
+  line-height: 1;
+  color: rgba(243, 246, 236, 0.78);
+  white-space: nowrap;
+  transition: border-color 0.4s, background-color 0.4s;
+}
+.bd1:hover {
+  border-color: rgba(168, 255, 53, 0.34);
+  background: rgba(168, 255, 53, 0.05);
+}
+.bd1-ico {
+  flex: none;
+  width: 22px;
+  height: 22px;
+  overflow: visible;
+  fill: none;
+  stroke: var(--lime);
+  stroke-width: 1.5;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+.bd1-ico--w { width: 26px; }
+.bd1-draw * {
+  stroke-dasharray: 1;
+  stroke-dashoffset: 1;
+}
+.bd-row.is-in .bd1-draw * { animation: bd-draw 1.1s cubic-bezier(0.65, 0, 0.35, 1) forwards; }
+.bd-row.is-in .bd1-draw *:nth-child(2) { animation-delay: 0.18s; }
+.bd-row.is-in .bd1-draw *:nth-child(3) { animation-delay: 0.36s; }
+.bd1-wave {
+  opacity: 0;
+  transform-box: view-box;
+  transform-origin: 14px 10px;
+}
+.bd-row.is-in .bd1-wave { animation: bd1-wave 2.8s ease-out 1.1s infinite; }
+.bd-row.is-in .bd1-w2 { animation-delay: 1.4s; }
+@keyframes bd1-wave {
+  0% { opacity: 0; transform: scale(0.8); }
+  25% { opacity: 1; }
+  60%, 100% { opacity: 0; transform: scale(1.14); }
+}
+.bd1:hover .bd1-wave { animation-duration: 1.4s; }
+.bd1-pin {
+  transform-box: view-box;
+  transform-origin: 12px 20px;
+}
+.bd-row.is-in .bd1-pin { animation: bd1-hop 3.2s cubic-bezier(0.45, 0, 0.2, 1) 1.2s infinite; }
+@keyframes bd1-hop {
+  0%, 55%, 100% { transform: translateY(0); }
+  68% { transform: translateY(-3.4px); }
+  80% { transform: translateY(0); }
+  87% { transform: translateY(-0.8px); }
+  93% { transform: translateY(0); }
+}
+.bd1-ripple {
+  fill: none;
+  stroke: var(--lime);
+  stroke-width: 1;
+  opacity: 0;
+  transform-box: view-box;
+  transform-origin: 12px 21.3px;
+}
+.bd-row.is-in .bd1-ripple { animation: bd1-ripple 3.2s ease-out 1.2s infinite; }
+@keyframes bd1-ripple {
+  0%, 78% { opacity: 0; transform: scale(0.3); }
+  80% { opacity: 0.9; transform: scale(0.4); }
+  100% { opacity: 0; transform: scale(1.3); }
+}
+.bd1-starfill {
+  fill: var(--lime);
+  stroke: none;
+  opacity: 0;
+  transform-box: view-box;
+  transform-origin: 12px 12px;
+}
+.bd-row.is-in .bd1-starfill { animation: bd1-fill 0.7s ease-out 0.9s forwards; }
+@keyframes bd1-fill {
+  from { opacity: 0; transform: scale(0.6); }
+  to { opacity: 1; transform: scale(1); }
+}
+.bd1-spark {
+  fill: var(--lime-soft);
+  stroke: none;
+  opacity: 0;
+  transform-box: fill-box;
+  transform-origin: center;
+}
+.bd-row.is-in .bd1-spark { animation: bd1-spark 3.4s ease-in-out 1.6s infinite; }
+@keyframes bd1-spark {
+  0%, 70%, 100% { opacity: 0; transform: scale(0.2) rotate(0deg); }
+  82% { opacity: 1; transform: scale(1) rotate(45deg); }
+}
+.bd1-l2,
+.bd1-l3 { stroke: var(--lime-soft); }
+.bd1-l1,
+.bd1-l3 {
+  transform-box: view-box;
+  transform-origin: 12px 12px;
+}
+.bd-row.is-in .bd1-draw .bd1-l3 { animation: bd-draw 1s cubic-bezier(0.65, 0, 0.35, 1) forwards, bd1-down 3.4s ease-in-out 1.4s infinite; }
+.bd-row.is-in .bd1-draw .bd1-l2 { animation: bd-draw 1s cubic-bezier(0.65, 0, 0.35, 1) 0.15s forwards; }
+.bd-row.is-in .bd1-draw .bd1-l1 { animation: bd-draw 1s cubic-bezier(0.65, 0, 0.35, 1) 0.3s forwards, bd1-up 3.4s ease-in-out 1.4s infinite; }
+@keyframes bd1-up { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-1.7px); } }
+@keyframes bd1-down { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(1.7px); } }
+
+/* ============================================================
+   03 — Rostos e lugares (standardised)
+   ============================================================ */
+
+.bd3 { padding-left: 4px; }
+.bd3-stack { display: inline-flex; }
+.bd3-ph {
+  flex: none;
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  overflow: hidden;
+  background: #0B1A10;
+  box-shadow: 0 0 0 2px #050B06;
+  transition: transform 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.bd3-ph + .bd3-ph { margin-left: -7px; }
+.bd3-ph img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+.bd3:hover .bd3-ph {
+  transform: translateY(-3px);
+  transition-delay: calc(var(--i) * 60ms);
+}
+.bd-row.is-in .bd3-ph { animation: bd3-in 0.7s cubic-bezier(0.2, 0.8, 0.2, 1) calc(var(--i) * 90ms + 0.15s) backwards; }
+@keyframes bd3-in { from { opacity: 0; transform: translateX(-8px) scale(0.8); } }
+
+/* ============================================================
+   07 — Painel de pontos (compact)
+   ============================================================ */
+
+.bd7 { padding-left: 5px; }
+.bd7-led {
+  display: grid;
+  place-items: center;
+  flex: none;
+  width: 24px;
+  height: 24px;
+  border-radius: 7px;
+  background: #020904;
+  box-shadow: inset 0 0 0 1px rgba(168, 255, 53, 0.16);
+}
+.bd7-led svg {
+  width: 17px;
+  height: 17px;
+}
+.bd7-led circle { fill: rgba(168, 255, 53, 0.13); }
+.bd-row.is-in .bd7-led circle.on { animation: bd7-lit 0.34s ease-out var(--d) forwards; }
+@keyframes bd7-lit {
+  0% { fill: rgba(168, 255, 53, 0.13); }
+  45% { fill: #F1FFDC; }
+  100% { fill: #A8FF35; }
+}
+
+/* ============================================================
+   09 — Borda de energia (one lap + icon)
+   ============================================================ */
+
+.bd9 {
+  position: relative;
+  display: inline-flex;
+  padding: 1px;
+  border-radius: 999px;
+  overflow: hidden;
+  isolation: isolate;
+  background: rgba(243, 246, 236, 0.13);
+  font-size: 14px;
+  line-height: 1;
+  white-space: nowrap;
+}
+/* a conic light larger than the pill turns once behind it; only the rim shows */
+.bd9-light {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 140%;
+  aspect-ratio: 1;
+  translate: -50% -50%;
+  background: conic-gradient(from 0deg, transparent 0 62%, rgba(168, 255, 53, 0) 64%, rgba(168, 255, 53, 0.95) 86%, #EEFFD6 88%, transparent 89% 100%);
+  opacity: 0;
+}
+.bd-row.is-in .bd9-light { animation: bd9-lap 1.9s cubic-bezier(0.45, 0, 0.25, 1) 0.2s; }
+@keyframes bd9-lap {
+  0% { opacity: 0; rotate: 0deg; }
+  12% { opacity: 1; }
+  82% { opacity: 1; }
+  100% { opacity: 0; rotate: 360deg; }
+}
+.bd9-in {
+  position: relative;
+  z-index: 1;
+  display: inline-flex;
+  align-items: center;
+  gap: 9px;
+  height: 32px;
+  padding: 0 15px 0 10px;
+  border-radius: 999px;
+  overflow: hidden;
+  background: #040B06;
+  color: rgba(243, 246, 236, 0.78);
+}
+.bd9-in > .bd-t { position: relative; }
+.bd9-ico {
+  position: relative;
+  color: var(--lime);
+}
+.bd9-ico * {
+  stroke-dasharray: 1;
+  stroke-dashoffset: 1;
+}
+.bd-row.is-in .bd9-ico * { animation: bd-draw 1.3s cubic-bezier(0.65, 0, 0.35, 1) 0.35s forwards; }
+.bd9-charge {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(90deg, rgba(168, 255, 53, 0), rgba(168, 255, 53, 0.14) 80%, rgba(216, 255, 166, 0.3));
+  transform: scaleX(0);
+  transform-origin: left;
+  opacity: 0;
+  pointer-events: none;
+}
+.bd-row.is-in .bd9-charge { animation: bd9-charge 1.5s cubic-bezier(0.65, 0, 0.35, 1) 0.3s; }
+@keyframes bd9-charge {
+  0% { opacity: 1; transform: scaleX(0); }
+  70% { opacity: 1; transform: scaleX(1); }
+  100% { opacity: 0; transform: scaleX(1); }
+}
+
+/* ============================================================
+   10 — Ícone em bloco (the widget, simplified)
+   ============================================================ */
+
+.bd10 { padding-left: 5px; }
+.bd10-tile {
+  display: grid;
+  place-items: center;
+  flex: none;
+  width: 24px;
+  height: 24px;
+  border-radius: 7px;
+  background: linear-gradient(160deg, #C9FF7A, #A8FF35 55%, #8FE324);
+  color: #06180D;
+  box-shadow: 0 0 12px rgba(168, 255, 53, 0.22);
+}
+.bd10-tile .bd-ico {
+  width: 15px;
+  height: 15px;
+}
+.bd-row.is-in .bd10-tile { animation: bd10-pop 0.8s cubic-bezier(0.16, 1, 0.3, 1) 0.2s backwards; }
+@keyframes bd10-pop { from { opacity: 0; transform: scale(0.5) rotate(-25deg); } }
+.bd-row.is-in .bd10-tile .bd-ico { animation: bd-pop-in 0.5s ease-out 0.55s backwards; }
+@keyframes bd-pop-in { from { opacity: 0; transform: scale(0.5); } }
+
+/* ============================================================
+   11 — Do ponto ao ícone
+   ============================================================ */
+
+.bd11 { padding-left: 7px; }
+.bd11-dot {
+  display: grid;
+  place-items: center;
+  flex: none;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background: var(--lime);
+  color: #06180D;
+  box-shadow: 0 0 10px rgba(168, 255, 53, 0.4);
+}
+.bd11-dot .bd-ico {
+  width: 12px;
+  height: 12px;
+  stroke-width: 2.2;
+}
+/* starts at scale .3 — exactly today's 6px dot */
+.bd-row.is-in .bd11-dot { animation: bd11-grow 0.9s cubic-bezier(0.16, 1, 0.3, 1) 0.45s backwards; }
+@keyframes bd11-grow { from { transform: scale(0.3); } }
+.bd-row.is-in .bd11-dot .bd-ico { animation: bd-pop-in 0.6s cubic-bezier(0.16, 1, 0.3, 1) 0.85s backwards; }
+
+/* ============================================================
+   12 — Carga
+   ============================================================ */
+
+.bd12-ico {
+  position: relative;
+  flex: none;
+  width: 18px;
+  height: 18px;
+  color: var(--lime);
+}
+.bd12-ico .bd-ico {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+}
+.bd12-out { opacity: 0.45; }
+.bd12-in { clip-path: inset(100% 0 0 0); }
+.bd-row.is-in .bd12-in { animation: bd12-fill 1.5s cubic-bezier(0.65, 0, 0.35, 1) 0.35s forwards; }
+.bd-row.is-in .bd12-ico--98 .bd12-in { animation-name: bd12-fill98; }
+@keyframes bd12-fill { to { clip-path: inset(0 0 0 0); } }
+@keyframes bd12-fill98 { to { clip-path: inset(7% 0 0 0); } }
+
+/* ============================================================
+   13 — Anel
+   ============================================================ */
+
+.bd13 { padding-left: 5px; }
+.bd13-ring {
+  position: relative;
+  display: grid;
+  place-items: center;
+  flex: none;
+  width: 24px;
+  height: 24px;
+  color: var(--lime);
+}
+.bd13-svg {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  transform: rotate(-90deg);
+}
+.bd13-track {
+  fill: none;
+  stroke: rgba(243, 246, 236, 0.14);
+  stroke-width: 1.3;
+}
+.bd13-prog {
+  fill: none;
+  stroke: var(--lime);
+  stroke-width: 1.5;
+  stroke-linecap: round;
+  stroke-dasharray: 1;
+  stroke-dashoffset: 1;
+}
+.bd-row.is-in .bd13-prog { animation: bd13-ring 1.3s cubic-bezier(0.65, 0, 0.35, 1) 0.3s forwards; }
+@keyframes bd13-ring { to { stroke-dashoffset: calc(1 - var(--p)); } }
+.bd13-ring .bd-ico {
+  width: 12px;
+  height: 12px;
+}
+
+/* ============================================================
+   14 — Foco de câmera
+   ============================================================ */
+
+.bd14 {
+  border-color: transparent;
+  border-radius: 9px;
+  background: rgba(243, 246, 236, 0.035);
+}
+.bd14 > .bd-ico { color: var(--lime); }
+.bd14-c {
+  position: absolute;
+  width: 8px;
+  height: 8px;
+  border: 0 solid var(--lime);
+}
+.bd14-tl { left: -1px; top: -1px; border-top-width: 1.5px; border-left-width: 1.5px; border-top-left-radius: 9px; }
+.bd14-tr { right: -1px; top: -1px; border-top-width: 1.5px; border-right-width: 1.5px; border-top-right-radius: 9px; }
+.bd14-bl { left: -1px; bottom: -1px; border-bottom-width: 1.5px; border-left-width: 1.5px; border-bottom-left-radius: 9px; }
+.bd14-br { right: -1px; bottom: -1px; border-bottom-width: 1.5px; border-right-width: 1.5px; border-bottom-right-radius: 9px; }
+.bd-row.is-in .bd14-tl { animation: bd14-tl 0.9s cubic-bezier(0.16, 1, 0.3, 1) 0.25s backwards; }
+.bd-row.is-in .bd14-tr { animation: bd14-tr 0.9s cubic-bezier(0.16, 1, 0.3, 1) 0.25s backwards; }
+.bd-row.is-in .bd14-bl { animation: bd14-bl 0.9s cubic-bezier(0.16, 1, 0.3, 1) 0.25s backwards; }
+.bd-row.is-in .bd14-br { animation: bd14-br 0.9s cubic-bezier(0.16, 1, 0.3, 1) 0.25s backwards; }
+@keyframes bd14-tl { from { opacity: 0; transform: translate(-8px, -6px); } }
+@keyframes bd14-tr { from { opacity: 0; transform: translate(8px, -6px); } }
+@keyframes bd14-bl { from { opacity: 0; transform: translate(-8px, 6px); } }
+@keyframes bd14-br { from { opacity: 0; transform: translate(8px, 6px); } }
+.bd-row.is-in .bd14 > .bd-t,
+.bd-row.is-in .bd14 > .bd-ico { animation: bd14-on 0.6s ease-out 0.75s backwards; }
+@keyframes bd14-on { from { opacity: 0.25; } }
+
+/* ============================================================
+   15 — Aura
+   ============================================================ */
+
+.bd15 {
+  border-color: transparent;
+  overflow: visible;
+}
+/* the site's glass ring: brighter at the bottom */
+.bd15::after {
+  content: '';
+  position: absolute;
+  inset: -1px;
+  border-radius: inherit;
+  padding: 1px;
+  pointer-events: none;
+  background: linear-gradient(to top, rgba(216, 255, 166, 0.55), rgba(243, 246, 236, 0.16) 45%, rgba(243, 246, 236, 0.06));
+  -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor;
+  mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+  mask-composite: exclude;
+}
+.bd-row.is-in .bd15::after { animation: bd-fade 1s ease-out 0.2s backwards; }
+@keyframes bd-fade { from { opacity: 0; } }
+.bd15-ico {
+  position: relative;
+  display: grid;
+  place-items: center;
+  flex: none;
+  width: 18px;
+  height: 18px;
+  color: var(--lime);
+}
+.bd15-g { position: relative; }
+.bd15-aura {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 34px;
+  height: 34px;
+  margin: -17px 0 0 -17px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(168, 255, 53, 0.45), rgba(168, 255, 53, 0) 65%);
+  opacity: 0.35;
+  transition: opacity 0.5s;
+}
+.bd15:hover .bd15-aura { opacity: 0.65; }
+.bd-row.is-in .bd15-aura { animation: bd15-bloom 1.6s cubic-bezier(0.16, 1, 0.3, 1) 0.3s backwards; }
+@keyframes bd15-bloom {
+  0% { opacity: 0; transform: scale(0.3); }
+  40% { opacity: 1; transform: scale(1.25); }
+  100% { opacity: 0.35; transform: scale(1); }
+}
+
+/* ============================================================
+   16 — Número em destaque
+   ============================================================ */
+
+.bd16 { padding-left: 5px; }
+.bd16-n {
+  display: inline-grid;
+  place-items: center;
+  flex: none;
+  min-width: 24px;
+  height: 24px;
+  padding: 0 8px;
+  border-radius: 999px;
+  background: var(--lime);
+  color: #06180D;
+  font-size: 13px;
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+}
+.bd-row.is-in .bd16-n { animation: bd-pop-in 0.7s cubic-bezier(0.16, 1, 0.3, 1) 0.15s backwards; }
+
+/* ============================================================
+   17 — Mini isométrico
+   ============================================================ */
+
+.bd17 { padding-left: 8px; }
+.bd17-ico {
+  flex: none;
+  width: 26px;
+  height: 22px;
+  overflow: visible;
+}
+.bd17-tile {
+  fill: rgba(168, 255, 53, 0.12);
+  stroke: rgba(168, 255, 53, 0.6);
+  stroke-width: 1;
+  stroke-linejoin: round;
+}
+.bd17-shadow {
+  fill: rgba(168, 255, 53, 0.35);
+  transform-box: fill-box;
+  transform-origin: center;
+}
+.bd17-obj,
+.bd17-obj * {
+  fill: rgba(168, 255, 53, 0.16);
+  stroke: var(--lime);
+  stroke-width: 1.3;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+[data-k="rate"] .bd17-obj path { fill: var(--lime); }
+.bd17-obj .bd17-wire { fill: none; }
+.bd17-t3 { fill: rgba(168, 255, 53, 0.45) !important; }
+.bd-row.is-in .bd17-tile { animation: bd-fade 0.6s ease-out 0.15s backwards; }
+.bd-row.is-in .bd17-obj { animation: bd17-drop 0.9s cubic-bezier(0.22, 1, 0.36, 1) 0.4s backwards; }
+.bd-row.is-in .bd17-shadow { animation: bd17-shadow 0.9s cubic-bezier(0.22, 1, 0.36, 1) 0.4s backwards; }
+/* editions stack: the plates land one after the other */
+.bd-row.is-in [data-k="ed"] .bd17-obj { animation: none; }
+.bd-row.is-in .bd17-t2 { animation: bd17-drop 0.8s cubic-bezier(0.22, 1, 0.36, 1) 0.4s backwards; }
+.bd-row.is-in .bd17-t3 { animation: bd17-drop 0.8s cubic-bezier(0.22, 1, 0.36, 1) 0.7s backwards; }
+@keyframes bd17-drop {
+  0% { opacity: 0; transform: translateY(-7px); }
+  60% { opacity: 1; transform: translateY(0.6px); }
+  100% { transform: translateY(0); }
+}
+@keyframes bd17-shadow { from { opacity: 0; transform: scale(0.3); } }
+
+/* ============================================================
+   18 — Pontilhado
+   ============================================================ */
+
+/* dash pattern on the svg is inherited by every stroke inside it */
+.bd18-ico {
+  color: var(--lime);
+  stroke-dasharray: 0.01 2.6;
+}
+.bd-row.is-in .bd18-ico { animation: bd18-join 1.4s cubic-bezier(0.65, 0, 0.35, 1) 0.7s forwards; }
+@keyframes bd18-join { to { stroke-dasharray: 2.6 0.01; } }
+
+/* ============================================================
+   19 — Sublinhado de luz
+   ============================================================ */
+
+.bd19 {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  gap: 9px;
+  height: 34px;
+  padding: 0 4px 0 1px;
+  font-size: 14px;
+  line-height: 1;
+  color: rgba(243, 246, 236, 0.78);
+  white-space: nowrap;
+}
+.bd19 > .bd-ico { color: var(--lime); }
+.bd19-line {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 1px;
+  height: 1px;
+  background: rgba(243, 246, 236, 0.16);
+}
+.bd19-run {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(90deg, rgba(168, 255, 53, 0), rgba(168, 255, 53, 0.95));
+  transform: scaleX(0);
+  transform-origin: left;
+  opacity: 0;
+}
+.bd-row.is-in .bd19-run { animation: bd19-run 1.4s cubic-bezier(0.65, 0, 0.35, 1) 0.3s; }
+@keyframes bd19-run {
+  0% { opacity: 1; transform: scaleX(0); }
+  70% { opacity: 1; transform: scaleX(1); }
+  100% { opacity: 0; transform: scaleX(1); }
+}
+.bd19-line::after {
+  content: '';
+  position: absolute;
+  right: -2px;
+  top: -2px;
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: var(--lime);
+  box-shadow: 0 0 8px rgba(168, 255, 53, 0.7);
+  opacity: 0;
+}
+.bd-row.is-in .bd19-line::after { animation: bd19-dot 0.5s ease-out 1.25s forwards; }
+@keyframes bd19-dot {
+  from { opacity: 0; transform: scale(0.3); }
+  to { opacity: 1; transform: scale(1); }
+}
+
+/* ============================================================
+   20 — Micro-interação
+   ============================================================ */
+
+.bd20-ico {
+  display: grid;
+  place-items: center;
+  flex: none;
+  width: 18px;
+  height: 18px;
+  color: var(--lime);
+}
+.bd20-ico .bd-ico {
+  width: 17px;
+  height: 17px;
+  overflow: visible;
+}
+.bd-row.is-in .bd20--spk .bd20-ico { transform-origin: 50% 85%; animation: bd20-wobble 1s ease-in-out 0.5s; }
+.bd-row.is-in .bd20--tour .bd20-ico { animation: bd20-hop 0.9s cubic-bezier(0.33, 0, 0.2, 1) 0.5s; }
+.bd-row.is-in .bd20--rate .bd20-ico { animation: bd20-spin 1.1s cubic-bezier(0.16, 1, 0.3, 1) 0.5s; }
+.bd-row.is-in .bd20--ed .bd-ico path:first-child { animation: bd20-settle 0.9s cubic-bezier(0.22, 1, 0.36, 1) 0.5s backwards; }
+@keyframes bd20-wobble {
+  0%, 100% { rotate: 0deg; }
+  20% { rotate: -14deg; }
+  45% { rotate: 10deg; }
+  70% { rotate: -5deg; }
+}
+@keyframes bd20-hop {
+  0%, 55%, 100% { translate: 0 0; }
+  30% { translate: 0 -5px; }
+  72% { translate: 0 -1.5px; }
+}
+@keyframes bd20-spin {
+  from { rotate: 0deg; }
+  to { rotate: 144deg; }
+}
+@keyframes bd20-settle {
+  0% { opacity: 0; translate: 0 -6px; }
+  60% { opacity: 1; translate: 0 0.5px; }
+  100% { translate: 0 0; }
+}
+
+/* ============================================================
+   Reduced motion: final, calm states
+   ============================================================ */
+
+.bd-reduced *,
+.bd-reduced *::before,
+.bd-reduced *::after {
+  animation: none !important;
+  transition: none !important;
+}
+.bd-reduced .bd1-draw *,
+.bd-reduced .bd9-ico * { stroke-dashoffset: 0; }
+.bd-reduced .bd1-starfill { opacity: 1; }
+.bd-reduced .bd7-led circle.on { fill: var(--lime); }
+.bd-reduced .bd12-in { clip-path: inset(0 0 0 0); }
+.bd-reduced .bd12-ico--98 .bd12-in { clip-path: inset(7% 0 0 0); }
+.bd-reduced .bd13-prog { stroke-dashoffset: calc(1 - var(--p)); }
+.bd-reduced .bd18-ico { stroke-dasharray: none; }
+.bd-reduced .bd19-line::after { opacity: 1; }
+
+/* ============================================================
+   Narrower screens: a calm, stacked fallback
+   ============================================================ */
+
+@media (max-width: 1100px) {
+  .bd-row {
+    grid-template-columns: 1fr;
+    gap: 40px;
+  }
+}
+@media (max-width: 760px) {
+  .bd-main { padding: 120px 20px 120px; }
+  .bd-intro h1 { font-size: 42px; }
+  .bd-grid { grid-template-columns: 1fr; }
+  .bd-h { font-size: 30px; }
+}

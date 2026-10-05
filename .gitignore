@@ -1,0 +1,15 @@
+# ferramentas locais
+.claude/
+.impeccable/
+.playwright-mcp/
+
+# arquivos que não fazem parte do site
+videos/
+assets/fonts/
+assets/img/footer-my2.png
+assets/img/reel-*.jpg
+
+# sistema
+Thumbs.db
+desktop.ini
+.DS_Store

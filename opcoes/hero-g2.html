@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Hero G2 — Mosaico de vidas (frase única)</title>
+  <link rel="icon" href="../assets/img/igreen-logo.svg">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Instrument+Sans:wdth,wght@75..100,400..700&display=swap">
+  <link rel="preload" as="image" href="../assets/img/hero-g/atlas-cinza.webp">
+  <link rel="preload" as="image" href="../assets/img/hero-g/atlas-cor.webp">
+  <link rel="stylesheet" href="../css/portalv2.css">
+  <link rel="stylesheet" href="hero-g2.css">
+  <script>
+    document.documentElement.classList.add('hg2-js');
+    // rede de segurança: se o JS do hero falhar, o texto aparece mesmo assim
+    window.addEventListener('load', function () {
+      setTimeout(function () { var h = document.getElementById('hg2'); if (h) h.classList.add('hg2-in'); }, 2500);
+    });
+  </script>
+</head>
+<body class="tone-green">
+
+  <!-- Menu fixo do topo (mesmo markup do site) -->
+  <header class="topnav">
+    <a class="topnav-logo" href="../index.html"><img src="../assets/img/igreen-logo.svg" alt="iGreen"></a>
+    <nav class="topnav-links" aria-label="Menu fixo">
+      <a href="../index.html">Início</a>
+      <a href="../index.html">Palestrantes</a>
+      <a href="../index.html#agenda">Agenda</a>
+      <a href="../index.html">FAQ</a>
+    </nav>
+    <div class="topnav-actions">
+      <a class="topnav-login" href="#">
+        <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><circle cx="12" cy="8" r="3.4" stroke="currentColor" stroke-width="1.5"/><path d="M5.2 19.4c.9-3.6 3.4-5.4 6.8-5.4s5.9 1.8 6.8 5.4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+        Entrar
+      </a>
+      <a class="topnav-cta" href="#">Cadastre-se</a>
+    </div>
+  </header>
+
+  <!-- ============================================================
+       Hero G2 — Mosaico de vidas, versão "frase única"
+       O número deixa de ser uma ilustração ao lado do texto e vira a
+       palavra que falta na frase:
+         Renda recorrente que [clipe] transforma
+                        +2.000          <- feito de pessoas
+                    vidas de verdade
+       Tudo centralizado, lido de cima para baixo como uma só frase.
+       Entrada: o número surge cinza; o clipe da frase dispara uma onda
+       que desce e acende cada ponto em cor (uma vez só).
+       Rolagem: a câmera mergulha no ponto final do "2.000"; os nove
+       pontos viram cartões, cinco tocam, e uma frase fecha a cena.
+       ============================================================ -->
+  <section class="hg2" id="hg2" aria-label="Mais de 2.000 vidas transformadas">
+    <div class="hg2-stage">
+
+      <!-- Rich animated background (markup do site; estilos em portalv2.css) -->
+      <div class="rich-bg" aria-hidden="true">
+        <img class="aurora-base" src="../assets/img/aurora-base.webp" alt="">
+        <span class="wash"></span>
+        <span class="band band-l1"></span>
+        <span class="band band-l2"></span>
+        <span class="band band-d1"></span>
+        <span class="band band-d2"></span>
+        <span class="dots-base"></span>
+        <span class="dots"></span>
+      </div>
+
+      <canvas class="hg2-canvas" aria-hidden="true"></canvas>
+
+      <div class="hg2-vids" aria-hidden="true">
+        <div class="hg2-vid" data-cell="1"><video src="../assets/video/cards/gen-executiva2.mp4" poster="../assets/video/cards/gen-executiva2.jpg" muted loop playsinline preload="metadata"></video></div>
+        <div class="hg2-vid" data-cell="3"><video src="../assets/video/cards/gen-podcast.mp4" poster="../assets/video/cards/gen-podcast.jpg" muted loop playsinline preload="metadata"></video></div>
+        <div class="hg2-vid" data-cell="4"><video src="../assets/video/cards/sel-carro.mp4" poster="../assets/video/cards/sel-carro.jpg" muted loop playsinline preload="metadata"></video></div>
+        <div class="hg2-vid" data-cell="5"><video src="../assets/video/cards/sel-musgo1.mp4" poster="../assets/video/cards/sel-musgo1.jpg" muted loop playsinline preload="metadata"></video></div>
+        <div class="hg2-vid" data-cell="7"><video src="../assets/video/cards/sel-suv.mp4" poster="../assets/video/cards/sel-suv.jpg" muted loop playsinline preload="metadata"></video></div>
+      </div>
+
+      <div class="hg2-vignette" aria-hidden="true"></div>
+
+      <!-- Texto: uma frase só, com o número no meio -->
+      <div class="hero-copy hg2-copy">
+        <a class="hg2-chip hg2-rise" href="#agenda">Próxima parada do tour: <b>Goiânia, 16 de agosto</b></a>
+
+        <h1 class="title hg2-title">
+          <span class="line hg2-l1"><span class="hg2-in-line">Renda recorrente que <span class="title-clip" aria-hidden="true"><video src="../assets/video/cards/sel-musgo3.mp4" poster="../assets/video/cards/sel-musgo3.jpg" muted loop autoplay playsinline></video></span> transforma</span></span>
+          <!-- o espaço do número (desenhado no canvas); o JS ajusta a altura -->
+          <span class="hg2-slot"><span class="hg2-plus" aria-hidden="true">+</span><span class="hg2-sr">mais de 2.000</span></span>
+          <span class="line line-muted hg2-l3"><span class="hg2-in-line">vidas de verdade</span></span>
+        </h1>
+
+        <p class="sub hg2-sub hg2-rise">Histórias reais de licenciados iGreen que constroem renda todo mês com energia, telecom e seguros.</p>
+
+        <div class="actions hg2-rise">
+          <a class="btn-primary" href="#">
+            Seja licenciado
+            <span class="chip chip-dark">
+              <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                <path d="M7 17L17 7M9 7h8v8" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+            </span>
+          </a>
+          <a class="btn-ghost" href="#">Ver histórias</a>
+        </div>
+      </div>
+
+      <!-- fecho do mergulho: a frase que dá sentido aos vídeos -->
+      <p class="hg2-end" aria-hidden="true"><span class="hg2-end-a">Cada ponto é uma vida.</span><span class="hg2-end-b">Mais de 2.000 já mudaram de verdade.</span></p>
+
+      <div class="hg2-fade" aria-hidden="true"></div>
+    </div>
+  </section>
+
+  <section class="hg2-next" id="agenda">
+    <p class="hg2-next-line">Conheça cada uma dessas histórias.<br><span>Elas começam aqui embaixo.</span></p>
+  </section>
+
+  <script src="hero-g2.js"></script>
+</body>
+</html>

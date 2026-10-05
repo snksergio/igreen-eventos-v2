@@ -1,0 +1,341 @@
+/* ============================================================
+   Opção C3 — Arquibancada
+   Fileiras de cards em arcos suaves (a arena vista do palco): menores
+   no fundo, maiores na frente — tamanho real, proporção sempre igual,
+   cards inteiros. A "ola" passa uma vez: cada card levanta, acende e
+   ganha cor. Tudo o que se move usa só transform e opacity; o cinza é
+   um filtro estático.
+   ============================================================ */
+
+:root {
+  --hc3-lime: #A8FF35;
+  --hc3-lime-soft: #D8FFA6;
+  --hc3-ink: #010702;
+  --hc3-card: #06110A;
+  --hc3-ease: cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/* ---------- palco ---------- */
+
+.hc3-hero {
+  position: relative;
+  height: 100vh;
+  min-height: 680px;
+  overflow: hidden;
+  background: linear-gradient(180deg, #010D03 0%, var(--hc3-ink) 70%);
+  isolation: isolate;
+  -webkit-user-select: none;
+  user-select: none;
+}
+
+/* ---------- a arquibancada ---------- */
+
+.hc3-stands {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+}
+.hc3-row,
+.hc3-rowi,
+.hc3-rowp {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+.hc3-rowp { will-change: transform; }
+
+/* lugar: posição e leve giro ao longo do arco (estáticos) */
+.hc3-seat {
+  position: absolute;
+  pointer-events: auto;
+}
+/* o card: proporção fixa, cantos de 14px, mídia recortada por cover */
+.hc3-card {
+  position: absolute;
+  inset: 0;
+  border-radius: 14px;
+  overflow: hidden;
+  background: var(--hc3-card);
+  box-shadow: 0 18px 36px rgba(0, 0, 0, 0.38);
+  transition: transform 0.6s var(--hc3-ease);
+}
+.hc3-card img,
+.hc3-card video {
+  position: absolute;
+  inset: 0;
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  pointer-events: none;
+}
+/* "antes": fotograma parado, cinza e apagado (filtro estático) */
+.hc3-g {
+  filter: grayscale(1) brightness(0.55) contrast(1.06);
+}
+/* "depois": o vídeo colorido entra por cima, só com opacidade */
+.hc3-v { opacity: 0; }
+
+/* brilho de marca e borda fina */
+.hc3-card::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  border-radius: inherit;
+  background: linear-gradient(180deg, rgba(120, 200, 60, 0.05) 0%, rgba(6, 24, 13, 0) 42%, rgba(4, 16, 8, 0.32) 100%);
+  box-shadow: inset 0 0 0 1px rgba(243, 246, 236, 0.08);
+  pointer-events: none;
+}
+/* aro de luz do sistema: mais claro embaixo, some antes do topo */
+.hc3-card::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: 5;
+  border-radius: inherit;
+  padding: 1px;
+  pointer-events: none;
+  mix-blend-mode: overlay;
+  background: linear-gradient(to top, rgba(255, 255, 255, 0.7) 0%, rgba(255, 255, 255, 0.24) 22%, rgba(255, 255, 255, 0.08) 40%, rgba(255, 255, 255, 0.03) 100%);
+  -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor;
+  mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+  mask-composite: exclude;
+}
+
+/* a onda: borda que acende e faixa de luz que sobe pelo card */
+.hc3-flash {
+  position: absolute;
+  inset: 0;
+  z-index: 4;
+  border-radius: inherit;
+  box-shadow: inset 0 0 0 1.5px rgba(216, 255, 166, 0.95), inset 0 0 26px rgba(168, 255, 53, 0.4);
+  opacity: 0;
+  pointer-events: none;
+}
+.hc3-sweep {
+  position: absolute;
+  left: -10%;
+  right: -10%;
+  top: 100%;
+  z-index: 3;
+  height: 55%;
+  background: linear-gradient(to top, rgba(216, 255, 166, 0) 0%, rgba(236, 255, 210, 0.4) 50%, rgba(216, 255, 166, 0) 100%);
+  opacity: 0;
+  pointer-events: none;
+}
+/* tocando: um pouco de luz lima sobe pela base do card */
+.hc3-live {
+  position: absolute;
+  inset: 0;
+  z-index: 3;
+  border-radius: inherit;
+  background: radial-gradient(80% 34% at 50% 100%, rgba(168, 255, 53, 0.24) 0%, rgba(168, 255, 53, 0.06) 55%, transparent 80%);
+  box-shadow: inset 0 0 0 1px rgba(216, 255, 166, 0.16);
+  opacity: 0;
+  transition: opacity 0.9s ease;
+  pointer-events: none;
+}
+.hc3-card.is-live .hc3-live { opacity: 1; }
+/* o cursor levanta quem ele toca */
+.hc3-card.is-hv { transform: translate3d(0, -8px, 0) scale(1.045); }
+
+/* ---------- luz e sombra para o texto ---------- */
+
+.hc3-shade {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  pointer-events: none;
+  background:
+    linear-gradient(to bottom, rgba(1, 7, 2, 0.85) 0%, rgba(1, 7, 2, 0.3) 9%, rgba(1, 7, 2, 0) 16%),
+    linear-gradient(to top, rgba(1, 7, 2, 0.55) 0%, rgba(1, 7, 2, 0) 9%);
+}
+.hc3-scrim {
+  position: absolute;
+  left: 50%;
+  top: var(--hc3-copy-cy, 40%);
+  z-index: 2;
+  width: calc(var(--hc3-copy-w, 640px) + 420px);
+  height: calc(var(--hc3-copy-h, 440px) + 260px);
+  transform: translate(-50%, -50%);
+  pointer-events: none;
+  background: radial-gradient(closest-side, rgba(1, 7, 2, 0.72) 0%, rgba(1, 7, 2, 0.5) 55%, rgba(1, 7, 2, 0.16) 82%, rgba(1, 7, 2, 0) 100%);
+}
+/* passagem: o escuro da próxima seção sobe pela base (só transform) */
+.hc3-curtain {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 100%;
+  z-index: 3;
+  height: 140%;
+  pointer-events: none;
+  background: linear-gradient(to bottom, rgba(1, 7, 2, 0) 0%, rgba(1, 7, 2, 0.72) 18%, rgba(1, 7, 2, 0.96) 36%, #010702 50%);
+  will-change: transform;
+}
+
+/* ---------- texto ---------- */
+
+.hc3-stage {
+  position: absolute;
+  inset: 0;
+  z-index: 4;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  padding-top: clamp(118px, 15.5vh, 230px);
+  pointer-events: none;
+}
+.hc3-hero .hero-copy {
+  width: 100%;
+  max-width: 1240px;
+  will-change: transform, opacity;
+}
+.hc3-hero .hero-badge {
+  height: 38px;
+  font-size: 14px;
+}
+.hc3-hero .avatars img { width: 28px; height: 28px; }
+.hc3-count {
+  display: inline-block;
+  font-variant-numeric: tabular-nums;
+  text-align: right;
+}
+.hc3-hero .title {
+  margin-top: 22px;
+  font-size: clamp(40px, 4.2vw, 64px);
+}
+.hc3-hero .sub {
+  margin-top: 20px;
+  max-width: 44ch;
+  font-size: clamp(15px, 0.3vw + 11px, 18px);
+}
+.hc3-hero .actions { margin-top: 28px; gap: 10px; }
+.hc3-hero .btn-primary,
+.hc3-hero .btn-ghost {
+  height: 46px;
+  font-size: 15px;
+}
+.hc3-hero .btn-ghost { padding: 0 22px; }
+.hc3-hero .btn-primary:has(.chip) { padding: 0 5px 0 21px; }
+.hc3-hero .chip { width: 36px; height: 36px; }
+.hc3-hero .chip svg { width: 15px; height: 15px; }
+.hc3-hero .next-stop { margin-top: 18px; font-size: 13.5px; }
+
+/* "vidas de verdade" acende da esquerda para a direita junto com a
+   onda: uma janela que corre com a cópia lima parada dentro dela */
+.hc3-charge { position: relative; }
+.hc3-lit {
+  position: absolute;
+  top: -0.6em;
+  bottom: -0.6em;
+  left: -0.8em;
+  right: -0.8em;
+  overflow: hidden;
+  pointer-events: none;
+  will-change: transform;
+}
+.hc3-lit-in {
+  position: relative;
+  display: block;
+  padding: 0.6em 0.8em;
+  white-space: nowrap;
+  will-change: transform;
+}
+.hc3-lit-txt {
+  position: relative;
+  background: linear-gradient(100deg, #A8FF35 0%, #BDFF5E 40%, #D8FFA6 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+.hc3-lit-glow {
+  position: absolute;
+  left: 0.8em;
+  top: 0.6em;
+  color: transparent;
+  text-shadow: 0 0 18px rgba(168, 255, 53, 0.55), 0 0 46px rgba(168, 255, 53, 0.28);
+}
+/* a borda que avança: um traço claro na frente da janela */
+.hc3-lit-edge {
+  position: absolute;
+  right: 0;
+  top: 0.35em;
+  bottom: 0.35em;
+  width: 1.4em;
+  background: linear-gradient(90deg, rgba(236, 255, 210, 0) 0%, rgba(236, 255, 210, 0.5) 70%, rgba(236, 255, 210, 0) 100%);
+  opacity: 0;
+}
+
+/* ---------- seção seguinte (demonstração) ---------- */
+
+.hc3-next {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 28px;
+  min-height: 90vh;
+  padding: 0 24px;
+  background: var(--hc3-ink);
+  text-align: center;
+}
+.hc3-next-t {
+  max-width: 18ch;
+  font-weight: 500;
+  font-size: clamp(32px, 2.2vw + 14px, 72px);
+  line-height: 1.04;
+  letter-spacing: -0.035em;
+  color: var(--text-hi);
+  text-wrap: balance;
+}
+.hc3-next-t span { display: block; }
+.hc3-next-t .hc3-next-m { color: var(--text-dim); }
+.hc3-next-note {
+  font-size: 14px;
+  color: rgba(243, 246, 236, 0.34);
+}
+
+/* fora da tela ou aba oculta: os laços do fundo param */
+.hc3-off .rich-bg .band { animation-play-state: paused; }
+
+/* ---------- estado inicial da entrada (só com JS e movimento) ---------- */
+
+.hc3-js:not(.hc3-static):not(.hc3-go) .hc3-hero .rich-bg,
+.hc3-js:not(.hc3-static):not(.hc3-go) .hc3-hero .hc3-stands,
+.hc3-js:not(.hc3-static):not(.hc3-go) .hc3-hero .hero-badge,
+.hc3-js:not(.hc3-static):not(.hc3-go) .hc3-hero .title .line,
+.hc3-js:not(.hc3-static):not(.hc3-go) .hc3-hero .sub,
+.hc3-js:not(.hc3-static):not(.hc3-go) .hc3-hero .actions,
+.hc3-js:not(.hc3-static):not(.hc3-go) .hc3-hero .next-stop {
+  opacity: 0;
+  /* rede de segurança: se o JS não rodar, o texto aparece sozinho */
+  animation: hc3-failsafe 0.8s ease 3s forwards;
+}
+@keyframes hc3-failsafe { to { opacity: 1; } }
+
+/* ---------- telas muito grandes ---------- */
+
+@media (min-width: 2200px) {
+  .hc3-card { border-radius: 16px; }
+  .hc3-hero .hero-badge { height: 40px; font-size: 14.5px; }
+  .hc3-hero .btn-primary,
+  .hc3-hero .btn-ghost { height: 50px; font-size: 16px; }
+  .hc3-hero .chip { width: 38px; height: 38px; }
+  .hc3-hero .next-stop { font-size: 14px; }
+}
+
+/* ---------- versão calma: sem movimento ou telas estreitas ---------- */
+
+.hc3-static .hc3-v { opacity: 1; }
+.hc3-static .hc3-lit,
+.hc3-static .hc3-curtain { display: none; }
+.hc3-static .hc3-rowp { will-change: auto; }
+
+@media (max-width: 899px) {
+  .hc3-card { border-radius: 12px; }
+  .hc3-hero .title { font-size: clamp(34px, 9.4vw, 58px); }
+}

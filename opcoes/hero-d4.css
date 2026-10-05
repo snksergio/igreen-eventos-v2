@@ -1,0 +1,404 @@
+/* ============================================================
+   Hero D4 — Dupla exposição
+   A silhueta da licenciada (recorte com alfa, espelhado para ela olhar
+   para o texto) é uma máscara: dentro dela, um mosaico de histórias.
+   O rosto fica por cima, só onde importa (imagem pronta com alfa).
+   "Antes" = imagens cinzas prontas por cima das coloridas (nenhum
+   filtro animado); "depois" = as cinzas saem por opacidade.
+   Por quadro só transform/opacity. Tudo em unidades da imagem original
+   (--u = px por unidade, medido pelo JS; o CSS tem um padrão).
+   ============================================================ */
+
+:root {
+  --hd4-lime: #A8FF35;
+  --hd4-lime-soft: #D8FFA6;
+  --hd4-ink: #010702;
+  --hd4-card: #06110A;
+  --hd4-ease: cubic-bezier(0.16, 1, 0.3, 1);
+  --hd4-ease-io: cubic-bezier(0.65, 0, 0.35, 1);
+}
+
+/* ---------- palco ---------- */
+
+.hd4 {
+  /* padrões sem JS: retrato com 110% da altura, à direita do texto */
+  --u: calc(116vh / 1760);
+  --fx: calc(50vw - 40px);
+  --fy: 0px;
+  position: relative;
+  height: 100vh;
+  min-height: 700px;
+  overflow: hidden;
+  background: linear-gradient(180deg, #010D03 0%, var(--hd4-ink) 70%);
+  isolation: isolate;
+  -webkit-user-select: none;
+  user-select: none;
+}
+
+.hd4-shade {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  background: radial-gradient(42% 62% at 21% 54%, rgba(1, 7, 2, 0.5) 0%, rgba(1, 7, 2, 0.22) 55%, rgba(1, 7, 2, 0) 100%);
+}
+
+.hd4-stage {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+}
+
+/* luz ambiente atrás dela (acende na transformação) */
+.hd4-bloom {
+  position: absolute;
+  left: calc(var(--fx) + 120 * var(--u));
+  top: calc(var(--fy) + 260 * var(--u));
+  width: calc(1100 * var(--u));
+  height: calc(1500 * var(--u));
+  background: radial-gradient(50% 50% at 50% 50%, rgba(168, 255, 53, 0.16) 0%, rgba(140, 235, 50, 0.07) 42%, rgba(120, 220, 40, 0) 72%);
+  opacity: 0.35;
+  will-change: opacity, transform;
+}
+
+/* a câmera: um ponto na origem; só transform (translate + scale) */
+.hd4-cam {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 0;
+  height: 0;
+  transform-origin: 0 0;
+  will-change: transform;
+}
+
+.hd4-fig {
+  position: absolute;
+  left: var(--fx);
+  top: var(--fy);
+  width: calc(1328 * var(--u));
+  height: calc(2200 * var(--u));
+}
+
+/* a silhueta: máscara de alfa pronta (mesmas proporções da caixa) */
+.hd4-sil {
+  position: absolute;
+  inset: 0;
+  background: #0A120D;
+  -webkit-mask-image: url('../assets/img/hero-d4/sil.webp');
+  mask-image: url('../assets/img/hero-d4/sil.webp');
+  -webkit-mask-size: 100% 100%;
+  mask-size: 100% 100%;
+  -webkit-mask-repeat: no-repeat;
+  mask-repeat: no-repeat;
+}
+
+.hd4-mos {
+  position: absolute;
+  inset: 0;
+  will-change: transform;
+}
+
+/* ---------- as histórias (tiles) ---------- */
+
+.hd4-t {
+  position: absolute;
+  left: calc(var(--x) * var(--u));
+  top: calc(var(--y) * var(--u));
+  width: calc(170 * var(--u));
+  height: calc(var(--h) * var(--u));
+  margin: 0;
+  border-radius: calc(9 * var(--u));
+  overflow: hidden;
+  background: var(--hd4-card);
+  transition: transform 0.7s var(--hd4-ease);
+}
+.hd4-t > .hd4-c,
+.hd4-t > .hd4-g {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+/* sem JS o navegador pode mostrar controles nativos: nunca nos tiles */
+.hd4-t video::-webkit-media-controls { display: none !important; }
+
+/* "antes": a foto cinza pronta cobre a colorida */
+.hd4-t > .hd4-g {
+  opacity: 0; /* sem JS: já em cor */
+  transition: opacity 0.95s var(--hd4-ease-io);
+  transition-delay: var(--d, 0s);
+}
+.hd4-anim .hd4-t > .hd4-g { opacity: 1; }
+.hd4-anim .hd4-alive .hd4-t > .hd4-g { opacity: 0; }
+.hd4-done .hd4-t > .hd4-g { visibility: hidden; }
+
+/* filete fino + borda inferior um pouco mais clara (sem blend nem máscara) */
+.hd4-t::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  box-shadow:
+    inset 0 0 0 1px rgba(243, 246, 236, 0.09),
+    inset 0 -1px 0 0 rgba(243, 246, 236, 0.2);
+  pointer-events: none;
+  transition: box-shadow 0.5s ease;
+}
+
+/* cursor sobre uma história: ela sai da silhueta (vai para a camada
+   .hd4-lift, fora da máscara), cresce inteira e toca */
+.hd4-lift {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+.hd4-lift .hd4-t { transition: transform 0.75s var(--hd4-ease); }
+.hd4-shadow {
+  position: absolute;
+  left: 0;
+  top: 0;
+  border-radius: 50%;
+  background: radial-gradient(closest-side, rgba(1, 7, 2, 0.62) 0%, rgba(1, 7, 2, 0.32) 55%, rgba(1, 7, 2, 0) 100%);
+  opacity: 0;
+  transition: opacity 0.6s var(--hd4-ease);
+}
+.hd4-shadow.is-on { opacity: 1; }
+.hd4-t.is-hv {
+  z-index: 2;
+  transform: scale(1.42);
+}
+.hd4-t.is-hv::after {
+  box-shadow:
+    inset 0 0 0 1px rgba(216, 255, 166, 0.55),
+    inset 0 -1px 0 0 rgba(216, 255, 166, 0.8);
+}
+
+/* a luz que sobe por dentro dela (uma vez) */
+.hd4-front {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: calc(620 * var(--u));
+  background: linear-gradient(180deg,
+    rgba(168, 255, 53, 0) 0%,
+    rgba(168, 255, 53, 0.08) 30%,
+    rgba(216, 255, 166, 0.5) 50%,
+    rgba(168, 255, 53, 0.2) 60%,
+    rgba(168, 255, 53, 0) 100%);
+  mix-blend-mode: plus-lighter;
+  opacity: 0;
+  pointer-events: none;
+}
+
+/* ---------- o rosto e a luz de contorno ---------- */
+
+.hd4-faces {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+
+.hd4-face {
+  position: absolute;
+  left: calc(96 * var(--u));
+  top: calc(328 * var(--u));
+  width: calc(944 * var(--u));
+  height: calc(1112 * var(--u));
+  display: block;
+  pointer-events: none;
+}
+.hd4-face-g {
+  opacity: 0;
+  transition: opacity 1.3s var(--hd4-ease-io);
+}
+.hd4-anim .hd4-face-g { opacity: 1; }
+.hd4-anim .hd4-lit .hd4-face-g { opacity: 0; }
+.hd4-done .hd4-face-g { visibility: hidden; }
+
+.hd4-rim {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: calc(1328 * var(--u));
+  height: calc(1760 * var(--u));
+  display: block;
+  pointer-events: none;
+  opacity: 0.5;
+}
+.hd4-anim .hd4-rim { opacity: 0; }
+
+/* ---------- texto ---------- */
+
+.hd4-wrap {
+  position: relative;
+  z-index: 3;
+  height: 100%;
+  width: min(100% - 96px, 1240px);
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  padding-top: 64px;
+  pointer-events: none;
+}
+.hero-copy.hd4-copy {
+  align-items: flex-start;
+  text-align: left;
+  padding: 0;
+  width: auto;
+  flex: 0 0 auto;
+}
+.hd4-copy .title {
+  margin-top: 26px;
+  font-size: clamp(40px, 4.2vw, 64px);
+  line-height: 1.03;
+  letter-spacing: -0.036em;
+}
+.hd4-copy .title .line {
+  margin: 0;
+  white-space: nowrap;
+}
+.hd4-copy .sub {
+  margin-top: 24px;
+  max-width: 41ch;
+  font-size: clamp(16px, 1.16vw, 18px);
+}
+.hd4-copy .actions {
+  justify-content: flex-start;
+  margin-top: 34px;
+}
+.hd4-copy .next-stop { margin-top: 24px; }
+
+/* telas grandes (2560): o texto cresce junto com o retrato */
+@media (min-width: 2200px) and (min-height: 1200px) {
+  .hd4-wrap { width: min(100% - 160px, 1640px); }
+  .hero-copy.hd4-copy { zoom: 1.3; }
+  .hd4-phrase,
+  .hd4-next-line { zoom: 1.3; }
+}
+
+/* ---------- fim da rolagem: véu + frase ---------- */
+
+.hd4-end {
+  position: absolute;
+  inset: 0;
+  z-index: 4;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  pointer-events: none;
+}
+.hd4-veil {
+  position: absolute;
+  inset: 0;
+  background:
+    linear-gradient(180deg, rgba(1, 7, 2, 0.62) 0, rgba(1, 7, 2, 0) 150px),
+    radial-gradient(46% 40% at 50% 50%, rgba(1, 7, 2, 0.8) 0%, rgba(1, 7, 2, 0.62) 55%, rgba(1, 7, 2, 0.36) 100%);
+  opacity: 0;
+}
+/* passagem: no fim, a base do mosaico se dissolve no preto da seção
+   seguinte (sem corte seco quando o hero sobe) */
+.hd4-melt {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 38%;
+  background: linear-gradient(180deg, rgba(1, 7, 2, 0) 0%, rgba(1, 7, 2, 0.7) 55%, var(--hd4-ink) 100%);
+  opacity: 0;
+}
+.hd4-phrase {
+  position: relative;
+  margin: 0;
+  font-family: var(--font-display);
+  font-weight: 500;
+  font-size: clamp(38px, 4.1vw, 64px);
+  line-height: 1.06;
+  letter-spacing: -0.034em;
+  text-align: center;
+  color: var(--text-hi);
+  opacity: 0;
+}
+.hd4-phrase span { display: block; }
+.hd4-phrase span + span { color: rgba(243, 246, 236, 0.5); }
+
+/* ---------- estados ---------- */
+
+/* entrada: tudo nasce apagado (classe posta no <head>, antes da primeira
+   pintura, só em tela larga e com movimento; sem JS fica em cor) */
+.hd4-anim .hd4-fig,
+.hd4-anim .hd4-copy .hero-badge,
+.hd4-anim .hd4-copy .title .line,
+.hd4-anim .hd4-copy .sub,
+.hd4-anim .hd4-copy .actions,
+.hd4-anim .hd4-copy .next-stop { opacity: 0; }
+
+/* fora da tela: tudo para (inclusive o fundo do site) */
+.hd4.hd4-off .rich-bg .band { animation-play-state: paused; }
+
+/* estático (movimento reduzido / sem JS): já em cor, calmo */
+.hd4-static .hd4-t > .hd4-g,
+.hd4-static .hd4-face-g { opacity: 0; transition: none; }
+.hd4-static .hd4-rim { opacity: 0.5; }
+.hd4-static .hd4-bloom { opacity: 0.8; }
+
+/* ---------- seção seguinte (simulada) ---------- */
+
+.hd4-next {
+  position: relative;
+  z-index: 1;
+  min-height: 90vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0 24px;
+  background: var(--hd4-ink);
+  text-align: center;
+}
+.hd4-next-line {
+  margin: 0;
+  font-family: var(--font-display);
+  font-weight: 500;
+  font-size: clamp(30px, 3.2vw, 48px);
+  line-height: 1.1;
+  letter-spacing: -0.03em;
+  color: var(--text-hi);
+}
+.hd4-next-line span { color: var(--text-dim); }
+
+/* ---------- telas estreitas: versão estática simples ---------- */
+
+@media (max-width: 899px) {
+  .hd4 {
+    --u: calc(min(70vh, 640px) / 1760);
+    --fx: calc(50vw - 640 * var(--u));
+    height: auto;
+    min-height: 100vh;
+    padding: 120px 0 0;
+    display: flex;
+    flex-direction: column;
+  }
+  .hd4-wrap {
+    order: 1;
+    width: auto;
+    height: auto;
+    padding: 0 24px;
+  }
+  .hd4-copy .title .line { white-space: normal; }
+  .hd4-stage {
+    order: 2;
+    position: relative;
+    inset: auto;
+    height: calc(1700 * var(--u));
+    margin-top: 40px;
+    overflow: hidden;
+  }
+  .hd4-end { display: none; }
+  .hd4-t > .hd4-g,
+  .hd4-face-g { opacity: 0; }
+  .hd4-rim { opacity: 0.5; }
+}

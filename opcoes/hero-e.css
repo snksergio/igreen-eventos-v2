@@ -1,0 +1,501 @@
+/* ============================================================
+   Opção E — Correnteza
+   Texto à esquerda, três colunas de vidas à direita. Os cards seguem
+   a receita dos tiles do site (raio 16, lavagem verde, filete fino e
+   aro em overlay). "Antes" = foto cinza pronta por cima do pôster
+   colorido (nenhum filtro animado); "depois" = a foto cinza sai por
+   opacidade e o vídeo toca. As colunas correm com animações de
+   compositor (Web Animations, só transform): parado, o JS dorme.
+   ============================================================ */
+
+:root {
+  --he-lime: #A8FF35;
+  --he-lime-soft: #D8FFA6;
+  --he-ink: #010702;
+  --he-card: #06110A;
+  --he-ease: cubic-bezier(0.16, 1, 0.3, 1);
+  --he-ease-io: cubic-bezier(0.65, 0, 0.35, 1);
+}
+
+/* ---------- palco ---------- */
+
+.he-hero {
+  position: relative;
+  height: 100vh;
+  min-height: 680px;
+  overflow: hidden;
+  background: linear-gradient(180deg, #010D03 0%, var(--he-ink) 70%);
+  isolation: isolate;
+}
+
+/* leitura do texto: sombra larga à esquerda */
+.he-shade {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+  background: radial-gradient(44% 64% at 20% 52%, rgba(1, 7, 2, 0.52) 0%, rgba(1, 7, 2, 0.22) 55%, rgba(1, 7, 2, 0) 100%);
+}
+
+/* depois da carga, uma luz lima baixa fica atrás das colunas */
+.he-aura {
+  position: absolute;
+  z-index: 1;
+  left: var(--he-rl, 50%);
+  top: -10%;
+  width: var(--he-rw, 50%);
+  height: 120%;
+  pointer-events: none;
+  background:
+    radial-gradient(60% 46% at 50% 56%, rgba(168, 255, 53, 0.13) 0%, rgba(150, 240, 50, 0.05) 46%, rgba(120, 220, 40, 0) 76%);
+  opacity: 0;
+  transform: scale(1.25);
+}
+
+/* ---------- colunas ---------- */
+
+/* a janela das colunas começa abaixo do menu fixo: os itens do menu
+   nunca ficam sobre as imagens; o corte é uma borda limpa */
+.he-window {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: var(--he-top, 100px);
+  bottom: 0;
+  z-index: 2;
+  overflow: hidden;
+  pointer-events: none;
+}
+.he-reel {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  transform-origin: var(--he-rc, 75%) 50%;
+}
+.he-col {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: var(--he-w, 210px);
+  height: 100%;
+}
+.he-par,
+.he-in {
+  position: absolute;
+  inset: 0;
+}
+.he-track {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 100%;
+  will-change: transform;
+}
+
+/* ---------- card ---------- */
+
+.he-card {
+  position: relative;
+  width: 100%;
+  margin: 0 0 var(--he-gap, 16px);
+  pointer-events: auto;
+}
+.he-face {
+  position: absolute;
+  inset: 0;
+  border-radius: 16px;
+  overflow: hidden;
+  background: var(--he-card);
+  isolation: isolate;
+  box-shadow: 0 30px 60px -32px rgba(0, 0, 0, 0.8);
+}
+.he-m {
+  position: absolute;
+  inset: 0;
+  transform: scale(1.07);
+  transition: transform 2s var(--he-ease);
+}
+.he-m > img,
+.he-m > video {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: var(--he-op, 50% 40%);
+  pointer-events: none;
+  -webkit-user-drag: none;
+}
+/* "antes": foto cinza pronta, por cima do pôster colorido */
+.he-m > .he-g {
+  z-index: 2;
+  transition: opacity 1.1s cubic-bezier(0.4, 0, 0.2, 1);
+}
+/* escurecimento fixo do "antes" (afina quando a cor chega) */
+.he-dim {
+  position: absolute;
+  inset: 0;
+  z-index: 3;
+  background: var(--he-ink);
+  opacity: 0.44;
+  transition: opacity 1.1s cubic-bezier(0.4, 0, 0.2, 1);
+  pointer-events: none;
+}
+/* lavagem verde da marca e base mais escura (receita dos tiles do site) */
+.he-face::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: 4;
+  background: linear-gradient(180deg, rgba(120, 200, 60, 0.07) 0%, rgba(6, 24, 13, 0) 45%, rgba(4, 16, 8, 0.34) 100%);
+  pointer-events: none;
+}
+/* filete fino + aro premium em overlay, mais forte embaixo */
+.he-face::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: 8;
+  border-radius: inherit;
+  padding: 1px;
+  pointer-events: none;
+  mix-blend-mode: overlay;
+  background: linear-gradient(to top, rgba(255, 255, 255, 0.7) 0%, rgba(255, 255, 255, 0.24) 22%, rgba(255, 255, 255, 0.08) 40%, rgba(255, 255, 255, 0.03) 100%);
+  -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor;
+  mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+  mask-composite: exclude;
+}
+.he-hair {
+  position: absolute;
+  inset: 0;
+  z-index: 7;
+  border-radius: inherit;
+  box-shadow: inset 0 0 0 1px rgba(243, 246, 236, 0.08);
+  pointer-events: none;
+}
+/* a luz que atravessa o card (só transform/opacity) */
+.he-sweep {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  z-index: 5;
+  width: var(--he-sw, 600px);
+  height: var(--he-sw, 600px);
+  margin: calc(var(--he-sw, 600px) / -2) 0 0 calc(var(--he-sw, 600px) / -2);
+  background: linear-gradient(90deg,
+    rgba(216, 255, 166, 0) 30%,
+    rgba(216, 255, 166, 0.1) 40%,
+    rgba(216, 255, 166, 0.3) 46%,
+    rgba(243, 255, 226, 0.66) 49.3%,
+    rgba(255, 255, 255, 0.8) 50%,
+    rgba(216, 255, 166, 0.3) 52%,
+    rgba(168, 255, 53, 0.06) 57%,
+    rgba(168, 255, 53, 0) 62%);
+  opacity: 0;
+  pointer-events: none;
+}
+/* aro lima: acende quando a luz toca o card e no hover */
+.he-rim {
+  position: absolute;
+  inset: 0;
+  z-index: 6;
+  border-radius: inherit;
+  box-shadow: inset 0 0 0 1px rgba(216, 255, 166, 0.88), inset 0 0 28px rgba(168, 255, 53, 0.26);
+  opacity: 0;
+  transition: opacity 0.7s ease;
+  pointer-events: none;
+}
+/* halo: o card irradia por um instante quando recebe a carga */
+.he-halo {
+  position: absolute;
+  inset: 0;
+  border-radius: 16px;
+  box-shadow: 0 0 0 1px rgba(216, 255, 166, 0.42), 0 0 38px 4px rgba(168, 255, 53, 0.26);
+  opacity: 0;
+  pointer-events: none;
+}
+/* anel local do hover: nasce na borda e se abre */
+.he-ping {
+  position: absolute;
+  inset: 0;
+  border-radius: 17px;
+  box-shadow: 0 0 0 1px rgba(216, 255, 166, 0.8), 0 0 24px rgba(168, 255, 53, 0.32);
+  opacity: 0;
+  pointer-events: none;
+}
+/* sinal de vida: um ponto lima no canto quando o vídeo está tocando */
+.he-live {
+  position: absolute;
+  left: 14px;
+  top: 14px;
+  z-index: 9;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--he-lime-soft);
+  box-shadow: 0 0 0 3px rgba(168, 255, 53, 0.14), 0 0 12px 2px rgba(168, 255, 53, 0.55);
+  opacity: 0;
+  transform: scale(0.4);
+  transition: opacity 0.6s ease, transform 0.8s var(--he-ease);
+  pointer-events: none;
+}
+
+/* estados */
+.he-card.is-on .he-g { opacity: 0; }
+.he-card.is-on .he-dim { opacity: 0.16; }
+.he-card.is-on .he-m { transform: scale(1); }
+.he-card.is-play .he-dim { opacity: 0; }
+.he-card.is-play .he-live { opacity: 1; transform: scale(1); }
+.he-card.is-hv .he-m { transform: scale(1.055); transition-duration: 1.1s; }
+.he-card.is-hv .he-rim { opacity: 1; transition-duration: 0.25s; }
+.he-card.is-hv .he-dim { opacity: 0; }
+
+/* com o cursor sobre uma vida, as outras recuam um pouco */
+.he-reel.is-focus .he-card:not(.is-hv) .he-dim {
+  opacity: 0.36;
+  transition-duration: 0.8s;
+}
+
+/* acender em silêncio (fora da tela, ou no modo estático) */
+.he-card.is-quiet .he-g,
+.he-card.is-quiet .he-dim,
+.he-card.is-quiet .he-m { transition: none; }
+
+/* ---------- frente de luz ---------- */
+
+.he-beam {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: var(--he-top, 100px);
+  bottom: 0;
+  z-index: 3;
+  overflow: hidden;
+  pointer-events: none;
+  opacity: 0;
+}
+.he-beam-in {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: var(--he-bw, 1400px);
+  height: var(--he-bh, 2600px);
+  margin: calc(var(--he-bh, 2600px) / -2) 0 0 calc(var(--he-bw, 1400px) / -2);
+  /* a luz corre para +X local: uma faixa macia, sem fio duro (o brilho
+     nítido acontece dentro de cada card); atrás dela, um rastro curto */
+  background: linear-gradient(90deg,
+    rgba(168, 255, 53, 0) 0%,
+    rgba(168, 255, 53, 0) 58%,
+    rgba(168, 255, 53, 0.035) 68%,
+    rgba(190, 255, 110, 0.1) 75.5%,
+    rgba(222, 255, 186, 0.22) 80.5%,
+    rgba(238, 255, 216, 0.3) 82.5%,
+    rgba(206, 255, 150, 0.14) 85%,
+    rgba(168, 255, 53, 0.035) 88.5%,
+    rgba(168, 255, 53, 0) 92%);
+  mix-blend-mode: screen;
+  will-change: transform;
+}
+
+/* ---------- texto ---------- */
+
+.he-wrap {
+  position: relative;
+  z-index: 4;
+  height: 100%;
+  width: min(100% - 96px, 1240px);
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  padding-top: 64px;
+  pointer-events: none;
+}
+.he-wrap a { pointer-events: auto; }
+.hero-copy.he-copy {
+  align-items: flex-start;
+  text-align: left;
+  padding: 0;
+  width: auto;
+  flex: 0 0 auto;
+}
+.he-copy .title {
+  margin-top: 26px;
+  font-size: clamp(40px, 4.2vw, 64px);
+  line-height: 1.03;
+  letter-spacing: -0.036em;
+}
+.he-copy .title .line {
+  margin: 0;
+  white-space: nowrap;
+}
+.he-copy .sub {
+  margin-top: 24px;
+  max-width: 41ch;
+  font-size: clamp(16px, 1.16vw, 18px);
+}
+.he-copy .actions {
+  justify-content: flex-start;
+  margin-top: 34px;
+}
+.he-copy .next-stop { margin-top: 24px; }
+
+/* o clipe da frase nasce cinza e parado; acende junto com a luz */
+.he-js:not(.he-static) .he-copy .title-clip video {
+  filter: grayscale(1) brightness(0.72);
+  transition: filter 0.9s cubic-bezier(0.4, 0, 0.2, 1);
+}
+.he-js:not(.he-static) .he-hero.is-charged .he-copy .title-clip video { filter: none; }
+
+/* telas grandes (2560): o bloco de texto cresce junto com as colunas */
+@media (min-width: 2200px) and (min-height: 1200px) {
+  .he-wrap { width: min(100% - 160px, 1640px); }
+  .hero-copy.he-copy { zoom: 1.3; }
+  .he-coda { font-size: 72px; }
+}
+
+/* entrada: texto e colunas nascem apagados (só com JS e movimento) */
+.he-js:not(.he-static) .he-copy .hero-badge,
+.he-js:not(.he-static) .he-copy .title .line,
+.he-js:not(.he-static) .he-copy .sub,
+.he-js:not(.he-static) .he-copy .actions,
+.he-js:not(.he-static) .he-copy .next-stop,
+.he-js:not(.he-static) .he-in { opacity: 0; }
+
+/* ---------- saída ---------- */
+
+.he-veil {
+  position: absolute;
+  inset: 0;
+  z-index: 3;
+  pointer-events: none;
+  /* escurece as vidas por igual e um pouco mais atrás da frase */
+  background:
+    radial-gradient(36% 24% at 50% 50%, rgba(1, 7, 2, 0.55) 0%, rgba(1, 7, 2, 0) 100%),
+    rgba(1, 7, 2, 0.6);
+  opacity: 0;
+}
+.he-coda {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  z-index: 5;
+  width: max-content;
+  max-width: calc(100% - 64px);
+  transform: translate(-50%, -50%);
+  margin: 0;
+  text-align: center;
+  font-family: var(--font-display);
+  font-weight: 500;
+  font-size: clamp(34px, 3.4vw, 56px);
+  line-height: 1.06;
+  letter-spacing: -0.034em;
+  color: var(--text-hi, #F3F6EC);
+  text-shadow: 0 2px 40px rgba(1, 7, 2, 0.6);
+  pointer-events: none;
+}
+.he-coda-l { display: block; }
+.he-coda-l > span {
+  display: inline-block;
+  opacity: 0;
+}
+.he-coda-m { color: rgba(243, 246, 236, 0.42); }
+.he-foot {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 26vh;
+  z-index: 6;
+  pointer-events: none;
+  background: linear-gradient(to bottom, rgba(1, 7, 2, 0) 0%, rgba(1, 7, 2, 0.6) 55%, #010702 100%);
+  opacity: 0;
+}
+
+/* fora da tela: tudo para (inclusive o fundo do site) */
+.he-hero.is-off .rich-bg .band { animation-play-state: paused; }
+
+/* ---------- seção seguinte (simulada) ---------- */
+
+.he-next {
+  position: relative;
+  z-index: 1;
+  min-height: 90vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 28px;
+  padding: 0 24px;
+  background: var(--he-ink);
+  text-align: center;
+}
+.he-next-t {
+  font-family: var(--font-display);
+  font-weight: 500;
+  font-size: clamp(30px, 3.2vw, 48px);
+  line-height: 1.08;
+  letter-spacing: -0.03em;
+  color: var(--text-hi);
+}
+.he-next-t span { display: block; }
+.he-next-t .he-next-m { color: var(--text-dim); }
+.he-next-note {
+  font-size: 13px;
+  color: rgba(243, 246, 236, 0.32);
+}
+
+/* ---------- versão estática: movimento reduzido ---------- */
+
+.he-static .he-aura { opacity: 0.8; }
+
+/* ---------- telas estreitas: texto + três cards parados ---------- */
+
+.he-strip { display: none; }
+
+@media (max-width: 899px) {
+  .he-hero {
+    height: auto;
+    min-height: 100vh;
+    padding: 120px 0 64px;
+  }
+  .he-window,
+  .he-beam,
+  .he-aura,
+  .he-coda,
+  .he-veil { display: none; }
+  .he-wrap {
+    width: auto;
+    height: auto;
+    padding: 0 24px;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 44px;
+  }
+  .hero-copy.he-copy { width: 100%; }
+  .he-copy .title .line { white-space: normal; }
+  .he-strip {
+    display: flex;
+    gap: 12px;
+    width: 100%;
+    max-width: 560px;
+  }
+  .he-strip figure {
+    position: relative;
+    flex: 1 1 0;
+    aspect-ratio: 4 / 5;
+    margin: 0;
+    border-radius: 14px;
+    overflow: hidden;
+    background: var(--he-card);
+    box-shadow: inset 0 0 0 1px rgba(243, 246, 236, 0.08);
+  }
+  .he-strip figure:nth-child(2) { transform: translateY(24px); }
+  .he-strip img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: 50% 30%;
+    display: block;
+  }
+}

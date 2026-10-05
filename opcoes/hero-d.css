@@ -1,0 +1,391 @@
+/* ============================================================
+   Hero D — Retrato
+   Uma pessoa ao lado do texto, cercada pelas histórias que a
+   transformam: um anel de painéis de vidro curvos gira ao redor dela.
+   Camadas (de trás para frente):
+     rich-bg (malha do site) · palco 3D [luz ambiente ao fundo · anel
+     de painéis · recorte dela no plano z = 0 — os painéis de trás
+     passam atrás do recorte, os da frente na frente] · véu do texto
+     · texto · fade do pé.
+   Por quadro só transform/opacity. O giro ocioso do anel é uma Web
+   Animation (compositor); a "vida" dela é uma troca de opacidade
+   entre imagens prontas (antes cinza/apagada · depois em cor) + a
+   luz lima do contorno, também pronta (assets/img/hero-d/).
+   ============================================================ */
+
+.hd {
+  --hd-ease: cubic-bezier(0.22, 0.7, 0.18, 1);
+  --hd-cx: 60vw;
+  --hd-cy: 60vh;
+  --hd-persp: 1650px;
+  --hd-pox: 60vw;
+  --hd-poy: 38vh;
+  --hd-pw: 660px;
+  --hd-ph: 880px;
+  --hd-pl: -360px;
+  --hd-pt: -540px;
+  --hd-left: max(5vw, calc((100vw - 1240px) / 2));
+}
+
+/* ============ Base estática (sem JS, < 900px) ============ */
+
+.hd .hd-copy { z-index: 6; }
+/* sem 3D: texto primeiro, retrato embaixo */
+.hd {
+  display: flex;
+  flex-direction: column;
+}
+.hd > .hd-copy { order: 1; }
+.hd > .hd-stage { order: 2; }
+.hd-defs { position: absolute; width: 0; height: 0; overflow: hidden; }
+
+.hd-stage {
+  position: relative;
+  z-index: 2;
+  height: 68vh;
+  margin-top: 48px;
+  pointer-events: none;
+}
+.hd-scene { position: absolute; inset: 0; }
+.hd-tilt,
+.hd-bloom,
+.hd-scrim { display: none; }
+.hd-portrait {
+  position: absolute;
+  left: 50%;
+  bottom: 0;
+  height: 100%;
+  aspect-ratio: 1328 / 1760;
+  transform: translateX(-50%);
+}
+.hd-portrait img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+.hd-portrait .hd-before,
+.hd-portrait .hd-rim { display: none; }
+
+/* ============ Composição 3D (≥ 900px, com JS) ============ */
+
+.hd-3d .hd {
+  height: 100vh;
+  min-height: 640px;
+  padding-top: 0;
+}
+
+/* -------- texto à esquerda, alinhado ao container do site -------- */
+
+.hd-3d .hd-copy {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: var(--hd-left);
+  width: min(560px, 40vw);
+  padding: 88px 0 2vh;
+  justify-content: center;
+  align-items: flex-start;
+  text-align: left;
+}
+.hd-3d .hd-copy .title {
+  margin-top: 24px;
+  font-size: clamp(40px, 4.2vw, 64px);
+  line-height: 1.03;
+  letter-spacing: -0.036em;
+}
+.hd-3d .hd-copy .title .line { margin: 0; }
+.hd-3d .hd-copy .sub {
+  margin-top: 22px;
+  max-width: 40ch;
+  font-size: clamp(16px, 1.15vw, 18.5px);
+}
+.hd-3d .hd-copy .actions {
+  margin-top: 30px;
+  justify-content: flex-start;
+}
+.hd-3d .hd-copy .next-stop { margin-top: 20px; }
+
+/* véu do texto: sombra larga e macia ancorada no bloco de texto */
+.hd-3d .hd-scrim {
+  display: block;
+  position: absolute;
+  inset: 0;
+  z-index: 5;
+  pointer-events: none;
+  background:
+    radial-gradient(34vw 46vh at calc(var(--hd-left) + 15vw) 54%, rgba(1, 7, 2, 0.62) 0%, rgba(1, 7, 2, 0.34) 46%, rgba(1, 7, 2, 0) 100%),
+    linear-gradient(90deg, rgba(1, 7, 2, 0.34) 0%, rgba(1, 7, 2, 0.12) 34%, rgba(1, 7, 2, 0) 52%);
+}
+
+/* fade do pé: ela "pousa" no escuro e o hero derrete na seção seguinte */
+.hd-3d .hd::after {
+  height: 20vh;
+  z-index: 4;
+  background: linear-gradient(to bottom, rgba(1, 7, 2, 0) 0%, rgba(1, 7, 2, 0.5) 55%, #010702 100%);
+}
+
+/* -------- palco e cena -------- */
+
+.hd-3d .hd-stage {
+  position: absolute;
+  inset: 0;
+  height: auto;
+  margin: 0;
+  overflow: hidden;
+  perspective: var(--hd-persp);
+  perspective-origin: var(--hd-pox) var(--hd-poy);
+}
+.hd-3d .hd-scene {
+  position: absolute;
+  inset: auto;
+  left: var(--hd-cx);
+  top: var(--hd-cy);
+  width: 0;
+  height: 0;
+  transform-style: preserve-3d;
+}
+.hd-3d .hd-tilt,
+.hd-3d .hd-enter,
+.hd-3d .hd-roll,
+.hd-3d .hd-ring {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 0;
+  height: 0;
+  transform-style: preserve-3d;
+}
+.hd-3d .hd-tilt { display: block; }
+
+/* o giro ocioso do anel é uma Web Animation criada no JS (roda no
+   compositor e sobrevive ao pin do ScrollTrigger, que move o hero no
+   DOM). Fora da tela tudo pausa: */
+.hd-off .rich-bg .band { animation-play-state: paused !important; }
+
+/* -------- o retrato (plano z = 0) -------- */
+
+.hd-3d .hd-portrait {
+  left: var(--hd-pl);
+  top: var(--hd-pt);
+  bottom: auto;
+  width: var(--hd-pw);
+  height: var(--hd-ph);
+  aspect-ratio: auto;
+  transform: translateZ(0);
+  transform-origin: 54% 100%;
+}
+.hd-3d .hd-portrait .hd-before,
+.hd-3d .hd-portrait .hd-rim { display: block; }
+
+/* a vida dela: troca de opacidade entre as imagens prontas, feita
+   por transição CSS (compositor) quando a onda passa — "antes"
+   (cinza, apagada) → "depois" (cor) + a luz lima do contorno */
+.hd-3d .hd-before { opacity: 1; transition: opacity 1.5s cubic-bezier(0.45, 0, 0.2, 1); }
+.hd-3d .hd-rim { opacity: 0; transition: opacity 1.8s cubic-bezier(0.45, 0, 0.2, 1) 0.15s; }
+.hd-3d .hd-bloom { transition: opacity 2.4s cubic-bezier(0.4, 0, 0.2, 1); }
+.hd-dawn .hd-bloom { opacity: 0.28; }
+.hd-alive .hd-before { opacity: 0; }
+.hd-alive .hd-rim { opacity: 0.6; }
+.hd-alive .hd-bloom { opacity: 0.6; }
+
+/* luz ambiente das telas: um brilho largo e baixo, atrás dos ombros
+   (nunca um halo na cabeça). Plano chapado fora do contexto 3D, para
+   nunca cruzar os painéis */
+.hd-3d .hd-bloom {
+  display: block;
+  position: absolute;
+  left: var(--hd-bx);
+  top: var(--hd-by);
+  width: var(--hd-bw);
+  height: var(--hd-bh);
+  border-radius: 50%;
+  background:
+    radial-gradient(closest-side, rgba(150, 240, 60, 0.2) 0%, rgba(130, 225, 56, 0.09) 42%, rgba(110, 200, 50, 0.03) 72%, rgba(110, 200, 50, 0) 100%);
+  opacity: 0;
+}
+
+/* -------- painéis de vidro curvos -------- */
+
+.hd-panel {
+  margin: 0;
+}
+.hd-3d .hd-panel {
+  position: absolute;
+  left: calc(var(--w) * -0.5);
+  top: calc(var(--h) * -0.5);
+  width: var(--w);
+  height: var(--h);
+  transform-style: preserve-3d;
+}
+.hd-face {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  background: #06110A;
+  -webkit-backface-visibility: hidden;
+  backface-visibility: hidden;
+}
+.hd-back { transform: rotateY(180deg); }
+/* a opacidade de cada face vem do JS: só a face virada para a câmera
+   aparece, e perto do perfil as duas somem suavemente (sem fresta) */
+.hd-front { pointer-events: auto; }
+
+.hd-face video,
+.hd-face img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+/* a foto cinza (antes) cobre a cor; some quando a onda passa */
+.hd-gray {
+  transition: opacity 0.8s var(--hd-ease);
+}
+.is-lit .hd-gray { opacity: 0; }
+
+/* painéis de costas: vidro mais escuro e translúcido */
+.hd-back { background: rgba(6, 17, 10, 0.5); }
+.hd-back img { opacity: 0.84; }
+
+/* sombreamento cilíndrico: bordas laterais mais escuras, faixa de
+   reflexo no meio — lê como vidro curvo */
+.hd-sheen {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  pointer-events: none;
+  background:
+    linear-gradient(90deg, rgba(1, 7, 2, 0.55) 0%, rgba(1, 7, 2, 0) 24%, rgba(243, 246, 236, 0.06) 47%, rgba(243, 246, 236, 0) 58%, rgba(1, 7, 2, 0) 76%, rgba(1, 7, 2, 0.55) 100%),
+    linear-gradient(180deg, rgba(243, 246, 236, 0.07) 0%, rgba(243, 246, 236, 0) 30%, rgba(1, 7, 2, 0) 64%, rgba(1, 7, 2, 0.4) 100%);
+  transition: opacity 1s var(--hd-ease);
+}
+.is-on .hd-sheen { opacity: 0.55; }
+
+/* brilho interno lima subindo do pé enquanto o vídeo toca */
+.hd-front::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: 3;
+  pointer-events: none;
+  background:
+    radial-gradient(76% 46% at 50% 108%, rgba(168, 255, 53, 0.28) 0%, rgba(168, 255, 53, 0.07) 52%, rgba(168, 255, 53, 0) 100%);
+  mix-blend-mode: screen;
+  opacity: 0;
+  transition: opacity 1.2s var(--hd-ease);
+}
+.is-on .hd-front::after { opacity: 1; }
+
+/* a faixa de luz que atravessa o painel quando a onda passa */
+.hd-sweep {
+  position: absolute;
+  top: -10%;
+  bottom: -10%;
+  left: 0;
+  width: 46%;
+  z-index: 4;
+  pointer-events: none;
+  background: linear-gradient(100deg, rgba(216, 255, 166, 0) 0%, rgba(216, 255, 166, 0.16) 38%, rgba(243, 255, 220, 0.5) 50%, rgba(216, 255, 166, 0.16) 62%, rgba(216, 255, 166, 0) 100%);
+  mix-blend-mode: screen;
+  opacity: 0;
+  transform: translateX(-110%);
+}
+.is-flash .hd-sweep { animation: hd-sweep 0.95s cubic-bezier(0.3, 0.5, 0.2, 1) both; }
+@keyframes hd-sweep {
+  0%   { opacity: 0; transform: translateX(-110%); }
+  14%  { opacity: 1; }
+  100% { opacity: 0; transform: translateX(240%); }
+}
+
+/* bordas: o filete em overlay (mais forte embaixo) e o filete lima
+   que acende com a onda — SVG com o mesmo contorno curvo */
+.hd-edge,
+.hd-flash {
+  position: absolute;
+  left: 0;
+  top: 0;
+  z-index: 5;
+  overflow: visible;
+  pointer-events: none;
+}
+.hd-edge { mix-blend-mode: overlay; }
+.hd-edge path { fill: none; stroke: url(#hd-ring-g); stroke-width: 2; }
+.hd-edge .hd-hair { stroke: rgba(243, 246, 236, 0.1); stroke-width: 2; }
+.hd-flash path { fill: none; stroke: #D8FFA6; stroke-width: 2.5; }
+.hd-flash { opacity: 0; transition: opacity 1.2s var(--hd-ease); }
+.is-on .hd-flash { opacity: 0.32; }
+.is-flash .hd-flash { animation: hd-flash 1.3s cubic-bezier(0.2, 0.6, 0.2, 1) both; }
+@keyframes hd-flash {
+  0%   { opacity: 0; }
+  12%  { opacity: 1; }
+  100% { opacity: 0; }
+}
+.is-on.is-flash .hd-flash { animation-name: hd-flash-on; }
+@keyframes hd-flash-on {
+  0%   { opacity: 0; }
+  12%  { opacity: 1; }
+  100% { opacity: 0.32; }
+}
+
+/* leve avanço do painel que está tocando (só a face da frente) */
+.hd-3d .hd-panel .hd-face { transition: opacity 0.8s ease, transform 1.2s var(--hd-ease); }
+.hd-3d .is-on .hd-front { transform: scale(1.035); }
+
+/* painel passando atrás do texto: o JS baixa a opacidade das faces */
+.hd-scrub .hd-panel .hd-face,
+.hd-intro .hd-panel .hd-face { transition: none; }
+
+/* ============ Próxima seção ============ */
+
+.hd-next {
+  position: relative;
+  z-index: 1;
+  min-height: 90vh;
+  display: grid;
+  place-items: center;
+  padding: 0 24px;
+  background: #010702;
+  overflow: hidden;
+}
+.hd-next::before {
+  content: '';
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 70vw;
+  height: 46vh;
+  transform: translate(-50%, -50%);
+  background: radial-gradient(closest-side, rgba(168, 255, 53, 0.07), rgba(168, 255, 53, 0) 100%);
+  pointer-events: none;
+}
+.hd-next-line {
+  position: relative;
+  text-align: center;
+  font-size: clamp(30px, 3.2vw, 50px);
+  font-weight: 500;
+  line-height: 1.08;
+  letter-spacing: -0.035em;
+  color: var(--text-hi);
+}
+.hd-next-line span { color: var(--text-dim); }
+
+/* ============ Movimento reduzido: composição parada, em cor ============ */
+
+.hd-rm .hd-before { opacity: 0; }
+.hd-rm .hd-rim { opacity: 0.7; }
+.hd-rm .hd-bloom { opacity: 0.8; }
+.hd-rm .hd-gray { opacity: 0; }
+.hd-rm .hd-front::after { opacity: 0.6; }
+.hd-rm .hd-flash { opacity: 0.3; }
+
+/* ============ Telas pequenas (fallback calmo) ============ */
+
+@media (max-width: 899px) {
+  .hd { padding-top: 120px; }
+  .hd-stage { height: 62vh; }
+}

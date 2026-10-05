@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Seção hero — F2 Tela</title>
+  <link rel="icon" href="../assets/img/igreen-logo.svg">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Instrument+Sans:wdth,wght@75..100,400..700&display=swap">
+  <link rel="stylesheet" href="../css/portalv2.css">
+  <link rel="stylesheet" href="section-hero-f2-tela.css">
+  <script>
+    /* com JS e movimento, o hero nasce apagado e a entrada o acende;
+       com movimento reduzido ou em telas estreitas, a versão estática */
+    document.documentElement.classList.add('shft-js');
+    if (matchMedia('(prefers-reduced-motion: reduce), (max-width: 899px)').matches) {
+      document.documentElement.classList.add('shft-static');
+    }
+    /* rede de segurança: se o script não rodar, mostra tudo */
+    setTimeout(function () { document.documentElement.classList.add('shft-go'); }, 4000);
+  </script>
+</head>
+<body class="tone-green">
+
+  <!-- Menu fixo do topo (mesmo markup do site) -->
+  <header class="topnav">
+    <a class="topnav-logo" href="../index.html"><img src="../assets/img/igreen-logo.svg" alt="iGreen"></a>
+    <nav class="topnav-links" aria-label="Menu fixo">
+      <a href="../index.html">Início</a>
+      <a href="../index.html">Palestrantes</a>
+      <a href="../index.html#agenda">Agenda</a>
+      <a href="../index.html">FAQ</a>
+    </nav>
+    <div class="topnav-actions">
+      <a class="topnav-login" href="#">
+        <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><circle cx="12" cy="8" r="3.4" stroke="currentColor" stroke-width="1.5"/><path d="M5.2 19.4c.9-3.6 3.4-5.4 6.8-5.4s5.9 1.8 6.8 5.4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+        Entrar
+      </a>
+      <a class="topnav-cta" href="#">Cadastre-se</a>
+    </div>
+  </header>
+
+  <!-- ============================================================
+       Seção hero — F2 Tela (refinamento da opção F2)
+       Mudanças pedidas: sem a luz desfocada atrás da tela (fica só o
+       fundo animado do site) e o título com mais respiro acima e abaixo.
+       A tela de cinema da opção F, agora feita de cards separados, com
+       o acabamento dos cards do site (cantos de 16px, véu da marca,
+       filete). Os cards formam uma tela panorâmica (proporção de
+       cinema) inclinada em 3D sob o texto. Na chegada, todos estão em
+       "antes": cinza e parados. Uma frente de luz lima, curva, atravessa
+       a tela uma única vez; atrás dela tudo é cor e vida, e cada card
+       responde quando a luz passa por ele. Depois, calma: alguns tocam
+       e passam a vez, sem piscar. Na rolagem, a tela se endireita e
+       vem na direção de quem vê; para por um instante, escurece e
+       fecha com a frase "Mais de 2.000 vidas já mudaram. A próxima
+       pode ser a sua.", entregando a página.
+       ============================================================ -->
+  <main class="shft-hero" id="topo">
+
+    <!-- Fundo animado do site (estilos em portalv2.css) -->
+    <div class="rich-bg" aria-hidden="true">
+      <img class="aurora-base" src="../assets/img/aurora-base.webp" alt="">
+      <span class="wash"></span>
+      <span class="band band-l1"></span>
+      <span class="band band-l2"></span>
+      <span class="band band-d1"></span>
+      <span class="band band-d2"></span>
+      <span class="dots-base"></span>
+      <span class="dots"></span>
+    </div>
+
+    <!-- Hero copy (mesmo conteúdo do site) -->
+    <div class="shft-copy">
+      <div class="hero-copy">
+        <div class="hero-badge">
+          <span class="avatars" aria-hidden="true">
+            <img src="../speakers/pedro-cut.png" alt="">
+            <img src="../speakers/carla-cut.png" alt="">
+            <img src="../speakers/ana-cut.png" alt="">
+            <img src="../speakers/bruno-cut.png" alt="">
+          </span>
+          <span><b>+2.000</b> vidas transformadas</span>
+        </div>
+
+        <h1 class="title">
+          <span class="line">Renda recorrente</span>
+          <span class="line">que <span class="title-clip" aria-hidden="true"><video src="../assets/video/cards/sel-musgo3.mp4" poster="../assets/video/cards/sel-musgo3.jpg" muted loop autoplay playsinline></video></span> transforma</span>
+          <span class="line line-muted">vidas de verdade</span>
+        </h1>
+
+        <p class="sub">Conheça as histórias de quem virou licenciado iGreen e construiu renda com energia por assinatura, telecom e seguros, todo mês.</p>
+
+        <div class="actions">
+          <a class="btn-primary" href="#">
+            Seja licenciado
+            <span class="chip chip-dark">
+              <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                <path d="M7 17L17 7M9 7h8v8" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+            </span>
+          </a>
+          <a class="btn-ghost" href="#">Ver histórias</a>
+        </div>
+
+        <a class="next-stop" href="../index.html#agenda">Próxima parada do tour: <b>Goiânia, 16 de agosto</b></a>
+      </div>
+    </div>
+
+    <!-- A tela de cards: fica parada (sticky) por um instante no fim,
+         para a frase de fechamento -->
+    <div class="shft-stage" role="group" aria-label="Licenciados iGreen em vídeo">
+      <div class="shft-tilt">
+
+        <div class="shft-panel">
+          <!-- antes: fotogramas cinza e parados (imagens já tratadas) -->
+          <div class="shft-gray" aria-hidden="true">
+            <div class="shft-grid">
+                <span class="shft-cell" style="grid-area:1 / 1"><img src="../assets/img/section-hero-f2-tela/gen-executiva1-antes.jpg" alt="" style="object-position:30% 40%"></span>
+                <span class="shft-cell" style="grid-area:1 / 2"><img src="../assets/img/section-hero-f2-tela/sel-musgo1-antes.jpg" alt="" style="object-position:50% 25%"></span>
+                <span class="shft-cell" style="grid-area:1 / 3"><img src="../assets/img/section-hero-f2-tela/gen-podcast-antes.jpg" alt="" style="object-position:50% 30%"></span>
+                <span class="shft-cell" style="grid-area:1 / 4 / span 2 / span 1"><img src="../assets/img/section-hero-f2-tela/gen-executiva2-antes.jpg" alt="" style="object-position:50% 30%"></span>
+                <span class="shft-cell" style="grid-area:1 / 5"><img src="../assets/img/section-hero-f2-tela/sel-suv-antes.jpg" alt="" style="object-position:50% 25%"></span>
+                <span class="shft-cell" style="grid-area:1 / 6"><img src="../assets/img/section-hero-f2-tela/gen-kart-antes.jpg" alt="" style="object-position:50% 30%"></span>
+                <span class="shft-cell" style="grid-area:1 / 7"><img src="../assets/img/section-hero-f2-tela/sel-jardim-antes.jpg" alt="" style="object-position:50% 35%"></span>
+                <span class="shft-cell" style="grid-area:2 / 1"><img src="../assets/img/section-hero-f2-tela/gen-reuniao-antes.jpg" alt="" style="object-position:50% 30%"></span>
+                <span class="shft-cell" style="grid-area:2 / 2"><img src="../assets/img/section-hero-f2-tela/sel-escritorio-antes.jpg" alt="" style="object-position:50% 35%"></span>
+                <span class="shft-cell" style="grid-area:2 / 3"><img src="../assets/img/section-hero-f2-tela/gen-walk-antes.jpg" alt="" style="object-position:50% 40%"></span>
+                <span class="shft-cell" style="grid-area:2 / 5"><img src="../assets/img/section-hero-f2-tela/sel-estudio-antes.jpg" alt="" style="object-position:50% 40%"></span>
+                <span class="shft-cell" style="grid-area:2 / 6"><img src="../assets/img/section-hero-f2-tela/sel-carro-antes.jpg" alt="" style="object-position:50% 15%"></span>
+                <span class="shft-cell" style="grid-area:2 / 7"><img src="../assets/img/section-hero-f2-tela/sel-musgo2-antes.jpg" alt="" style="object-position:50% 25%"></span>
+            </div>
+          </div>
+
+          <!-- depois: cards em cor, recortados pela frente curva -->
+          <div class="shft-front">
+            <div class="shft-clip">
+              <div class="shft-after">
+                <div class="shft-grid">
+                <div class="shft-slot" style="grid-area:1 / 1">
+                  <span class="shft-glow" aria-hidden="true"></span>
+                  <figure class="shft-tile" data-i="0">
+                    <video src="../assets/video/cards/gen-executiva1.mp4" poster="../assets/video/cards/gen-executiva1.jpg" muted loop playsinline preload="metadata" style="object-position:30% 40%" aria-label="Executiva de blazer verde sorrindo com o celular na mão"></video>
+                    <span class="shft-ping" aria-hidden="true"></span>
+                  </figure>
+                </div>
+                <div class="shft-slot" style="grid-area:1 / 2">
+                  <span class="shft-glow" aria-hidden="true"></span>
+                  <figure class="shft-tile" data-i="1">
+                    <video src="../assets/video/cards/sel-musgo1.mp4" poster="../assets/video/cards/sel-musgo1.jpg" muted loop playsinline preload="metadata" style="object-position:50% 25%" aria-label="Licenciado falando diante do logo iGreen no muro verde"></video>
+                    <span class="shft-ping" aria-hidden="true"></span>
+                  </figure>
+                </div>
+                <div class="shft-slot" style="grid-area:1 / 3">
+                  <span class="shft-glow" aria-hidden="true"></span>
+                  <figure class="shft-tile" data-i="2">
+                    <video src="../assets/video/cards/gen-podcast.mp4" poster="../assets/video/cards/gen-podcast.jpg" muted loop playsinline preload="metadata" style="object-position:50% 30%" aria-label="Licenciado gravando podcast em um estúdio de parede verde"></video>
+                    <span class="shft-ping" aria-hidden="true"></span>
+                  </figure>
+                </div>
+                <div class="shft-slot" style="grid-area:1 / 4 / span 2 / span 1">
+                  <span class="shft-glow" aria-hidden="true"></span>
+                  <figure class="shft-tile" data-i="3">
+                    <video src="../assets/video/cards/gen-executiva2.mp4" poster="../assets/video/cards/gen-executiva2.jpg" muted loop playsinline preload="metadata" style="object-position:50% 30%" aria-label="Executiva de blazer verde apresentando em um estúdio com luzes verdes"></video>
+                    <span class="shft-ping" aria-hidden="true"></span>
+                  </figure>
+                </div>
+                <div class="shft-slot" style="grid-area:1 / 5">
+                  <span class="shft-glow" aria-hidden="true"></span>
+                  <figure class="shft-tile" data-i="4">
+                    <video src="../assets/video/cards/sel-suv.mp4" poster="../assets/video/cards/sel-suv.jpg" muted loop playsinline preload="metadata" style="object-position:50% 25%" aria-label="Licenciado com o celular diante de um SUV verde"></video>
+                    <span class="shft-ping" aria-hidden="true"></span>
+                  </figure>
+                </div>
+                <div class="shft-slot" style="grid-area:1 / 6">
+                  <span class="shft-glow" aria-hidden="true"></span>
+                  <figure class="shft-tile" data-i="5">
+                    <video src="../assets/video/cards/gen-kart.mp4" poster="../assets/video/cards/gen-kart.jpg" muted loop playsinline preload="metadata" style="object-position:50% 30%" aria-label="Piloto de kart com macacão e capacete verdes da iGreen"></video>
+                    <span class="shft-ping" aria-hidden="true"></span>
+                  </figure>
+                </div>
+                <div class="shft-slot" style="grid-area:1 / 7">
+                  <span class="shft-glow" aria-hidden="true"></span>
+                  <figure class="shft-tile" data-i="6">
+                    <video src="../assets/video/cards/sel-jardim.mp4" poster="../assets/video/cards/sel-jardim.jpg" muted loop playsinline preload="metadata" style="object-position:50% 35%" aria-label="Licenciado com polo iGreen falando ao lado do jardim vertical"></video>
+                    <span class="shft-ping" aria-hidden="true"></span>
+                  </figure>
+                </div>
+                <div class="shft-slot" style="grid-area:2 / 1">
+                  <span class="shft-glow" aria-hidden="true"></span>
+                  <figure class="shft-tile" data-i="7">
+                    <video src="../assets/video/cards/gen-reuniao.mp4" poster="../assets/video/cards/gen-reuniao.jpg" muted loop playsinline preload="metadata" style="object-position:50% 30%" aria-label="Executiva de blazer verde apresentando em uma sala de reunião"></video>
+                    <span class="shft-ping" aria-hidden="true"></span>
+                  </figure>
+                </div>
+                <div class="shft-slot" style="grid-area:2 / 2">
+                  <span class="shft-glow" aria-hidden="true"></span>
+                  <figure class="shft-tile" data-i="8">
+                    <video src="../assets/video/cards/sel-escritorio.mp4" poster="../assets/video/cards/sel-escritorio.jpg" muted loop playsinline preload="metadata" style="object-position:50% 35%" aria-label="Licenciado de camiseta verde em um escritório moderno"></video>
+                    <span class="shft-ping" aria-hidden="true"></span>
+                  </figure>
+                </div>
+                <div class="shft-slot" style="grid-area:2 / 3">
+                  <span class="shft-glow" aria-hidden="true"></span>
+                  <figure class="shft-tile" data-i="9">
+                    <video src="../assets/video/cards/gen-walk.mp4" poster="../assets/video/cards/gen-walk.jpg" muted loop playsinline preload="metadata" style="object-position:50% 40%" aria-label="Executiva de blazer verde caminhando pelo escritório"></video>
+                    <span class="shft-ping" aria-hidden="true"></span>
+                  </figure>
+                </div>
+                <div class="shft-slot" style="grid-area:2 / 5">
+                  <span class="shft-glow" aria-hidden="true"></span>
+                  <figure class="shft-tile" data-i="10">
+                    <video src="../assets/video/cards/sel-estudio.mp4" poster="../assets/video/cards/sel-estudio.jpg" muted loop playsinline preload="metadata" style="object-position:50% 40%" aria-label="Apresentadora em estúdio com telão de ondas verdes"></video>
+                    <span class="shft-ping" aria-hidden="true"></span>
+                  </figure>
+                </div>
+                <div class="shft-slot" style="grid-area:2 / 6">
+                  <span class="shft-glow" aria-hidden="true"></span>
+                  <figure class="shft-tile" data-i="11">
+                    <video src="../assets/video/cards/sel-carro.mp4" poster="../assets/video/cards/sel-carro.jpg" muted loop playsinline preload="metadata" style="object-position:50% 15%" aria-label="Licenciada sorrindo diante de um carro verde"></video>
+                    <span class="shft-ping" aria-hidden="true"></span>
+                  </figure>
+                </div>
+                <div class="shft-slot" style="grid-area:2 / 7">
+                  <span class="shft-glow" aria-hidden="true"></span>
+                  <figure class="shft-tile" data-i="12">
+                    <video src="../assets/video/cards/sel-musgo2.mp4" poster="../assets/video/cards/sel-musgo2.jpg" muted loop playsinline preload="metadata" style="object-position:50% 25%" aria-label="Licenciado de óculos falando diante do logo iGreen"></video>
+                    <span class="shft-ping" aria-hidden="true"></span>
+                  </figure>
+                </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- o feixe de luz, recortado pela tela -->
+          <div class="shft-beamwrap" aria-hidden="true">
+            <div class="shft-beam">
+              <svg class="shft-beam-svg"></svg>
+              <span class="shft-tag shft-tag--antes">antes</span>
+              <span class="shft-tag shft-tag--depois"><i></i>depois</span>
+            </div>
+          </div>
+
+          <span class="shft-dim" aria-hidden="true"></span>
+        </div>
+
+        <!-- fechamento: a frase aparece sobre a tela escurecida -->
+        <p class="shft-phrase" aria-hidden="true">
+          <span class="shft-phrase-l">Mais de 2.000 vidas já mudaram.</span>
+          <span class="shft-phrase-l shft-phrase-m">A próxima pode ser a sua.</span>
+        </p>
+      </div>
+    </div>
+    <div class="shft-hold" aria-hidden="true"></div>
+
+  </main>
+
+  <!-- Simula a seção seguinte, para julgar a saída do hero -->
+  <section class="shft-next" aria-label="Seção seguinte">
+    <p class="shft-next-t"><span>Trabalho não é só renda.</span> <span class="shft-next-m">Ele muda a sua história.</span></p>
+    <p class="shft-next-note">Seção seguinte (F2 Tela)</p>
+  </section>
+
+  <script src="../assets/vendor/gsap.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.13.0/ScrollTrigger.min.js"></script>
+  <script src="section-hero-f2-tela.js"></script>
+</body>
+</html>

@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Hero G — Mosaico de vidas</title>
+  <link rel="icon" href="../assets/img/igreen-logo.svg">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Instrument+Sans:wdth,wght@75..100,400..700&display=swap">
+  <link rel="preload" as="image" href="../assets/img/hero-g/atlas-cinza.webp">
+  <link rel="preload" as="image" href="../assets/img/hero-g/atlas-cor.webp">
+  <link rel="stylesheet" href="../css/portalv2.css">
+  <link rel="stylesheet" href="hero-g.css">
+  <!-- marca a página como "com JS" antes do primeiro quadro: só então o
+       texto começa escondido para a entrada (sem JS tudo aparece) -->
+  <script>
+    document.documentElement.classList.add('hg-js');
+    // rede de segurança: se o JS do hero falhar, o texto aparece mesmo assim
+    window.addEventListener('load', function () {
+      setTimeout(function () { var h = document.getElementById('hg'); if (h) h.classList.add('hg-in'); }, 2500);
+    });
+  </script>
+</head>
+<body class="tone-green">
+
+  <!-- Menu fixo do topo (mesmo markup do site) -->
+  <header class="topnav">
+    <a class="topnav-logo" href="../index.html"><img src="../assets/img/igreen-logo.svg" alt="iGreen"></a>
+    <nav class="topnav-links" aria-label="Menu fixo">
+      <a href="../index.html">Início</a>
+      <a href="../index.html">Palestrantes</a>
+      <a href="../index.html#agenda">Agenda</a>
+      <a href="../index.html">FAQ</a>
+    </nav>
+    <div class="topnav-actions">
+      <a class="topnav-login" href="#">
+        <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><circle cx="12" cy="8" r="3.4" stroke="currentColor" stroke-width="1.5"/><path d="M5.2 19.4c.9-3.6 3.4-5.4 6.8-5.4s5.9 1.8 6.8 5.4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+        Entrar
+      </a>
+      <a class="topnav-cta" href="#">Cadastre-se</a>
+    </div>
+  </header>
+
+  <!-- ============================================================
+       Hero G — Mosaico de vidas
+       O número "2.000" desenhado com centenas de pontos, e cada ponto
+       é uma pessoa (quadros dos vídeos dos licenciados, fotos dos
+       eventos, palestrantes). Tudo num único <canvas> alimentado por
+       dois atlas de miniaturas (cor e cinza).
+       1. Entrada: o número surge cinza e apagado ("antes"); o clipe da
+          frase dispara e uma onda de energia atravessa o número,
+          acendendo cada ponto em cor ("depois") em ~2 s.
+       2. Vida: de tempos em tempos um ponto apaga e reacende com outra
+          pessoa. Calmo, poucos de cada vez.
+       3. Interação: o cursor é uma lente — os pontos perto dele crescem
+          e clareiam, e os rostos ficam legíveis. Passar no botão
+          principal manda uma onda de luz pelo número.
+       4. Rolagem (hero preso ~110vh): a câmera mergulha no ponto final
+          do "2.000" até que os nove pontos dele ocupem a tela; cinco
+          viram vídeos vivos. Então a próxima seção assume.
+       ============================================================ -->
+  <section class="hg" id="hg" aria-label="Mais de 2.000 vidas transformadas">
+    <div class="hg-stage">
+
+      <!-- Rich animated background (markup do site; estilos em portalv2.css) -->
+      <div class="rich-bg" aria-hidden="true">
+        <img class="aurora-base" src="../assets/img/aurora-base.webp" alt="">
+        <span class="wash"></span>
+        <span class="band band-l1"></span>
+        <span class="band band-l2"></span>
+        <span class="band band-d1"></span>
+        <span class="band band-d2"></span>
+        <span class="dots-base"></span>
+        <span class="dots"></span>
+      </div>
+
+      <!-- o mosaico: um único canvas -->
+      <canvas class="hg-canvas" aria-hidden="true"></canvas>
+
+      <!-- os cinco pontos que viram vídeo no fim do mergulho -->
+      <div class="hg-vids" aria-hidden="true">
+        <div class="hg-vid" data-cell="1"><video src="../assets/video/cards/gen-executiva2.mp4" poster="../assets/video/cards/gen-executiva2.jpg" muted loop playsinline preload="metadata"></video></div>
+        <div class="hg-vid" data-cell="3"><video src="../assets/video/cards/gen-podcast.mp4" poster="../assets/video/cards/gen-podcast.jpg" muted loop playsinline preload="metadata"></video></div>
+        <div class="hg-vid" data-cell="4"><video src="../assets/video/cards/sel-carro.mp4" poster="../assets/video/cards/sel-carro.jpg" muted loop playsinline preload="metadata"></video></div>
+        <div class="hg-vid" data-cell="5"><video src="../assets/video/cards/sel-musgo1.mp4" poster="../assets/video/cards/sel-musgo1.jpg" muted loop playsinline preload="metadata"></video></div>
+        <div class="hg-vid" data-cell="7"><video src="../assets/video/cards/sel-suv.mp4" poster="../assets/video/cards/sel-suv.jpg" muted loop playsinline preload="metadata"></video></div>
+      </div>
+
+      <!-- foco do mergulho: escurece as bordas quando a câmera entra -->
+      <div class="hg-vignette" aria-hidden="true"></div>
+
+      <!-- Hero copy (conteúdo do site, reorganizado em duas colunas) -->
+      <div class="hero-copy hg-copy">
+        <div class="hg-col hg-col-main">
+          <div class="hero-badge hg-rise">
+            <span class="avatars" aria-hidden="true">
+              <img src="../speakers/pedro-cut.png" alt="">
+              <img src="../speakers/carla-cut.png" alt="">
+              <img src="../speakers/ana-cut.png" alt="">
+              <img src="../speakers/bruno-cut.png" alt="">
+            </span>
+            <span><b>+2.000</b> vidas transformadas</span>
+          </div>
+
+          <h1 class="title">
+            <span class="line"><span class="hg-line-in">Renda recorrente</span></span>
+            <span class="line"><span class="hg-line-in">que <span class="title-clip" aria-hidden="true"><video src="../assets/video/cards/sel-musgo3.mp4" poster="../assets/video/cards/sel-musgo3.jpg" muted loop autoplay playsinline></video></span> transforma</span></span>
+            <span class="line line-muted"><span class="hg-line-in">vidas de verdade</span></span>
+          </h1>
+        </div>
+
+        <div class="hg-col hg-col-side">
+          <p class="sub hg-rise">Conheça as histórias de quem virou licenciado iGreen e construiu renda com energia por assinatura, telecom e seguros, todo mês.</p>
+
+          <div class="actions hg-rise">
+            <a class="btn-primary" href="#">
+              Seja licenciado
+              <span class="chip chip-dark">
+                <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                  <path d="M7 17L17 7M9 7h8v8" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+              </span>
+            </a>
+            <a class="btn-ghost" href="#">Ver histórias</a>
+          </div>
+
+          <a class="next-stop hg-rise" href="#agenda">Próxima parada do tour: <b>Goiânia, 16 de agosto</b></a>
+        </div>
+      </div>
+
+      <!-- passagem para a próxima seção -->
+      <div class="hg-fade" aria-hidden="true"></div>
+    </div>
+  </section>
+
+  <!-- Próxima seção (simples), para julgar a saída do hero -->
+  <section class="hg-next" id="agenda">
+    <p class="hg-next-line">Cada ponto é uma pessoa.<br><span>Cada pessoa, uma história de verdade.</span></p>
+  </section>
+
+  <script src="hero-g.js"></script>
+</body>
+</html>

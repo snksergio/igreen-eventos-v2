@@ -1,0 +1,147 @@
+/* ============================================================
+   Section kickers — "Borda de energia + objeto 3D" (proposta 09·C)
+   The area's 3D glass object rises out of the pill, cut along the
+   pill's base, while one lap of light runs around the border and the
+   inside charges. Plays once when the badge comes into view
+   (js/kicker.js); hover replays it. The hero badge is not affected.
+   ============================================================ */
+
+/* keeps the .kicker class for the sections' spacing and reveal hooks,
+   but drops the old pill look */
+.kicker.kicker3d {
+  position: relative;
+  display: inline-flex;
+  height: auto;
+  padding: 0;
+  gap: 0;
+  border: 0;
+  border-radius: 0;
+  background: none;
+}
+.kicker.kicker3d::before { content: none; }
+
+.kp-pill {
+  position: relative;
+  display: inline-flex;
+  margin: 0;
+  padding: 1px; /* the 1px rim is the border */
+  border-radius: 999px;
+  overflow: hidden;
+  isolation: isolate;
+  background: rgba(243, 246, 236, 0.13);
+  font-size: 14px;
+  line-height: 1;
+  white-space: nowrap;
+}
+/* a conic light larger than the pill turns once behind it; only the rim shows */
+.kp-light {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 140%;
+  aspect-ratio: 1;
+  translate: -50% -50%;
+  background: conic-gradient(from 0deg, transparent 0 62%, rgba(168, 255, 53, 0) 64%, rgba(168, 255, 53, 0.95) 86%, #EEFFD6 88%, transparent 89% 100%);
+  opacity: 0;
+}
+.kp-in {
+  position: relative;
+  z-index: 1;
+  display: inline-flex;
+  align-items: center;
+  height: 32px;
+  padding: 0 15px 0 64px; /* room for the object on the left */
+  border-radius: 999px;
+  overflow: hidden;
+  background: #040B06;
+  color: rgba(243, 246, 236, 0.78);
+}
+.kp-t { position: relative; }
+.kp-t b {
+  font-weight: 500;
+  color: #F5F9F0;
+}
+.kp-charge {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(90deg, rgba(168, 255, 53, 0), rgba(168, 255, 53, 0.14) 80%, rgba(216, 255, 166, 0.3));
+  transform: scaleX(0);
+  transform-origin: left;
+  opacity: 0;
+  pointer-events: none;
+}
+
+/* the clip box: its bottom edge is the pill's inner base, its top is open
+   above the pill — the object breaks out upward and is cut at the base */
+.kp-pop {
+  position: absolute;
+  left: 8px;
+  bottom: 1px;
+  z-index: 2;
+  width: 52px;
+  height: 74px;
+  overflow: hidden;
+  pointer-events: none;
+}
+.kp-obj {
+  position: absolute;
+  left: 50%;
+  bottom: -7px;
+  display: block;
+  line-height: 0;
+  translate: -50% 0;
+}
+.kp-obj img {
+  display: block;
+  width: auto;
+  height: 46px;
+  filter: drop-shadow(0 3px 6px rgba(0, 0, 0, 0.45));
+}
+.kp-glow {
+  position: absolute;
+  left: 50%;
+  bottom: -13px;
+  width: 50px;
+  height: 25px;
+  translate: -50% 0;
+  border-radius: 50%;
+  background: radial-gradient(closest-side, rgba(168, 255, 53, 0.5), rgba(168, 255, 53, 0));
+}
+
+/* editions: the kicker sits in a line mask — give the mask room above
+   the pill so the object isn't clipped */
+.od-head-in > .od-m:has(.kicker3d) {
+  padding-top: 16px;
+  margin-top: -16px;
+}
+
+/* ---------- entrance (only when js/kicker.js is running) ---------- */
+
+.kp-ready .kicker3d:not(.is-in) .kp-obj { transform: translateY(95%); }
+.kp-ready .kicker3d:not(.is-in) .kp-glow { opacity: 0; }
+
+.kicker3d.is-in .kp-light { animation: kp-lap 1.9s cubic-bezier(0.45, 0, 0.25, 1) 0.2s; }
+.kicker3d.is-in .kp-charge { animation: kp-charge 1.5s cubic-bezier(0.65, 0, 0.35, 1) 0.3s; }
+.kicker3d.is-in .kp-obj { animation: kp-rise 1.1s cubic-bezier(0.16, 1, 0.3, 1) 0.5s backwards; }
+.kicker3d.is-in .kp-glow { animation: kp-fade 1.2s ease-out 0.7s backwards; }
+
+@keyframes kp-lap {
+  0% { opacity: 0; rotate: 0deg; }
+  12% { opacity: 1; }
+  82% { opacity: 1; }
+  100% { opacity: 0; rotate: 360deg; }
+}
+@keyframes kp-charge {
+  0% { opacity: 1; transform: scaleX(0); }
+  70% { opacity: 1; transform: scaleX(1); }
+  100% { opacity: 0; transform: scaleX(1); }
+}
+@keyframes kp-rise { from { transform: translateY(90%); } }
+@keyframes kp-fade { from { opacity: 0; } }
+
+/* hover replay: animations switched off for one style pass */
+.kicker3d.kp-reset * { animation: none !important; }
+
+@media (prefers-reduced-motion: reduce) {
+  .kicker3d * { animation: none !important; }
+}

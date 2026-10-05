@@ -1,0 +1,458 @@
+/* ============================================================
+   Hero B no index — "O vale sobe"
+   Base: o hero do site (texto centralizado + mosaico em vale de 7
+   colunas de clipes 4:5, mesh animado ao fundo). O mosaico foi copiado
+   de css/portal.css com nomes próprios (shbi-) para esta página ficar
+   isolada. Por cima, a alma do Hero B: cinza → a frase acende → cor.
+   Por quadro só mudam transform e opacity.
+   ============================================================ */
+
+:root {
+  --shbi-lime: #A8FF35;
+  --shbi-lime-soft: #D8FFA6;
+  --shbi-ink: #F3F6EC;
+}
+
+/* ============ Mosaico em vale (copiado de portal.css) ============ */
+
+.shbi {
+  --m-gap: 14px;
+  --m-edge: 32px;
+}
+
+.shbi-mosaic {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  gap: var(--m-gap);
+  /* a largura do site + uma folga de 24px de cada lado para o anel do
+     hover não ser cortado pela máscara */
+  width: calc(min(100% - 2 * var(--m-edge), 1640px) + 48px);
+  margin: 56px auto 0; /* o JS puxa para cima: as laterais sobem ao lado do texto */
+  /* a caixa se estende 100vh acima das colunas (transparente): quando o
+     vale sobe, nada passa do topo da máscara */
+  padding: 100vh 24px 24px;
+  pointer-events: none;
+  /* a base se dissolve no mesh, no mesmo ponto da tela que no site
+     (posições medidas pelo JS) */
+  -webkit-mask-image: linear-gradient(to bottom, #000 0, #000 var(--shbi-f0, 90%), transparent var(--shbi-f1, 100%));
+  mask-image: linear-gradient(to bottom, #000 0, #000 var(--shbi-f0, 90%), transparent var(--shbi-f1, 100%));
+}
+.shbi-col {
+  flex: 1 1 0;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: var(--m-gap);
+  will-change: transform;
+}
+
+/* ============ Cards ============ */
+
+.shbi-tile {
+  position: relative;
+  margin: 0;
+  aspect-ratio: 4 / 5;
+  pointer-events: auto;
+}
+.shbi-tile--tall { aspect-ratio: 4 / 10; }
+.shbi-card {
+  position: absolute;
+  inset: 0;
+  border-radius: 16px;
+  overflow: hidden;
+  background: #0C2414;
+  transition: transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.shbi-card video,
+.shbi-cover,
+.shbi-photo,
+.shbi-gray {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  pointer-events: none;
+}
+/* capa colorida (o pôster) por cima do vídeo: trocas de clipe suaves */
+.shbi-cover {
+  z-index: 1;
+  transition: opacity 1.3s cubic-bezier(0.45, 0, 0.25, 1);
+}
+/* "antes": a foto cinza por cima de tudo (só com o JS ligado) */
+.shbi-gray {
+  z-index: 1;
+  opacity: 0;
+  transition: opacity 0.9s cubic-bezier(0.3, 0.6, 0.2, 1);
+}
+.shbi-armed .shbi-gray { opacity: 1; }
+.shbi-armed .shbi-still .shbi-gray { opacity: 0; }
+.shbi-lit .shbi-cover {
+  opacity: 0;
+  transition-duration: 0.6s;
+}
+/* lavagem da marca (a mesma do site) */
+.shbi-wash {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  background: linear-gradient(180deg, rgba(120, 200, 60, 0.07) 0%, rgba(6, 24, 13, 0) 45%, rgba(4, 16, 8, 0.32) 100%);
+  pointer-events: none;
+}
+/* a luz que atravessa o card (só transform/opacity) */
+.shbi-sweep {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  z-index: 3;
+  width: var(--shbi-sw, 400px);
+  height: var(--shbi-sw, 400px);
+  margin: calc(var(--shbi-sw, 400px) / -2) 0 0 calc(var(--shbi-sw, 400px) / -2);
+  background: linear-gradient(90deg,
+    rgba(216, 255, 166, 0) 34%,
+    rgba(216, 255, 166, 0.16) 43%,
+    rgba(243, 255, 226, 0.62) 49.2%,
+    rgba(255, 255, 255, 0.78) 50%,
+    rgba(216, 255, 166, 0.34) 52%,
+    rgba(168, 255, 53, 0.08) 58%,
+    rgba(168, 255, 53, 0) 66%);
+  opacity: 0;
+  pointer-events: none;
+}
+/* aro lima */
+.shbi-rim {
+  position: absolute;
+  inset: 0;
+  z-index: 4;
+  border-radius: inherit;
+  box-shadow: inset 0 0 0 1px rgba(216, 255, 166, 0.9), inset 0 0 26px rgba(168, 255, 53, 0.32);
+  opacity: 0;
+  pointer-events: none;
+}
+/* filete + anel de sobreposição premium (padrão dos cards do site) */
+.shbi-card::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: 5;
+  border-radius: inherit;
+  padding: 1px;
+  pointer-events: none;
+  mix-blend-mode: overlay;
+  background: linear-gradient(to top, rgba(255, 255, 255, 0.7) 0%, rgba(255, 255, 255, 0.24) 22%, rgba(255, 255, 255, 0.08) 40%, rgba(255, 255, 255, 0.03) 100%);
+  -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor;
+  mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+  mask-composite: exclude;
+}
+.shbi-card::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: 5;
+  border-radius: inherit;
+  box-shadow: inset 0 0 0 1px rgba(243, 246, 236, 0.08);
+  pointer-events: none;
+}
+/* anel local do hover */
+.shbi-ping {
+  position: absolute;
+  inset: 0;
+  border-radius: 17px;
+  box-shadow: 0 0 0 1px rgba(216, 255, 166, 0.75), 0 0 22px rgba(168, 255, 53, 0.3);
+  opacity: 0;
+  pointer-events: none;
+}
+.shbi-hover { z-index: 3; }
+.shbi-hover .shbi-card { transform: scale(1.04); }
+
+/* ============ Texto ============ */
+
+.shbi-copy { z-index: 3; }
+/* véu suave atrás do texto: a luz da explosão nunca disputa a leitura */
+.shbi-copy::before {
+  content: '';
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  z-index: -1;
+  width: calc(100% + 240px);
+  max-width: 1300px;
+  height: calc(100% + 160px);
+  transform: translate(-50%, -50%);
+  background: radial-gradient(closest-side, rgba(1, 7, 2, 0.42) 0%, rgba(1, 7, 2, 0.26) 50%, rgba(1, 7, 2, 0) 100%);
+  pointer-events: none;
+}
+.shbi-copy > * { position: relative; z-index: 1; }
+
+/* tipografia: o título no tamanho que o cliente aprovou (o mesmo da
+   frase da seção seguinte); sub e botões acompanham */
+.shbi .title {
+  margin-top: 22px;
+  font-size: clamp(34px, 4.2vw, 64px);
+  line-height: 1.06;
+  letter-spacing: -0.032em;
+}
+.shbi .sub {
+  margin-top: 20px;
+  max-width: 52ch;
+  font-size: clamp(15.5px, 1.15vw, 17.5px);
+}
+.shbi .actions { margin-top: 28px; }
+.shbi .next-stop { margin-top: 18px; font-size: 13.5px; }
+
+/* a pílula da frase: aro fino, halo e o núcleo de luz da abertura */
+.shbi .title-clip {
+  position: relative;
+  overflow: visible;
+  background: transparent;
+  box-shadow: none;
+}
+.shbi .title-clip video {
+  position: relative;
+  z-index: 1;
+  border-radius: 999px;
+  background: #0E2A17;
+  box-shadow: 0 0 0 1px rgba(243, 246, 236, 0.16), 0 12px 32px rgba(0, 0, 0, 0.35);
+}
+.shbi .title-clip::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: 3;
+  border-radius: 999px;
+  box-shadow: inset 0 0 0 1px rgba(216, 255, 166, 0.28);
+  pointer-events: none;
+}
+.shbi-halo {
+  position: absolute;
+  left: -46%;
+  right: -46%;
+  top: -90%;
+  bottom: -90%;
+  z-index: 0;
+  border-radius: 50%;
+  background: radial-gradient(closest-side, rgba(168, 255, 53, 0.42) 0%, rgba(168, 255, 53, 0.16) 42%, rgba(168, 255, 53, 0.05) 68%, rgba(168, 255, 53, 0) 100%);
+  opacity: 0.3;
+  pointer-events: none;
+}
+.shbi-core {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  border-radius: 999px;
+  background: radial-gradient(closest-side, #F3FFE2 0%, var(--shbi-lime-soft) 40%, rgba(168, 255, 53, 0.9) 100%);
+  box-shadow: 0 0 0 1px rgba(216, 255, 166, 0.5);
+  opacity: 0;
+  pointer-events: none;
+}
+
+/* "vidas de verdade" acende: base apagada (a do site), camada lima
+   revelada por uma cortina de borda suave e a camada "quente" do flash */
+.shbi-vline { position: relative; }
+.shbi-lime {
+  position: absolute;
+  top: -0.3em;
+  bottom: -0.3em;
+  left: -0.5em;
+  right: -1.8em;
+  overflow: hidden;
+  opacity: 0;
+  -webkit-mask-image: linear-gradient(90deg, #000 0, #000 calc(100% - 1.3em), transparent 100%);
+  mask-image: linear-gradient(90deg, #000 0, #000 calc(100% - 1.3em), transparent 100%);
+  pointer-events: none;
+}
+.shbi-lime > span {
+  position: absolute;
+  left: 0.5em;
+  top: 0.3em;
+  white-space: nowrap;
+  color: var(--shbi-lime);
+  text-shadow: 0 0 0.2em rgba(168, 255, 53, 0.42), 0 0 0.62em rgba(168, 255, 53, 0.2);
+}
+.shbi-hot {
+  position: absolute;
+  left: 0;
+  top: 0;
+  white-space: nowrap;
+  color: #F7FFEA;
+  text-shadow: 0 0 0.12em rgba(216, 255, 166, 0.95), 0 0 0.4em rgba(168, 255, 53, 0.75), 0 0 1.1em rgba(168, 255, 53, 0.4);
+  opacity: 0;
+  pointer-events: none;
+}
+.shbi-edge {
+  position: absolute;
+  left: 0;
+  top: -0.32em;
+  width: 0.9em;
+  height: 1.66em;
+  border-radius: 50%;
+  background: radial-gradient(closest-side, rgba(255, 255, 255, 0.95) 0%, rgba(216, 255, 166, 0.62) 32%, rgba(168, 255, 53, 0.16) 66%, rgba(168, 255, 53, 0) 100%);
+  opacity: 0;
+  pointer-events: none;
+}
+.shbi-burst,
+.shbi-streak {
+  position: absolute;
+  left: 0;
+  top: 0;
+  z-index: 0;
+  border-radius: 50%;
+  opacity: 0;
+  pointer-events: none;
+}
+.shbi-burst {
+  width: var(--shbi-bw, 900px);
+  height: var(--shbi-bh, 420px);
+  background: radial-gradient(closest-side, rgba(226, 255, 186, 0.62) 0%, rgba(168, 255, 53, 0.3) 28%, rgba(168, 255, 53, 0.1) 58%, rgba(168, 255, 53, 0) 100%);
+}
+.shbi-streak {
+  width: var(--shbi-kw, 1800px);
+  height: var(--shbi-kh, 22px);
+  background: radial-gradient(closest-side, rgba(255, 255, 255, 0.9) 0%, rgba(216, 255, 166, 0.55) 26%, rgba(168, 255, 53, 0.14) 60%, rgba(168, 255, 53, 0) 100%);
+}
+
+/* ============ Anel da explosão e véu do mural ============ */
+
+.shbi-wave {
+  position: absolute;
+  left: 0;
+  top: 0;
+  z-index: 2;
+  width: var(--shbi-ww, 1000px);
+  height: var(--shbi-wh, 640px);
+  border-radius: 50%;
+  opacity: 0;
+  pointer-events: none;
+  background: radial-gradient(closest-side,
+    rgba(168, 255, 53, 0) 0%,
+    rgba(168, 255, 53, 0) 74%,
+    rgba(168, 255, 53, 0.022) 86%,
+    rgba(168, 255, 53, 0.07) 93.5%,
+    rgba(216, 255, 166, 0.26) 97.2%,
+    rgba(243, 255, 226, 0.72) 98.7%,
+    rgba(168, 255, 53, 0.18) 99.4%,
+    rgba(168, 255, 53, 0) 100%);
+}
+.shbi-wave--echo {
+  background: radial-gradient(closest-side,
+    rgba(168, 255, 53, 0) 0%,
+    rgba(168, 255, 53, 0) 84%,
+    rgba(168, 255, 53, 0.05) 94%,
+    rgba(216, 255, 166, 0.36) 98.6%,
+    rgba(168, 255, 53, 0) 100%);
+}
+/* escurece o mural quando a frase seguinte pousa sobre ele */
+.shbi-dim {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  background: radial-gradient(70% 60% at 50% 50%, rgba(1, 7, 2, 0.9) 0%, rgba(1, 7, 2, 0.7) 100%);
+  opacity: 0;
+  pointer-events: none;
+}
+
+/* ============ Seção seguinte ============ */
+
+.shbi-next {
+  position: relative;
+  z-index: 5;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 90vh;
+  padding: 18vh 24px 12vh;
+  background: #010702;
+}
+.shbi-next-line {
+  max-width: 900px;
+  text-align: center;
+  font-family: var(--font-display);
+  font-weight: 500;
+  font-size: clamp(34px, 4.2vw, 64px);
+  line-height: 1.1;
+  letter-spacing: -0.032em;
+  color: var(--shbi-ink);
+  text-shadow: 0 2px 30px rgba(1, 7, 2, 0.6);
+}
+.shbi-next-line span { color: rgba(243, 246, 236, 0.5); }
+/* sombra suave atrás da frase: ela pousa sobre o mural de vídeos */
+.shbi-next-line { position: relative; }
+.shbi-next-line::before {
+  content: '';
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  z-index: -1;
+  width: calc(100% + 360px);
+  height: calc(100% + 220px);
+  transform: translate(-50%, -50%);
+  border-radius: 50%;
+  background: radial-gradient(closest-side, rgba(1, 7, 2, 0.78) 0%, rgba(1, 7, 2, 0.55) 45%, rgba(1, 7, 2, 0) 100%);
+  pointer-events: none;
+}
+
+/* ============ Modo com o vale que sobe (JS ligado, tela ≥ 900px) ============ */
+
+.shbi-on .shbi-scroller {
+  position: relative;
+  height: 200vh;          /* 100vh de tela + 100vh de rolagem do vale */
+}
+.shbi-on .shbi {
+  position: sticky;
+  top: 0;
+  height: 100vh;
+  min-height: 0;
+}
+/* o pé do hero do site (::after) ficaria no meio da tela com o hero
+   preso: aqui quem dissolve a base é o próprio mosaico */
+.shbi-on .shbi::after { display: none; }
+/* a frase da seção seguinte pousa sobre o mural; o escuro vem depois */
+.shbi-on .shbi-next {
+  margin-top: -88vh;
+  min-height: 160vh;
+  align-items: flex-start;
+  padding: 30vh 24px 0;
+  background: linear-gradient(to bottom, rgba(1, 7, 2, 0) 0, rgba(1, 7, 2, 0) 55vh, rgba(1, 7, 2, 0.85) 76vh, #010702 90vh);
+}
+
+/* telas muito largas: o mosaico ocupa mais da largura (sem faixas vazias) */
+@media (min-width: 2300px) and (min-height: 1300px) {
+  .shbi { --m-gap: 18px; }
+  .shbi-mosaic { width: calc(min(100% - 2 * 64px, 2160px) + 48px); }
+  .shbi .title,
+  .shbi-next-line { font-size: 76px; }
+  .shbi .title { margin-top: 26px; }
+  .shbi .sub { font-size: 20px; margin-top: 24px; }
+  .shbi .hero-badge { height: 44px; font-size: 16px; padding: 0 18px 0 6px; }
+  .shbi .hero-badge .avatars img { width: 32px; height: 32px; }
+  .shbi .actions { margin-top: 32px; }
+  .shbi .actions .btn-primary,
+  .shbi .actions .btn-ghost { height: 56px; font-size: 17.5px; }
+  .shbi .actions .btn-ghost { padding: 0 30px; }
+  .shbi .actions .btn-primary:has(.chip) { padding: 0 7px 0 28px; }
+  .shbi .actions .chip { width: 42px; height: 42px; }
+  .shbi .next-stop { font-size: 15.5px; margin-top: 22px; }
+}
+
+/* fundo e loops CSS param quando o hero não está à vista */
+.shbi-paused .rich-bg .band { animation-play-state: paused; }
+
+/* ============ Movimento reduzido: estático, colorido, calmo ============ */
+
+.shbi-rm .shbi-lime { opacity: 1; }
+/* sem o vale que sobe: o hero volta ao fluxo normal do site */
+.shbi-rm .shbi-scroller { height: auto; }
+.shbi-rm .shbi { position: relative; height: auto; }
+.shbi-rm .shbi::after { display: block; }
+.shbi-rm .shbi-next {
+  margin-top: 0;
+  min-height: 90vh;
+  align-items: center;
+  padding: 18vh 24px 12vh;
+  background: #010702;
+}

@@ -1,0 +1,315 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Hero B no index — O vale sobe</title>
+  <link rel="icon" href="../assets/img/igreen-logo.svg">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Instrument+Sans:wdth,wght@75..100,400..700&display=swap">
+  <link rel="stylesheet" href="../css/portalv2.css">
+  <link rel="stylesheet" href="section-hero-b-index.css">
+</head>
+<body class="tone-green">
+
+  <!-- Menu fixo do topo (mesmo markup do site) -->
+  <header class="topnav">
+    <a class="topnav-logo" href="../index.html"><img src="../assets/img/igreen-logo.svg" alt="iGreen"></a>
+    <nav class="topnav-links" aria-label="Menu fixo">
+      <a href="../index.html">Início</a>
+      <a href="../index.html">Palestrantes</a>
+      <a href="../index.html#agenda">Agenda</a>
+      <a href="../index.html">FAQ</a>
+    </nav>
+    <div class="topnav-actions">
+      <a class="topnav-login" href="#">
+        <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><circle cx="12" cy="8" r="3.4" stroke="currentColor" stroke-width="1.5"/><path d="M5.2 19.4c.9-3.6 3.4-5.4 6.8-5.4s5.9 1.8 6.8 5.4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+        Entrar
+      </a>
+      <a class="topnav-cta" href="#">Cadastre-se</a>
+    </div>
+  </header>
+
+  <!-- ============================================================
+       Hero do index + a alma do Hero B — "O vale sobe"
+       O mesmo hero do site: texto centralizado sobre o mosaico em vale
+       (7 colunas que começam logo abaixo do texto, medidas de verdade).
+       Os clipes nascem cinzas; "vidas de verdade" acende em lima UMA
+       vez e a explosão transforma o mosaico inteiro em cor. Ao rolar,
+       o vale sobe: cada coluna se ergue até a mesma linha — quem estava
+       mais embaixo sobe mais — e o mosaico vira um só mural de vidas
+       transformadas, onde pousa a frase seguinte.
+       ============================================================ -->
+  <div class="shbi-scroller">
+    <main class="hero shbi" id="shbi">
+
+      <!-- fundo animado do site (estilos em portalv2.css) -->
+      <div class="rich-bg" aria-hidden="true">
+        <img class="aurora-base" src="../assets/img/aurora-base.webp" alt="">
+        <span class="wash"></span>
+        <span class="band band-l1"></span>
+        <span class="band band-l2"></span>
+        <span class="band band-d1"></span>
+        <span class="band band-d2"></span>
+        <span class="dots-base"></span>
+        <span class="dots"></span>
+      </div>
+
+      <!-- Texto do hero (mesmo conteúdo do site) -->
+      <div class="hero-copy shbi-copy">
+        <!-- a luz que explode da frase quando ela acende -->
+        <span class="shbi-burst" aria-hidden="true"></span>
+        <span class="shbi-streak" aria-hidden="true"></span>
+
+        <div class="hero-badge">
+          <span class="avatars" aria-hidden="true">
+            <img src="../speakers/pedro-cut.png" alt="">
+            <img src="../speakers/carla-cut.png" alt="">
+            <img src="../speakers/ana-cut.png" alt="">
+            <img src="../speakers/bruno-cut.png" alt="">
+          </span>
+          <span><b>+2.000</b> vidas transformadas</span>
+        </div>
+
+        <h1 class="title">
+          <span class="line">Renda recorrente</span>
+          <span class="line">que <span class="title-clip" aria-hidden="true"><span class="shbi-halo"></span><video src="../assets/video/cards/sel-musgo3.mp4" poster="../assets/video/cards/sel-musgo3.jpg" muted loop autoplay playsinline></video><span class="shbi-core"></span></span> transforma</span>
+          <span class="line line-muted shbi-vline"><span class="shbi-vtext">vidas de verdade</span><span class="shbi-lime" aria-hidden="true"><span>vidas de verdade</span></span><span class="shbi-hot" aria-hidden="true">vidas de verdade</span><span class="shbi-edge" aria-hidden="true"></span></span>
+        </h1>
+
+        <p class="sub">Conheça as histórias de quem virou licenciado iGreen e construiu renda com energia por assinatura, telecom e seguros, todo mês.</p>
+
+        <div class="actions">
+          <a class="btn-primary" href="#">
+            Seja licenciado
+            <span class="chip chip-dark">
+              <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                <path d="M7 17L17 7M9 7h8v8" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+            </span>
+          </a>
+          <a class="btn-ghost" href="#">Ver histórias</a>
+        </div>
+
+        <a class="next-stop" href="#agenda">Próxima parada do tour: <b>Goiânia, 16 de agosto</b></a>
+      </div>
+
+      <!-- Mosaico em vale: sete colunas; a de cada ponta sobe ao lado do
+           título, o centro desce sob os botões (topos medidos pelo JS).
+           O último card de cada coluna (data-late) fica abaixo da dobra e
+           só aparece quando o vale sobe. -->
+      <div class="shbi-mosaic" aria-label="Histórias de licenciados em vídeo">
+        <div class="shbi-col">
+          <figure class="shbi-tile">
+            <div class="shbi-card">
+              <video src="../assets/video/cards/gen-walk.mp4" poster="../assets/video/cards/gen-walk.jpg" muted loop playsinline preload="metadata" aria-label="Executiva de blazer verde caminhando pelo escritório"></video>
+              <img class="shbi-cover" src="../assets/video/cards/gen-walk.jpg" alt="">
+              <img class="shbi-gray" src="../assets/img/hero-shbi/gen-walk-g.jpg" alt="">
+              <span class="shbi-wash"></span><span class="shbi-sweep"></span><span class="shbi-rim"></span>
+            </div>
+            <span class="shbi-ping"></span>
+          </figure>
+          <figure class="shbi-tile">
+            <div class="shbi-card">
+              <video src="../assets/video/cards/sel-jardim.mp4" poster="../assets/video/cards/sel-jardim.jpg" muted loop playsinline preload="metadata" aria-label="Licenciado com polo iGreen falando ao lado do jardim vertical"></video>
+              <img class="shbi-cover" src="../assets/video/cards/sel-jardim.jpg" alt="">
+              <img class="shbi-gray" src="../assets/img/hero-shbi/sel-jardim-g.jpg" alt="">
+              <span class="shbi-wash"></span><span class="shbi-sweep"></span><span class="shbi-rim"></span>
+            </div>
+            <span class="shbi-ping"></span>
+          </figure>
+          <figure class="shbi-tile" data-late>
+            <div class="shbi-card">
+              <video src="../assets/video/past/crowd-hands.mp4" poster="../assets/video/past/crowd-hands.jpg" muted loop playsinline preload="metadata" aria-label="Público vibrando com as mãos para o alto no evento"></video>
+              <img class="shbi-cover" src="../assets/video/past/crowd-hands.jpg" alt="">
+              <img class="shbi-gray" src="../assets/img/hero-shbi/crowd-hands-g.jpg" alt="">
+              <span class="shbi-wash"></span><span class="shbi-sweep"></span><span class="shbi-rim"></span>
+            </div>
+            <span class="shbi-ping"></span>
+          </figure>
+        </div>
+        <div class="shbi-col">
+          <figure class="shbi-tile">
+            <div class="shbi-card">
+              <video src="../assets/video/cards/sel-musgo1.mp4" poster="../assets/video/cards/sel-musgo1.jpg" muted loop playsinline preload="metadata" aria-label="Licenciado falando diante do logo iGreen no muro verde"></video>
+              <img class="shbi-cover" src="../assets/video/cards/sel-musgo1.jpg" alt="">
+              <img class="shbi-gray" src="../assets/img/hero-shbi/sel-musgo1-g.jpg" alt="">
+              <span class="shbi-wash"></span><span class="shbi-sweep"></span><span class="shbi-rim"></span>
+            </div>
+            <span class="shbi-ping"></span>
+          </figure>
+          <figure class="shbi-tile">
+            <div class="shbi-card">
+              <video src="../assets/video/cards/gen-podcast.mp4" poster="../assets/video/cards/gen-podcast.jpg" muted loop playsinline preload="metadata" aria-label="Licenciado gravando podcast em um estúdio de parede verde"></video>
+              <img class="shbi-cover" src="../assets/video/cards/gen-podcast.jpg" alt="">
+              <img class="shbi-gray" src="../assets/img/hero-shbi/gen-podcast-g.jpg" alt="">
+              <span class="shbi-wash"></span><span class="shbi-sweep"></span><span class="shbi-rim"></span>
+            </div>
+            <span class="shbi-ping"></span>
+          </figure>
+          <figure class="shbi-tile" data-late>
+            <div class="shbi-card">
+              <video src="../assets/video/past/stage-speaker.mp4" poster="../assets/video/past/stage-speaker.jpg" muted loop playsinline preload="metadata" aria-label="Palestrante no palco do iGreen Live"></video>
+              <img class="shbi-cover" src="../assets/video/past/stage-speaker.jpg" alt="">
+              <img class="shbi-gray" src="../assets/img/hero-shbi/stage-speaker-g.jpg" alt="">
+              <span class="shbi-wash"></span><span class="shbi-sweep"></span><span class="shbi-rim"></span>
+            </div>
+            <span class="shbi-ping"></span>
+          </figure>
+        </div>
+        <div class="shbi-col">
+          <figure class="shbi-tile">
+            <div class="shbi-card">
+              <video src="../assets/video/cards/gen-executiva2.mp4" poster="../assets/video/cards/gen-executiva2.jpg" muted loop playsinline preload="metadata" aria-label="Executiva de blazer verde apresentando em um estúdio com luzes verdes"></video>
+              <img class="shbi-cover" src="../assets/video/cards/gen-executiva2.jpg" alt="">
+              <img class="shbi-gray" src="../assets/img/hero-shbi/gen-executiva2-g.jpg" alt="">
+              <span class="shbi-wash"></span><span class="shbi-sweep"></span><span class="shbi-rim"></span>
+            </div>
+            <span class="shbi-ping"></span>
+          </figure>
+          <figure class="shbi-tile">
+            <div class="shbi-card">
+              <video src="../assets/video/cards/sel-suv.mp4" poster="../assets/video/cards/sel-suv.jpg" muted loop playsinline preload="metadata" aria-label="Licenciado com o celular diante de um SUV verde"></video>
+              <img class="shbi-cover" src="../assets/video/cards/sel-suv.jpg" alt="">
+              <img class="shbi-gray" src="../assets/img/hero-shbi/sel-suv-g.jpg" alt="">
+              <span class="shbi-wash"></span><span class="shbi-sweep"></span><span class="shbi-rim"></span>
+            </div>
+            <span class="shbi-ping"></span>
+          </figure>
+          <figure class="shbi-tile" data-late>
+            <div class="shbi-card">
+              <video src="../assets/video/past/arena-audience.mp4" poster="../assets/video/past/arena-audience.jpg" muted loop playsinline preload="metadata" aria-label="Arena lotada assistindo ao evento"></video>
+              <img class="shbi-cover" src="../assets/video/past/arena-audience.jpg" alt="">
+              <img class="shbi-gray" src="../assets/img/hero-shbi/arena-audience-g.jpg" alt="">
+              <span class="shbi-wash"></span><span class="shbi-sweep"></span><span class="shbi-rim"></span>
+            </div>
+            <span class="shbi-ping"></span>
+          </figure>
+        </div>
+        <div class="shbi-col shbi-col--center">
+          <figure class="shbi-tile shbi-tile--tall">
+            <div class="shbi-card">
+              <video src="../assets/video/cards/sel-carro.mp4" poster="../assets/video/cards/sel-carro.jpg" muted loop playsinline preload="metadata" aria-label="Licenciada sorrindo diante de um carro verde"></video>
+              <img class="shbi-cover" src="../assets/video/cards/sel-carro.jpg" alt="">
+              <img class="shbi-gray" src="../assets/img/hero-shbi/sel-carro-g.jpg" alt="">
+              <span class="shbi-wash"></span><span class="shbi-sweep"></span><span class="shbi-rim"></span>
+            </div>
+            <span class="shbi-ping"></span>
+          </figure>
+          <figure class="shbi-tile" data-late>
+            <div class="shbi-card">
+              <video src="../assets/video/past/expo-crowd.mp4" poster="../assets/video/past/expo-crowd.jpg" muted loop playsinline preload="metadata" aria-label="Público circulando pela feira do evento"></video>
+              <img class="shbi-cover" src="../assets/video/past/expo-crowd.jpg" alt="">
+              <img class="shbi-gray" src="../assets/img/hero-shbi/expo-crowd-g.jpg" alt="">
+              <span class="shbi-wash"></span><span class="shbi-sweep"></span><span class="shbi-rim"></span>
+            </div>
+            <span class="shbi-ping"></span>
+          </figure>
+        </div>
+        <div class="shbi-col">
+          <figure class="shbi-tile">
+            <div class="shbi-card">
+              <video src="../assets/video/cards/sel-estudio.mp4" poster="../assets/video/cards/sel-estudio.jpg" muted loop playsinline preload="metadata" aria-label="Apresentadora em estúdio com telão de ondas verdes"></video>
+              <img class="shbi-cover" src="../assets/video/cards/sel-estudio.jpg" alt="">
+              <img class="shbi-gray" src="../assets/img/hero-shbi/sel-estudio-g.jpg" alt="">
+              <span class="shbi-wash"></span><span class="shbi-sweep"></span><span class="shbi-rim"></span>
+            </div>
+            <span class="shbi-ping"></span>
+          </figure>
+          <figure class="shbi-tile">
+            <div class="shbi-card">
+              <video src="../assets/video/cards/sel-musgo2.mp4" poster="../assets/video/cards/sel-musgo2.jpg" muted loop playsinline preload="metadata" aria-label="Licenciado de óculos falando diante do logo iGreen"></video>
+              <img class="shbi-cover" src="../assets/video/cards/sel-musgo2.jpg" alt="">
+              <img class="shbi-gray" src="../assets/img/hero-shbi/sel-musgo2-g.jpg" alt="">
+              <span class="shbi-wash"></span><span class="shbi-sweep"></span><span class="shbi-rim"></span>
+            </div>
+            <span class="shbi-ping"></span>
+          </figure>
+          <figure class="shbi-tile" data-late>
+            <div class="shbi-card">
+              <video src="../assets/video/past/car-reveal.mp4" poster="../assets/video/past/car-reveal.jpg" muted loop playsinline preload="metadata" aria-label="Carro verde revelado no palco do evento"></video>
+              <img class="shbi-cover" src="../assets/video/past/car-reveal.jpg" alt="">
+              <img class="shbi-gray" src="../assets/img/hero-shbi/car-reveal-g.jpg" alt="">
+              <span class="shbi-wash"></span><span class="shbi-sweep"></span><span class="shbi-rim"></span>
+            </div>
+            <span class="shbi-ping"></span>
+          </figure>
+        </div>
+        <div class="shbi-col">
+          <figure class="shbi-tile">
+            <div class="shbi-card">
+              <video src="../assets/video/cards/gen-kart.mp4" poster="../assets/video/cards/gen-kart.jpg" muted loop playsinline preload="metadata" aria-label="Piloto de kart com macacão e capacete verdes da iGreen"></video>
+              <img class="shbi-cover" src="../assets/video/cards/gen-kart.jpg" alt="">
+              <img class="shbi-gray" src="../assets/img/hero-shbi/gen-kart-g.jpg" alt="">
+              <span class="shbi-wash"></span><span class="shbi-sweep"></span><span class="shbi-rim"></span>
+            </div>
+            <span class="shbi-ping"></span>
+          </figure>
+          <figure class="shbi-tile">
+            <div class="shbi-card">
+              <video src="../assets/video/cards/sel-escritorio.mp4" poster="../assets/video/cards/sel-escritorio.jpg" muted loop playsinline preload="metadata" aria-label="Licenciado de camiseta verde em um escritório moderno"></video>
+              <img class="shbi-cover" src="../assets/video/cards/sel-escritorio.jpg" alt="">
+              <img class="shbi-gray" src="../assets/img/hero-shbi/sel-escritorio-g.jpg" alt="">
+              <span class="shbi-wash"></span><span class="shbi-sweep"></span><span class="shbi-rim"></span>
+            </div>
+            <span class="shbi-ping"></span>
+          </figure>
+          <figure class="shbi-tile" data-late>
+            <div class="shbi-card">
+              <video src="../assets/video/past/arena-persistencia.mp4" poster="../assets/video/past/arena-persistencia.jpg" muted loop playsinline preload="metadata" aria-label="Telões com a palavra persistência na arena"></video>
+              <img class="shbi-cover" src="../assets/video/past/arena-persistencia.jpg" alt="">
+              <img class="shbi-gray" src="../assets/img/hero-shbi/arena-persistencia-g.jpg" alt="">
+              <span class="shbi-wash"></span><span class="shbi-sweep"></span><span class="shbi-rim"></span>
+            </div>
+            <span class="shbi-ping"></span>
+          </figure>
+        </div>
+        <div class="shbi-col">
+          <figure class="shbi-tile">
+            <div class="shbi-card">
+              <video src="../assets/video/cards/gen-executiva1.mp4" poster="../assets/video/cards/gen-executiva1.jpg" muted loop playsinline preload="metadata" aria-label="Executiva de blazer verde sorrindo com o celular na mão"></video>
+              <img class="shbi-cover" src="../assets/video/cards/gen-executiva1.jpg" alt="">
+              <img class="shbi-gray" src="../assets/img/hero-shbi/gen-executiva1-g.jpg" alt="">
+              <span class="shbi-wash"></span><span class="shbi-sweep"></span><span class="shbi-rim"></span>
+            </div>
+            <span class="shbi-ping"></span>
+          </figure>
+          <figure class="shbi-tile">
+            <div class="shbi-card">
+              <video src="../assets/video/cards/gen-reuniao.mp4" poster="../assets/video/cards/gen-reuniao.jpg" muted loop playsinline preload="metadata" aria-label="Executiva de blazer verde apresentando em uma sala de reunião"></video>
+              <img class="shbi-cover" src="../assets/video/cards/gen-reuniao.jpg" alt="">
+              <img class="shbi-gray" src="../assets/img/hero-shbi/gen-reuniao-g.jpg" alt="">
+              <span class="shbi-wash"></span><span class="shbi-sweep"></span><span class="shbi-rim"></span>
+            </div>
+            <span class="shbi-ping"></span>
+          </figure>
+          <figure class="shbi-tile" data-late>
+            <div class="shbi-card">
+              <img class="shbi-photo" src="../assets/img/past/moment-13.jpg" alt="Abraço emocionado entre participantes do evento">
+              <img class="shbi-gray" src="../assets/img/hero-shbi/moment-13-g.jpg" alt="">
+              <span class="shbi-wash"></span><span class="shbi-sweep"></span><span class="shbi-rim"></span>
+            </div>
+            <span class="shbi-ping"></span>
+          </figure>
+        </div>
+      </div>
+
+      <!-- o anel de luz da explosão e o véu que acolhe a frase final -->
+      <span class="shbi-wave" aria-hidden="true"></span>
+      <span class="shbi-wave shbi-wave--echo" aria-hidden="true"></span>
+      <span class="shbi-dim" aria-hidden="true"></span>
+
+    </main>
+  </div>
+
+  <!-- A seção seguinte: a frase pousa sobre o mural de vidas -->
+  <section class="shbi-next" aria-label="Próxima seção">
+    <p class="shbi-next-line">Trabalho não é só renda —<br><span>ele muda a sua história.</span></p>
+  </section>
+
+  <script src="../assets/vendor/gsap.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.13.0/ScrollTrigger.min.js"></script>
+  <script src="section-hero-b-index.js"></script>
+</body>
+</html>

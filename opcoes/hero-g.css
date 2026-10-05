@@ -1,0 +1,328 @@
+/* ============================================================
+   Hero G — Mosaico de vidas
+   Texto em duas colunas no alto; abaixo, o número "2.000" feito de
+   centenas de pontos — cada ponto uma pessoa — desenhado num único
+   <canvas> pelo hero-g.js. Aqui só ficam o layout, a entrada do
+   texto (uma vez, no compositor) e as camadas leves que o JS move
+   com transform/opacity durante o mergulho da rolagem.
+   ============================================================ */
+
+:root {
+  --hg-lime: #A8FF35;
+  --hg-lime-soft: #D8FFA6;
+  --hg-ink: #F3F6EC;
+  --hg-base: #06110A;
+  --hg-bg: #010702;
+  --hg-pin: 110vh;              /* quanto a rolagem fica presa no hero */
+  --hg-ease: cubic-bezier(0.16, 1, 0.3, 1);   /* expo.out */
+}
+
+/* ============ Palco preso ============ */
+
+.hg {
+  position: relative;
+  height: calc(100vh + var(--hg-pin));
+  background: var(--hg-bg);
+}
+.hg-stage {
+  position: sticky;
+  top: 0;
+  height: 100vh;
+  overflow: hidden;
+  isolation: isolate;
+  background: linear-gradient(180deg, #010D03 0%, var(--hg-bg) 70%);
+  -webkit-user-select: none;
+  user-select: none;
+}
+
+.hg-canvas {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  width: 100%;
+  height: 100%;
+  display: block;
+  pointer-events: none;
+}
+
+/* vinheta do mergulho: some no repouso, fecha as bordas no fim */
+.hg-vignette {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  pointer-events: none;
+  opacity: 0;
+  background: radial-gradient(ellipse 58% 64% at 50% 50%, rgba(1, 7, 2, 0) 52%, rgba(1, 7, 2, 0.72) 82%, rgba(1, 7, 2, 0.94) 100%);
+}
+
+/* ============ Os cinco pontos que viram vídeo ============ */
+
+.hg-vids {
+  position: absolute;
+  inset: 0;
+  z-index: 3;
+  pointer-events: none;
+}
+.hg-vid {
+  position: absolute;
+  left: 0;
+  top: 0;
+  overflow: hidden;
+  opacity: 0;
+  visibility: hidden;
+  transform-origin: 0 0;
+  background: var(--hg-base);
+  box-shadow: inset 0 0 0 1px rgba(243, 246, 236, 0.08);
+  will-change: transform, opacity;
+}
+.hg-vid video {
+  position: absolute;
+  display: block;
+  max-width: none;
+}
+/* anel "overlay" do sistema: mais claro na base, some no topo */
+.hg-vid::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  border-radius: inherit;
+  padding: 1px;
+  pointer-events: none;
+  mix-blend-mode: overlay;
+  background: linear-gradient(to top, rgba(255, 255, 255, 0.85) 0%, rgba(255, 255, 255, 0.24) 24%, rgba(255, 255, 255, 0.08) 46%, transparent 62%);
+  -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor;
+  mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+  mask-composite: exclude;
+}
+
+/* ============ Texto: duas colunas no alto ============ */
+
+.hg .hg-copy {
+  position: absolute;
+  top: clamp(112px, 13.6vh, 172px);
+  left: 0;
+  right: 0;
+  z-index: 4;
+  width: min(1240px, 100% - 2 * max(5vw, 32px));
+  margin: 0 auto;
+  padding: 0;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(320px, 400px);
+  column-gap: clamp(40px, 5.2vw, 104px);
+  align-items: end;
+  text-align: left;
+}
+.hg-col { min-width: 0; }
+.hg-col-main {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+.hg-col-side {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  padding-bottom: 0.2em;
+}
+
+.hg .title {
+  margin-top: 24px;
+  font-size: clamp(40px, 4.2vw, 64px);
+  line-height: 1.03;
+  letter-spacing: -0.038em;
+}
+.hg .title .line {
+  width: auto;
+  margin: 0;
+  white-space: nowrap;
+}
+.hg-line-in { display: inline-block; }
+
+.hg .sub {
+  margin-top: 0;
+  max-width: 40ch;
+  font-size: clamp(16px, 1.16vw, 18.5px);
+}
+.hg .actions {
+  margin-top: 28px;
+  justify-content: flex-start;
+}
+.hg .next-stop {
+  margin-top: 20px;
+  display: inline-block;
+}
+
+/* o clipe da frase é o gerador: o anel de luz precisa sair da pílula,
+   então o recorte arredondado passa para o próprio vídeo */
+.hg .title-clip {
+  position: relative;
+  overflow: visible;
+  background: transparent;
+  box-shadow: none;
+}
+.hg .title-clip video {
+  position: relative;
+  z-index: 1;
+  border-radius: 999px;
+  background: #0E2A17;
+  box-shadow: 0 0 0 1px rgba(243, 246, 236, 0.16), 0 12px 32px rgba(0, 0, 0, 0.35);
+}
+.hg .title-clip::before,
+.hg .title-clip::after {
+  content: '';
+  position: absolute;
+  inset: -1px;
+  border-radius: 999px;
+  pointer-events: none;
+  opacity: 0;
+}
+/* halo atrás da pílula */
+.hg .title-clip::before {
+  z-index: 0;
+  inset: -10px -14px;
+  background: radial-gradient(closest-side, rgba(168, 255, 53, 0.55), rgba(168, 255, 53, 0.16) 55%, rgba(168, 255, 53, 0) 100%);
+}
+/* anel que se expande na direção do mosaico */
+.hg .title-clip::after {
+  z-index: 2;
+  box-shadow: 0 0 0 1.5px rgba(216, 255, 166, 0.9), 0 0 18px 2px rgba(168, 255, 53, 0.45);
+}
+.hg.hg-fire .title-clip::before { animation: hg-halo 1.6s var(--hg-ease) both; }
+.hg.hg-fire .title-clip::after { animation: hg-ring 1.4s var(--hg-ease) both; }
+@keyframes hg-halo {
+  0%   { opacity: 0; transform: scale(0.8); }
+  14%  { opacity: 1; transform: scale(1.05); }
+  100% { opacity: 0; transform: scale(1.25); }
+}
+@keyframes hg-ring {
+  0%   { opacity: 0; transform: scale(1); }
+  10%  { opacity: 1; }
+  100% { opacity: 0; transform: scale(1.75, 2.1); }
+}
+
+/* ============ Entrada do texto (uma vez; só transform/opacity) ============ */
+
+.hg-js .hg .hg-rise,
+.hg-js .hg .hg-line-in {
+  opacity: 0;
+  transform: translate3d(0, 22px, 0);
+}
+.hg-js .hg .hg-line-in { transform: translate3d(0, 0.42em, 0); }
+.hg.hg-in .hg-rise,
+.hg.hg-in .hg-line-in {
+  animation: hg-rise 1.15s var(--hg-ease) both;
+}
+.hg.hg-in .hero-badge { animation-delay: 0.05s; }
+.hg.hg-in .line:nth-child(1) .hg-line-in { animation-delay: 0.16s; }
+.hg.hg-in .line:nth-child(2) .hg-line-in { animation-delay: 0.25s; }
+.hg.hg-in .line:nth-child(3) .hg-line-in { animation-delay: 0.34s; }
+.hg.hg-in .sub { animation-delay: 0.46s; }
+.hg.hg-in .actions { animation-delay: 0.56s; }
+.hg.hg-in .next-stop { animation-delay: 0.64s; }
+@keyframes hg-rise {
+  from { opacity: 0; transform: var(--hg-from, translate3d(0, 22px, 0)); }
+  to   { opacity: 1; transform: none; }
+}
+.hg-line-in { --hg-from: translate3d(0, 0.42em, 0); }
+
+/* ============ Passagem para a próxima seção ============ */
+
+.hg-fade {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 5;
+  height: 18vh;
+  pointer-events: none;
+  opacity: 0;
+  background: linear-gradient(to bottom, rgba(1, 7, 2, 0) 0%, rgba(1, 7, 2, 0.7) 60%, var(--hg-bg) 100%);
+}
+
+.hg-next {
+  position: relative;
+  z-index: 1;
+  min-height: 90vh;
+  display: grid;
+  place-items: center;
+  padding: 0 24px;
+  background: var(--hg-bg);
+}
+.hg-next-line {
+  font-family: var(--font-display);
+  font-weight: 500;
+  font-size: clamp(30px, 3.1vw, 50px);
+  line-height: 1.1;
+  letter-spacing: -0.032em;
+  text-align: center;
+  color: var(--hg-ink);
+}
+.hg-next-line span { color: rgba(243, 246, 236, 0.4); }
+
+/* ============ Pausa (fora da tela / aba oculta) ============ */
+
+.hg.hg-paused .rich-bg .band,
+.hg.hg-paused .title-clip::before,
+.hg.hg-paused .title-clip::after {
+  animation-play-state: paused;
+}
+
+/* ============ Movimento reduzido: estático, colorido, calmo ============ */
+
+@media (prefers-reduced-motion: reduce) {
+  .hg { height: 100vh; }
+  .hg-js .hg .hg-rise,
+  .hg-js .hg .hg-line-in {
+    opacity: 1;
+    transform: none;
+    animation: none;
+  }
+  .hg .title-clip::before,
+  .hg .title-clip::after { display: none; }
+}
+
+/* ============ Telas pequenas: versão estática simples ============ */
+
+@media (max-width: 899px) {
+  .hg { height: auto; }
+  .hg-stage {
+    position: relative;
+    height: auto;
+    min-height: 100vh;
+    padding: 112px 0 56px;
+    display: flex;
+    flex-direction: column;
+  }
+  .hg .hg-copy { order: 1; }
+  .hg-canvas { order: 2; }
+  .hg .hg-copy {
+    position: relative;
+    top: 0;
+    grid-template-columns: 1fr;
+    row-gap: 24px;
+    justify-items: center;
+    text-align: center;
+  }
+  .hg-col-main,
+  .hg-col-side { align-items: center; }
+  .hg .title .line { white-space: normal; }
+  .hg .actions { justify-content: center; }
+  .hg-canvas {
+    position: relative;
+    inset: auto;
+    width: calc(100% - 32px);
+    height: 30vw;
+    margin: 40px auto 0;
+  }
+  .hg-vids,
+  .hg-vignette,
+  .hg-fade { display: none; }
+  .hg-js .hg .hg-rise,
+  .hg-js .hg .hg-line-in {
+    opacity: 1;
+    transform: none;
+    animation: none;
+  }
+}

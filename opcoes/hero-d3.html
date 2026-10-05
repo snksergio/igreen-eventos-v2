@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Hero D3 — Órbita</title>
+  <link rel="icon" href="../assets/img/igreen-logo.svg">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Instrument+Sans:wdth,wght@75..100,400..700&display=swap">
+  <link rel="stylesheet" href="../css/portalv2.css">
+  <link rel="stylesheet" href="hero-d3.css">
+  <link rel="preload" as="image" href="../assets/img/hero-d/pessoa3-antes.webp">
+  <link rel="preload" as="image" href="../assets/img/hero-d/pessoa3-depois.webp">
+</head>
+<body class="tone-green">
+
+  <!-- Menu fixo do topo (mesmo markup do site) -->
+  <header class="topnav">
+    <a class="topnav-logo" href="../index.html"><img src="../assets/img/igreen-logo.svg" alt="iGreen"></a>
+    <nav class="topnav-links" aria-label="Menu fixo">
+      <a href="../index.html">Início</a>
+      <a href="../index.html">Palestrantes</a>
+      <a href="../index.html#agenda">Agenda</a>
+      <a href="../index.html">FAQ</a>
+    </nav>
+    <div class="topnav-actions">
+      <a class="topnav-login" href="#">
+        <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><circle cx="12" cy="8" r="3.4" stroke="currentColor" stroke-width="1.5"/><path d="M5.2 19.4c.9-3.6 3.4-5.4 6.8-5.4s5.9 1.8 6.8 5.4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+        Entrar
+      </a>
+      <a class="topnav-cta" href="#">Cadastre-se</a>
+    </div>
+  </header>
+
+  <!-- ============================================================
+       Hero D3 — Órbita
+       Ela grande, à esquerda, recortada pela borda — olhando para o
+       texto à direita. Uma órbita larga de painéis de vidro atravessa a
+       tela inteira e envolve os dois: passa por trás da cabeça dela e
+       por cima do texto (longe, pequena), desce pela direita e volta
+       por baixo, na frente dela (perto, grande). Na chegada tudo está
+       cinza; uma onda de luz corre a órbita a partir dela e tudo ganha
+       cor junto — ela também (uma vez só). Depois a órbita gira devagar
+       e os painéis que passam na frente tocam o vídeo (no máximo 4).
+       Sem 3D compartilhado: cada painel tem a sua perspectiva e a
+       ordem é decidida por z-index — nada se cruza, nada pisca.
+       ============================================================ -->
+  <main class="hero hd3" id="hd3">
+
+    <!-- fundo animado do site (estilos em portalv2.css) -->
+    <div class="rich-bg" aria-hidden="true">
+      <img class="aurora-base" src="../assets/img/aurora-base.webp" alt="">
+      <span class="wash"></span>
+      <span class="band band-l1"></span>
+      <span class="band band-l2"></span>
+      <span class="band band-d1"></span>
+      <span class="band band-d2"></span>
+      <span class="dots-base"></span>
+      <span class="dots"></span>
+    </div>
+
+    <!-- palco: perspectiva única, sem preserve-3d. A órbita e o retrato
+         são irmãos; atrás / na frente dela = z-index -->
+    <div class="hd3-stage" aria-label="Histórias de licenciados em vídeo">
+      <span class="hd3-bloom" aria-hidden="true"></span>
+      <figure class="hd3-panel" data-k="s"><div class="hd3-card">
+        <video src="../assets/video/cards/sel-carro.mp4" poster="../assets/video/cards/sel-carro.jpg" muted loop playsinline preload="metadata" aria-label="Licenciada sorrindo diante de um carro verde"></video>
+        <img class="hd3-gray" src="../assets/img/hero-d/sel-carro-g.jpg" alt=""><span class="hd3-sheen"></span><span class="hd3-veil"></span>
+      </div></figure>
+      <figure class="hd3-panel" data-k="l"><div class="hd3-card">
+        <video src="../assets/video/cards/gen-podcast.mp4" poster="../assets/video/cards/gen-podcast.jpg" muted loop playsinline preload="metadata" aria-label="Licenciado gravando podcast em um estúdio de parede verde"></video>
+        <img class="hd3-gray" src="../assets/img/hero-d/gen-podcast-g.jpg" alt=""><span class="hd3-sheen"></span><span class="hd3-veil"></span>
+      </div></figure>
+      <figure class="hd3-panel" data-k="p"><div class="hd3-card">
+        <video src="../assets/video/cards/gen-executiva2.mp4" poster="../assets/video/cards/gen-executiva2.jpg" muted loop playsinline preload="metadata" aria-label="Executiva de blazer verde apresentando em um estúdio com luzes verdes"></video>
+        <img class="hd3-gray" src="../assets/img/hero-d/gen-executiva2-g.jpg" alt=""><span class="hd3-sheen"></span><span class="hd3-veil"></span>
+      </div></figure>
+      <figure class="hd3-panel" data-k="s"><div class="hd3-card">
+        <video src="../assets/video/cards/sel-jardim.mp4" poster="../assets/video/cards/sel-jardim.jpg" muted loop playsinline preload="metadata" aria-label="Licenciado com polo iGreen falando ao lado do jardim vertical"></video>
+        <img class="hd3-gray" src="../assets/img/hero-d/sel-jardim-g.jpg" alt=""><span class="hd3-sheen"></span><span class="hd3-veil"></span>
+      </div></figure>
+      <figure class="hd3-panel" data-k="l"><div class="hd3-card">
+        <video src="../assets/video/past/expo-crowd.mp4" poster="../assets/video/past/expo-crowd.jpg" muted loop playsinline preload="metadata" aria-label="Feira do iGreen Live cheia de licenciados"></video>
+        <img class="hd3-gray" src="../assets/img/hero-d/expo-crowd-g.jpg" alt=""><span class="hd3-sheen"></span><span class="hd3-veil"></span>
+      </div></figure>
+      <figure class="hd3-panel" data-k="l"><div class="hd3-card">
+        <video src="../assets/video/cards/gen-walk.mp4" poster="../assets/video/cards/gen-walk.jpg" muted loop playsinline preload="metadata" aria-label="Executiva de blazer verde caminhando pelo escritório"></video>
+        <img class="hd3-gray" src="../assets/img/hero-d/gen-walk-g.jpg" alt=""><span class="hd3-sheen"></span><span class="hd3-veil"></span>
+      </div></figure>
+      <figure class="hd3-panel" data-k="s"><div class="hd3-card">
+        <video src="../assets/video/cards/sel-musgo1.mp4" poster="../assets/video/cards/sel-musgo1.jpg" muted loop playsinline preload="metadata" aria-label="Licenciado falando diante do logo iGreen no muro verde"></video>
+        <img class="hd3-gray" src="../assets/img/hero-d/sel-musgo1-g.jpg" alt=""><span class="hd3-sheen"></span><span class="hd3-veil"></span>
+      </div></figure>
+      <figure class="hd3-panel" data-k="p"><div class="hd3-card">
+        <video src="../assets/video/cards/gen-kart.mp4" poster="../assets/video/cards/gen-kart.jpg" muted loop playsinline preload="metadata" aria-label="Piloto de kart com macacão e capacete verdes da iGreen"></video>
+        <img class="hd3-gray" src="../assets/img/hero-d/gen-kart-g.jpg" alt=""><span class="hd3-sheen"></span><span class="hd3-veil"></span>
+      </div></figure>
+      <figure class="hd3-panel" data-k="l"><div class="hd3-card">
+        <video src="../assets/video/past/stage-speaker.mp4" poster="../assets/video/past/stage-speaker.jpg" muted loop playsinline preload="metadata" aria-label="Palestrante no palco do iGreen Live"></video>
+        <img class="hd3-gray" src="../assets/img/hero-d/stage-speaker-g.jpg" alt=""><span class="hd3-sheen"></span><span class="hd3-veil"></span>
+      </div></figure>
+      <figure class="hd3-panel" data-k="s"><div class="hd3-card">
+        <video src="../assets/video/cards/sel-estudio.mp4" poster="../assets/video/cards/sel-estudio.jpg" muted loop playsinline preload="metadata" aria-label="Apresentadora em estúdio com telão de ondas verdes"></video>
+        <img class="hd3-gray" src="../assets/img/hero-d/sel-estudio-g.jpg" alt=""><span class="hd3-sheen"></span><span class="hd3-veil"></span>
+      </div></figure>
+      <figure class="hd3-panel" data-k="p"><div class="hd3-card">
+        <video src="../assets/video/cards/gen-reuniao.mp4" poster="../assets/video/cards/gen-reuniao.jpg" muted loop playsinline preload="metadata" aria-label="Executiva de blazer verde apresentando em uma sala de reunião"></video>
+        <img class="hd3-gray" src="../assets/img/hero-d/gen-reuniao-g.jpg" alt=""><span class="hd3-sheen"></span><span class="hd3-veil"></span>
+      </div></figure>
+      <figure class="hd3-panel" data-k="s"><div class="hd3-card">
+        <video src="../assets/video/cards/sel-suv.mp4" poster="../assets/video/cards/sel-suv.jpg" muted loop playsinline preload="metadata" aria-label="Licenciado com o celular diante de um SUV verde"></video>
+        <img class="hd3-gray" src="../assets/img/hero-d/sel-suv-g.jpg" alt=""><span class="hd3-sheen"></span><span class="hd3-veil"></span>
+      </div></figure>
+      <figure class="hd3-panel" data-k="l"><div class="hd3-card">
+        <video src="../assets/video/past/arena-persistencia.mp4" poster="../assets/video/past/arena-persistencia.jpg" muted loop playsinline preload="metadata" aria-label="Arena do iGreen Live durante a palestra"></video>
+        <img class="hd3-gray" src="../assets/img/hero-d/arena-persistencia-g.jpg" alt=""><span class="hd3-sheen"></span><span class="hd3-veil"></span>
+      </div></figure>
+      <figure class="hd3-panel" data-k="l"><div class="hd3-card">
+        <video src="../assets/video/cards/gen-executiva1.mp4" poster="../assets/video/cards/gen-executiva1.jpg" muted loop playsinline preload="metadata" aria-label="Executiva de blazer verde sorrindo com o celular na mão"></video>
+        <img class="hd3-gray" src="../assets/img/hero-d/gen-executiva1-g.jpg" alt=""><span class="hd3-sheen"></span><span class="hd3-veil"></span>
+      </div></figure>
+      <figure class="hd3-panel" data-k="s"><div class="hd3-card">
+        <video src="../assets/video/cards/sel-escritorio.mp4" poster="../assets/video/cards/sel-escritorio.jpg" muted loop playsinline preload="metadata" aria-label="Licenciado de camiseta verde em um escritório moderno"></video>
+        <img class="hd3-gray" src="../assets/img/hero-d/sel-escritorio-g.jpg" alt=""><span class="hd3-sheen"></span><span class="hd3-veil"></span>
+      </div></figure>
+      <figure class="hd3-panel" data-k="s"><div class="hd3-card">
+        <video src="../assets/video/cards/sel-musgo2.mp4" poster="../assets/video/cards/sel-musgo2.jpg" muted loop playsinline preload="metadata" aria-label="Licenciado de óculos falando diante do logo iGreen"></video>
+        <img class="hd3-gray" src="../assets/img/hero-d/sel-musgo2-g.jpg" alt=""><span class="hd3-sheen"></span><span class="hd3-veil"></span>
+      </div></figure>
+
+      <div class="hd3-person" aria-hidden="true">
+        <img class="hd3-after" src="../assets/img/hero-d/pessoa3-depois.webp" alt="">
+        <img class="hd3-before" src="../assets/img/hero-d/pessoa3-antes.webp" alt="">
+        <img class="hd3-rim" src="../assets/img/hero-d/pessoa3-rim.webp" alt="">
+      </div>
+    </div>
+
+    <!-- véu suave atrás do texto -->
+    <div class="hd3-scrim" aria-hidden="true"></div>
+
+    <!-- Texto do hero (mesmo conteúdo do site), à direita dela -->
+    <div class="hero-copy hd3-copy">
+      <div class="hero-badge">
+        <span class="avatars" aria-hidden="true">
+          <img src="../speakers/pedro-cut.png" alt="">
+          <img src="../speakers/carla-cut.png" alt="">
+          <img src="../speakers/ana-cut.png" alt="">
+          <img src="../speakers/bruno-cut.png" alt="">
+        </span>
+        <span><b>+2.000</b> vidas transformadas</span>
+      </div>
+
+      <h1 class="title">
+        <span class="line">Renda recorrente</span>
+        <span class="line">que <span class="title-clip" aria-hidden="true"><video src="../assets/video/cards/sel-musgo3.mp4" poster="../assets/video/cards/sel-musgo3.jpg" muted loop autoplay playsinline></video></span> transforma</span>
+        <span class="line line-muted">vidas de verdade</span>
+      </h1>
+
+      <p class="sub">Conheça as histórias de quem virou licenciado iGreen e construiu renda com energia por assinatura, telecom e seguros, todo mês.</p>
+
+      <div class="actions">
+        <a class="btn-primary" href="#">
+          Seja licenciado
+          <span class="chip chip-dark">
+            <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+              <path d="M7 17L17 7M9 7h8v8" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </span>
+        </a>
+        <a class="btn-ghost" href="#">Ver histórias</a>
+      </div>
+
+      <a class="next-stop" href="#agenda">Próxima parada do tour: <b>Goiânia, 16 de agosto</b></a>
+    </div>
+
+    <!-- gradiente compartilhado pelas bordas dos painéis (overlay ring) -->
+    <svg class="hd3-defs" width="0" height="0" aria-hidden="true" focusable="false">
+      <defs>
+        <linearGradient id="hd3-ring-g" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0" stop-color="#fff" stop-opacity="0.12"/>
+          <stop offset="0.45" stop-color="#fff" stop-opacity="0.18"/>
+          <stop offset="0.8" stop-color="#fff" stop-opacity="0.42"/>
+          <stop offset="1" stop-color="#fff" stop-opacity="0.85"/>
+        </linearGradient>
+      </defs>
+    </svg>
+
+  </main>
+
+  <!-- A seção seguinte: o fecho da cena -->
+  <section class="hd3-next" aria-label="Próxima seção">
+    <p class="hd3-next-line">Trabalho não é só renda —<br><span>ele muda a sua história.</span></p>
+  </section>
+
+  <script src="../assets/vendor/gsap.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.13.0/ScrollTrigger.min.js"></script>
+  <script src="hero-d3.js"></script>
+</body>
+</html>

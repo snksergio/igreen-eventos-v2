@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Rodapé G4 — Seu nome no crachá</title>
+  <link rel="icon" href="../assets/img/igreen-logo.svg">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Instrument+Sans:wdth,wght@75..100,400..700&display=swap">
+  <link rel="stylesheet" href="../css/portalv2.css">
+  <link rel="stylesheet" href="footer-g4.css">
+  <script>
+    /* before first paint: with JS and motion the statement waits below its
+       masks and the credential waits above the room; reduced motion or
+       narrow screens get the calm final state straight away */
+    document.documentElement.classList.add(
+      matchMedia('(prefers-reduced-motion: reduce), (max-width: 900px)').matches ? 'fg4-static' : 'fg4-js'
+    );
+  </script>
+</head>
+<body class="tone-green">
+
+  <!-- Menu fixo do topo (mesmo markup do site) -->
+  <header class="topnav">
+    <a class="topnav-logo" href="../index.html"><img src="../assets/img/igreen-logo.svg" alt="iGreen"></a>
+    <nav class="topnav-links" aria-label="Menu fixo">
+      <a href="../index.html">Início</a>
+      <a href="../index.html">Palestrantes</a>
+      <a href="../index.html#agenda">Agenda</a>
+      <a href="../index.html">FAQ</a>
+    </nav>
+    <div class="topnav-actions">
+      <a class="topnav-login" href="#">
+        <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><circle cx="12" cy="8" r="3.4" stroke="currentColor" stroke-width="1.5"/><path d="M5.2 19.4c.9-3.6 3.4-5.4 6.8-5.4s5.9 1.8 6.8 5.4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+        Entrar
+      </a>
+      <a class="topnav-cta" href="#">Cadastre-se</a>
+    </div>
+  </header>
+
+  <!-- Lead-in: a última seção real do site (FAQ), para julgar a passagem -->
+  <section class="faq">
+    <div class="faq-inner">
+      <div class="faq-left">
+        <h2>Perguntas de quem<br><span>vai pela primeira vez</span></h2>
+        <p class="faq-sub">Ingresso, troca de cidade, gravações e reembolso: o essencial para chegar tranquilo no dia.</p>
+        <div class="faq-contact">
+          <div>
+            <h3>Ainda tem dúvidas?</h3>
+            <p>Fale com o time — respondemos em até um dia útil.</p>
+          </div>
+          <a class="btn-primary" href="#">
+            Fale conosco
+            <span class="chip chip-dark">
+              <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                <path d="M16.5 7.5L6 18" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+                <path d="M8 6.18791C8 6.18791 16.0479 5.50949 17.2692 6.73079C18.4906 7.95209 17.812 16 17.812 16" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+            </span>
+          </a>
+        </div>
+      </div>
+      <div class="faq-list">
+        <div class="faq-item">
+          <div class="faq-q" role="button" tabindex="0" aria-expanded="false">
+            <h3>O que é o iGreen Live exatamente?</h3>
+            <span class="faq-plus"><svg viewBox="0 0 14 14" fill="none"><path d="M7 1v12M1 7h12" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg></span>
+          </div>
+          <div class="faq-a"><p>Um evento itinerante de um dia onde sócios e líderes da iGreen mostram como funciona a energia por assinatura, o telecom e os seguros — ao vivo, com histórias reais e números reais no telão.</p></div>
+        </div>
+        <div class="faq-item">
+          <div class="faq-q" role="button" tabindex="0" aria-expanded="false">
+            <h3>O ingresso dá acesso a todas as palestras?</h3>
+            <span class="faq-plus"><svg viewBox="0 0 14 14" fill="none"><path d="M7 1v12M1 7h12" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg></span>
+          </div>
+          <div class="faq-a"><p>Sim. Todo ingresso dá acesso completo ao palco principal, às sessões práticas e ao espaço de networking na sua cidade.</p></div>
+        </div>
+        <div class="faq-item">
+          <div class="faq-q" role="button" tabindex="0" aria-expanded="false">
+            <h3>Posso trocar meu ingresso de cidade?</h3>
+            <span class="faq-plus"><svg viewBox="0 0 14 14" fill="none"><path d="M7 1v12M1 7h12" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg></span>
+          </div>
+          <div class="faq-a"><p>Você pode transferir seu ingresso para qualquer cidade do mesmo tour, sem custo, até sete dias antes da data do evento.</p></div>
+        </div>
+        <div class="faq-item">
+          <div class="faq-q" role="button" tabindex="0" aria-expanded="false">
+            <h3>As palestras são gravadas?</h3>
+            <span class="faq-plus"><svg viewBox="0 0 14 14" fill="none"><path d="M7 1v12M1 7h12" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg></span>
+          </div>
+          <div class="faq-a"><p>As palestras principais são gravadas e enviadas aos participantes após o tour. As sessões práticas são só ao vivo — é aí que estar na sala faz diferença.</p></div>
+        </div>
+        <div class="faq-item">
+          <div class="faq-q" role="button" tabindex="0" aria-expanded="false">
+            <h3>Existe política de reembolso?</h3>
+            <span class="faq-plus"><svg viewBox="0 0 14 14" fill="none"><path d="M7 1v12M1 7h12" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg></span>
+          </div>
+          <div class="faq-a"><p>Reembolso integral até quatorze dias antes do evento e de cinquenta por cento até quarenta e oito horas antes da abertura. Transferir o ingresso para um amigo é sempre gratuito.</p></div>
+        </div>
+        <div class="faq-item">
+          <div class="faq-q" role="button" tabindex="0" aria-expanded="false">
+            <h3>Como me torno um licenciado iGreen?</h3>
+            <span class="faq-plus"><svg viewBox="0 0 14 14" fill="none"><path d="M7 1v12M1 7h12" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg></span>
+          </div>
+          <div class="faq-a"><p>Participe do evento e converse com o time no espaço de atendimento. Você recebe treinamento, suporte e materiais para conquistar seus primeiros clientes.</p></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================================
+       Rodapé G4 — "Seu nome no crachá"
+       Um rodapé aberto, escuro, na grade de 12 colunas do site. À
+       esquerda, a frase e um campo: "Como você quer ser chamado?". À
+       direita, a credencial do iGreen Live desce de cima da tela num
+       cordão; o nome digitado é impresso nela ao vivo e ela balança um
+       pouco a cada letra. Pode ser agarrada e arremessada.
+       ============================================================ -->
+  <footer class="fg4-footer" id="fg4-footer">
+
+    <!-- the room: deep dark, a low aurora and the hero's dot matrix (static layers) -->
+    <div class="fg4-room" aria-hidden="true">
+      <div class="fg4-aurora">
+        <img class="fg4-ribbon" src="../assets/img/aurora-base.webp" alt="" width="2108" height="1292" decoding="async">
+        <span class="fg4-haze"></span>
+        <span class="fg4-floor"></span>
+      </div>
+      <span class="fg4-back"></span>
+      <span class="fg4-dots-base"></span>
+      <span class="fg4-dots"></span>
+    </div>
+
+    <div class="fg4-wrap">
+
+      <div class="fg4-head">
+        <h2 class="fg4-st">
+          <span class="fg4-l"><span class="fg4-li">A próxima história</span></span>
+          <span class="fg4-l fg4-l-mute"><span class="fg4-li">pode ter o seu nome.</span></span>
+        </h2>
+
+        <div class="fg4-ask fg4-rv">
+          <label class="fg4-k" for="fg4-name">Como você quer ser chamado?</label>
+          <div class="fg4-field">
+            <input class="fg4-input" id="fg4-name" type="text" name="nome" maxlength="22" placeholder="Seu nome" autocomplete="off" autocapitalize="words" spellcheck="false" enterkeyhint="done">
+          </div>
+        </div>
+
+        <div class="fg4-cta fg4-rv">
+          <a class="btn-primary fg4-mag" href="#">
+            <span>Garantir meu lugar</span>
+            <span class="chip chip-dark">
+              <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M7 17L17 7M9 7h8v8" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </span>
+          </a>
+          <a class="btn-ghost fg4-ghost" href="#">Falar com a equipe</a>
+        </div>
+      </div>
+
+      <div class="fg4-grid">
+        <span class="fg4-rule" aria-hidden="true"></span>
+
+        <div class="fg4-col fg4-stop fg4-rv">
+          <p class="fg4-h"><span class="fg4-dot" aria-hidden="true"></span>Próxima parada</p>
+          <p class="fg4-city">Goiânia</p>
+          <p class="fg4-when">16 de agosto · check-in 14h00</p>
+          <p class="fg4-venue">Centro de Convenções de Goiânia</p>
+          <a class="fg4-u fg4-more" href="../index.html#agenda">Ver as seis datas do tour</a>
+        </div>
+
+        <nav class="fg4-col fg4-event fg4-rv" aria-label="Evento">
+          <p class="fg4-h">Evento</p>
+          <ul class="fg4-list">
+            <li><a class="fg4-u" href="#">Palestrantes</a></li>
+            <li><a class="fg4-u" href="#">Agenda</a></li>
+            <li><a class="fg4-u" href="#">Edições</a></li>
+            <li><a class="fg4-u" href="#">Depoimentos</a></li>
+            <li><a class="fg4-u" href="#">FAQ</a></li>
+          </ul>
+        </nav>
+
+        <div class="fg4-col fg4-contact fg4-rv">
+          <p class="fg4-h">Contato</p>
+          <a class="fg4-u fg4-mail" href="mailto:contato@igreenlive.com.br">contato@igreenlive.com.br</a>
+          <a class="fg4-u fg4-phone" href="tel:+556230000000">+55 62 3000-0000</a>
+          <p class="fg4-addr">iGreen Energy · Goiânia — GO</p>
+          <ul class="fg4-social" aria-label="Redes sociais">
+            <li><a class="fg4-u" href="#">Instagram</a></li>
+            <li><a class="fg4-u" href="#">YouTube</a></li>
+            <li><a class="fg4-u" href="#">LinkedIn</a></li>
+            <li><a class="fg4-u" href="#">WhatsApp</a></li>
+          </ul>
+        </div>
+
+        <!-- the credential's bay (measured by the script) -->
+        <span class="fg4-bay" aria-hidden="true"></span>
+      </div>
+
+      <div class="fg4-bar fg4-rv">
+        <p class="fg4-copy">© 2026 iGreen Energy</p>
+        <p class="fg4-made">Feito na estrada</p>
+        <nav class="fg4-legal" aria-label="Legal">
+          <a class="fg4-u" href="#">Política de privacidade</a>
+          <a class="fg4-u" href="#">Termos de uso</a>
+          <a class="fg4-u" href="#">Uso de dados</a>
+        </nav>
+        <a class="fg4-up" href="#" aria-label="Voltar ao topo">
+          <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M12 19V5M6 11l6-6 6 6" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </a>
+      </div>
+
+    </div>
+
+    <!-- the lanyard: one canvas for the strap, a DOM card on its end -->
+    <div class="fg4-stage">
+      <canvas class="fg4-strap" aria-hidden="true"></canvas>
+      <div class="fg4-card" role="img" aria-label="Credencial iGreen Live 2026 em nome de Você. Próxima parada: Goiânia, 16 de agosto, check-in às 14h00.">
+        <div class="fg4-face" aria-hidden="true">
+          <span class="fg4-hole"></span>
+          <div class="fg4-card-top">
+            <img class="fg4-card-logo" src="../assets/img/igreen-logo.svg" alt="" width="279" height="82">
+            <span class="fg4-card-ed">Live <i>2026</i></span>
+          </div>
+          <div class="fg4-photo">
+            <img src="../assets/img/footer-g/credencial-retrato.jpg" alt="" width="480" height="540" draggable="false" decoding="async">
+            <span class="fg4-seal"><span class="fg4-seal-foil"></span><svg viewBox="0 0 16 16"><path d="M8 0C8.6 4.4 11.6 7.4 16 8C11.6 8.6 8.6 11.6 8 16C7.4 11.6 4.4 8.6 0 8C4.4 7.4 7.4 4.4 8 0Z" fill="currentColor"/></svg></span>
+          </div>
+          <div class="fg4-id">
+            <p class="fg4-name"><span class="fg4-name-in">Você</span></p>
+            <p class="fg4-meta">Próxima parada <span>Goiânia · 16 ago</span></p>
+          </div>
+          <div class="fg4-card-foot">
+            <svg class="fg4-qr" viewBox="0 0 25 25" aria-hidden="true"></svg>
+            <dl class="fg4-facts">
+              <div><dt>Setor</dt><dd>Plateia A</dd></div>
+              <div><dt>Check-in</dt><dd>14h00</dd></div>
+            </dl>
+          </div>
+          <div class="fg4-strip"><span>Acesso total</span><span class="fg4-strip-n">Nº 0816</span></div>
+          <span class="fg4-holo"><span class="fg4-holo-in"></span></span>
+        </div>
+      </div>
+      <!-- crosses into view when the credential's resting place is on screen -->
+      <span class="fg4-cue" aria-hidden="true"></span>
+    </div>
+
+  </footer>
+
+  <script src="../assets/vendor/gsap.min.js"></script>
+  <script src="footer-g4.js"></script>
+</body>
+</html>

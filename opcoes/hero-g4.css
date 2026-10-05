@@ -1,0 +1,268 @@
+/* ============================================================
+   Hero G4 — A lâmpada de pessoas
+   Texto do site numa coluna à esquerda; à direita, o "G" lâmpada do
+   logo iGreen feito de pessoas (canvas), com um halo de luz que só
+   acende depois que a energia sobe pela lâmpada. Na rolagem, a
+   lâmpada vai ao centro e a luz se espalha em raios de pessoas.
+   ============================================================ */
+
+:root {
+  --hg4-lime: #A8FF35;
+  --hg4-lime-soft: #D8FFA6;
+  --hg4-ink: #F3F6EC;
+  --hg4-base: #06110A;
+  --hg4-bg: #010702;
+  --hg4-pin: 120vh;
+  --hg4-ease: cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.hg4 {
+  position: relative;
+  height: calc(100vh + var(--hg4-pin));
+  background: var(--hg4-bg);
+}
+.hg4-stage {
+  position: sticky;
+  top: 0;
+  height: 100vh;
+  overflow: hidden;
+  isolation: isolate;
+  background: linear-gradient(180deg, #010D03 0%, var(--hg4-bg) 70%);
+  -webkit-user-select: none;
+  user-select: none;
+}
+.hg4-canvas {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  width: 100%;
+  height: 100%;
+  display: block;
+  pointer-events: none;
+}
+
+/* halo: um gradiente parado; o JS só muda transform/opacity */
+.hg4-halo {
+  position: absolute;
+  left: 0;
+  top: 0;
+  z-index: 0;
+  width: 100px;
+  height: 100px;
+  border-radius: 50%;
+  pointer-events: none;
+  opacity: 0;
+  transform-origin: 50% 50%;
+  background: radial-gradient(closest-side, rgba(190, 255, 110, 0.34) 0%, rgba(168, 255, 53, 0.16) 38%, rgba(120, 220, 40, 0.06) 66%, rgba(120, 220, 40, 0) 100%);
+  will-change: transform, opacity;
+}
+
+/* ============ Vídeos nas pontas dos raios ============ */
+
+.hg4-vids {
+  position: absolute;
+  inset: 0;
+  z-index: 3;
+  pointer-events: none;
+}
+.hg4-vid {
+  position: absolute;
+  left: 0;
+  top: 0;
+  overflow: hidden;
+  border-radius: 50%;
+  opacity: 0;
+  visibility: hidden;
+  background: var(--hg4-base);
+  box-shadow: 0 0 0 1px rgba(216, 255, 166, 0.5), 0 0 28px rgba(168, 255, 53, 0.28);
+  will-change: opacity;
+}
+.hg4-vid video {
+  position: absolute;
+  display: block;
+  max-width: none;
+}
+
+/* ============ Texto: coluna à esquerda ============ */
+
+.hg4 .hg4-copy {
+  position: absolute;
+  top: 120px;                      /* o JS centraliza na altura livre */
+  left: 0;
+  z-index: 4;
+  width: min(600px, 46vw);
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  text-align: left;
+}
+.hg4 .title {
+  margin-top: 26px;
+  font-size: clamp(44px, 4.45vw, 64px);
+  line-height: 1.03;
+  letter-spacing: -0.038em;
+}
+.hg4 .title .line {
+  width: auto;
+  margin: 0;
+  white-space: nowrap;
+}
+.hg4-in-line { display: inline-block; }
+.hg4 .sub {
+  margin-top: 24px;
+  max-width: 42ch;
+}
+.hg4 .actions {
+  margin-top: 30px;
+  justify-content: flex-start;
+}
+.hg4 .next-stop { margin-top: 20px; }
+
+.hg4 .title-clip {
+  position: relative;
+  overflow: visible;
+  background: transparent;
+  box-shadow: none;
+}
+.hg4 .title-clip video {
+  position: relative;
+  border-radius: 999px;
+  background: #0E2A17;
+  box-shadow: 0 0 0 1px rgba(243, 246, 236, 0.16), 0 12px 32px rgba(0, 0, 0, 0.35);
+}
+
+/* ============ Entrada do texto (uma vez) ============ */
+
+.hg4-js .hg4 .hg4-rise,
+.hg4-js .hg4 .hg4-in-line {
+  opacity: 0;
+  transform: translate3d(0, 20px, 0);
+}
+.hg4-js .hg4 .hg4-in-line { transform: translate3d(0, 0.4em, 0); }
+.hg4.hg4-in .hg4-rise,
+.hg4.hg4-in .hg4-in-line {
+  animation: hg4-rise 1.15s var(--hg4-ease) both;
+}
+.hg4-in-line { --hg4-from: translate3d(0, 0.4em, 0); }
+.hg4.hg4-in .hero-badge { animation-delay: 0.05s; }
+.hg4.hg4-in .line:nth-child(1) .hg4-in-line { animation-delay: 0.14s; }
+.hg4.hg4-in .line:nth-child(2) .hg4-in-line { animation-delay: 0.22s; }
+.hg4.hg4-in .line:nth-child(3) .hg4-in-line { animation-delay: 0.3s; }
+.hg4.hg4-in .sub { animation-delay: 0.42s; }
+.hg4.hg4-in .actions { animation-delay: 0.5s; }
+.hg4.hg4-in .next-stop { animation-delay: 0.58s; }
+@keyframes hg4-rise {
+  from { opacity: 0; transform: var(--hg4-from, translate3d(0, 20px, 0)); }
+  to   { opacity: 1; transform: none; }
+}
+
+/* ============ Fecho ============ */
+
+.hg4-end {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 78%;                        /* o JS posiciona sob a lâmpada */
+  z-index: 4;
+  margin: 0 auto;
+  text-align: center;
+  font-family: var(--font-display);
+  font-weight: 500;
+  font-size: clamp(32px, 3vw, 54px);
+  line-height: 1.1;
+  letter-spacing: -0.032em;
+  color: var(--hg4-ink);
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+  will-change: transform, opacity;
+}
+.hg4-end span { display: block; position: relative; }
+.hg4-end-b { color: rgba(243, 246, 236, 0.52); }
+.hg4-end::before {
+  content: '';
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: min(900px, 80%);
+  height: calc(100% + 120px);
+  transform: translate(-50%, -50%);
+  background: radial-gradient(closest-side, rgba(1, 7, 2, 0.6) 0%, rgba(1, 7, 2, 0.32) 55%, rgba(1, 7, 2, 0) 100%);
+  pointer-events: none;
+}
+
+.hg4-fade {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 5;
+  height: 9vh;
+  pointer-events: none;
+  opacity: 0;
+  background: linear-gradient(to bottom, rgba(1, 7, 2, 0) 0%, rgba(1, 7, 2, 0.7) 60%, var(--hg4-bg) 100%);
+}
+
+.hg4-next {
+  position: relative;
+  z-index: 1;
+  min-height: 90vh;
+  display: grid;
+  place-items: center;
+  padding: 0 24px;
+  background: var(--hg4-bg);
+}
+.hg4-next-line {
+  font-family: var(--font-display);
+  font-weight: 500;
+  font-size: clamp(30px, 3.1vw, 50px);
+  line-height: 1.1;
+  letter-spacing: -0.032em;
+  text-align: center;
+  color: var(--hg4-ink);
+}
+.hg4-next-line span { color: rgba(243, 246, 236, 0.4); }
+
+.hg4.hg4-paused .rich-bg .band { animation-play-state: paused; }
+
+@media (prefers-reduced-motion: reduce) {
+  .hg4 { height: 100vh; }
+  .hg4-js .hg4 .hg4-rise,
+  .hg4-js .hg4 .hg4-in-line {
+    opacity: 1;
+    transform: none;
+    animation: none;
+  }
+}
+
+/* ============ Telas pequenas: versão estática simples ============ */
+
+@media (max-width: 899px) {
+  .hg4 { height: auto; }
+  .hg4-stage {
+    position: relative;
+    height: auto;
+    min-height: 100vh;
+    padding: 112px 24px 56px;
+  }
+  .hg4 .hg4-copy {
+    position: relative;
+    top: 0 !important;
+    left: 0 !important;
+    width: 100%;
+    align-items: center;
+    text-align: center;
+  }
+  .hg4 .title .line { white-space: normal; }
+  .hg4 .actions { justify-content: center; }
+  .hg4-vids,
+  .hg4-end,
+  .hg4-fade { display: none; }
+  .hg4-js .hg4 .hg4-rise,
+  .hg4-js .hg4 .hg4-in-line {
+    opacity: 1;
+    transform: none;
+    animation: none;
+  }
+}

@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Hero H — Painel de embarque</title>
+  <link rel="icon" href="../assets/img/igreen-logo.svg">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Instrument+Sans:wdth,wght@75..100,400..700&display=swap">
+  <link rel="stylesheet" href="../css/portalv2.css">
+  <link rel="stylesheet" href="hero-h.css">
+  <!-- marca a página como "com JS" antes do primeiro quadro: só então o
+       texto e o painel começam escondidos para a entrada (sem JS tudo
+       aparece, colorido e parado) -->
+  <script>
+    document.documentElement.classList.add('hh-js');
+    // rede de segurança: se o JS do hero falhar, o conteúdo aparece mesmo assim
+    window.addEventListener('load', function () {
+      setTimeout(function () { var h = document.getElementById('hh'); if (h && !h.classList.contains('hh-ready')) h.classList.add('hh-fallback'); }, 3000);
+    });
+  </script>
+</head>
+<body class="tone-green">
+
+  <!-- Menu fixo do topo (mesmo markup do site) -->
+  <header class="topnav">
+    <a class="topnav-logo" href="../index.html"><img src="../assets/img/igreen-logo.svg" alt="iGreen"></a>
+    <nav class="topnav-links" aria-label="Menu fixo">
+      <a href="../index.html">Início</a>
+      <a href="../index.html">Palestrantes</a>
+      <a href="../index.html#agenda">Agenda</a>
+      <a href="../index.html">FAQ</a>
+    </nav>
+    <div class="topnav-actions">
+      <a class="topnav-login" href="#">
+        <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><circle cx="12" cy="8" r="3.4" stroke="currentColor" stroke-width="1.5"/><path d="M5.2 19.4c.9-3.6 3.4-5.4 6.8-5.4s5.9 1.8 6.8 5.4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+        Entrar
+      </a>
+      <a class="topnav-cta" href="#">Cadastre-se</a>
+    </div>
+  </header>
+
+  <!-- ============================================================
+       Hero H — Painel de embarque ("A virada")
+       Um painel de embarque split-flap, de vidro escuro, em que cada
+       palheta é uma pessoa (licenciados, palestrantes, gente dos eventos).
+       1. Entrada: o texto sobe; o painel aparece com todos os rostos
+          cinza e parados ("antes").
+       2. A virada (uma vez só): o clipe do título acende e uma onda de
+          palhetas vira em cascata pelo painel — cada pessoa vira a
+          página e aparece em cor ("depois"); uma frente de luz lima
+          acompanha a onda. Em seguida cinco rostos ganham vida (vídeo).
+       3. Vida: calma. De tempos em tempos um vídeo descansa e outro
+          começa; muito de vez em quando duas palhetas trocam de lugar.
+       4. Interação: o cursor é uma luz atrás do vidro; passar sobre uma
+          palheta faz ela "procurar" (gira rápido por outros rostos),
+          parar na pessoa certa e começar a tocar.
+       5. Rolagem (hero preso): o texto sai, o painel vai ao centro e
+          vira letra por letra: PRÓXIMA / PARADA / GOIÂNIA / 16 DE / AGOSTO.
+          Os cinco espaços em branco da frase ficam com rostos vivos (vídeo):
+          as pessoas continuam no painel enquanto o destino se forma em volta.
+       Sem JS, com movimento reduzido ou em telas estreitas: painel
+       estático, colorido e calmo.
+       ============================================================ -->
+  <section class="hh" id="hh" aria-label="Mais de 2.000 vidas transformadas">
+    <div class="hh-stage">
+
+      <!-- Rich animated background (markup do site; estilos em portalv2.css) -->
+      <div class="rich-bg" aria-hidden="true">
+        <img class="aurora-base" src="../assets/img/aurora-base.webp" alt="">
+        <span class="wash"></span>
+        <span class="band band-l1"></span>
+        <span class="band band-l2"></span>
+        <span class="band band-d1"></span>
+        <span class="band band-d2"></span>
+        <span class="dots-base"></span>
+        <span class="dots"></span>
+      </div>
+
+      <!-- sombra macia atrás do texto: o mesh continua visível, o texto fica legível -->
+      <div class="hh-scrim" aria-hidden="true"></div>
+
+      <div class="hh-wrap">
+
+        <!-- Hero copy (conteúdo do site, em coluna à esquerda) -->
+        <div class="hero-copy hh-copy">
+          <div class="hero-badge hh-rise">
+            <span class="avatars" aria-hidden="true">
+              <img src="../speakers/pedro-cut.png" alt="">
+              <img src="../speakers/carla-cut.png" alt="">
+              <img src="../speakers/ana-cut.png" alt="">
+              <img src="../speakers/bruno-cut.png" alt="">
+            </span>
+            <span><b>+2.000</b> vidas transformadas</span>
+          </div>
+
+          <h1 class="title">
+            <span class="line"><span class="hh-line-in">Renda recorrente</span></span>
+            <span class="line"><span class="hh-line-in">que <span class="title-clip" aria-hidden="true"><video src="../assets/video/cards/sel-musgo3.mp4" poster="../assets/video/cards/sel-musgo3.jpg" muted loop autoplay playsinline></video></span> transforma</span></span>
+            <span class="line line-muted"><span class="hh-line-in">vidas de verdade</span></span>
+          </h1>
+
+          <p class="sub hh-rise">Conheça as histórias de quem virou licenciado iGreen e construiu renda com energia por assinatura, telecom e seguros, todo mês.</p>
+
+          <div class="actions hh-rise">
+            <a class="btn-primary" href="#">
+              Seja licenciado
+              <span class="chip chip-dark">
+                <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                  <path d="M7 17L17 7M9 7h8v8" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+              </span>
+            </a>
+            <a class="btn-ghost" href="#">Ver histórias</a>
+          </div>
+
+          <a class="next-stop hh-rise" href="#agenda">Próxima parada do tour: <b>Goiânia, 16 de agosto</b></a>
+        </div>
+
+        <!-- O painel de embarque: as palhetas são montadas pelo JS -->
+        <div class="hh-slot">
+          <div class="hh-board" aria-label="Painel com rostos de licenciados iGreen" role="img">
+            <span class="hh-back" aria-hidden="true"><span class="hh-light"></span><span class="hh-charge"></span></span>
+            <div class="hh-grid" aria-hidden="true"></div>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- passagem para a próxima seção -->
+      <div class="hh-fade" aria-hidden="true"></div>
+    </div>
+  </section>
+
+  <!-- Próxima seção (simples), para julgar a saída do hero -->
+  <section class="hh-next" id="agenda">
+    <p class="hh-next-line">Cada rosto, uma virada de vida.<br><span>A próxima pode ser a sua.</span></p>
+  </section>
+
+  <script src="hero-h.js"></script>
+</body>
+</html>

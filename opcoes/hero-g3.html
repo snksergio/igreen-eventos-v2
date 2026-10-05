@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Hero G3 — Mosaico de vidas (a multidão)</title>
+  <link rel="icon" href="../assets/img/igreen-logo.svg">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Instrument+Sans:wdth,wght@75..100,400..700&display=swap">
+  <link rel="preload" as="image" href="../assets/img/hero-g/atlas-cinza.webp">
+  <link rel="preload" as="image" href="../assets/img/hero-g/atlas-cor.webp">
+  <link rel="stylesheet" href="../css/portalv2.css">
+  <link rel="stylesheet" href="hero-g3.css">
+  <script>
+    document.documentElement.classList.add('hg3-js');
+    // rede de segurança: se o JS do hero falhar, o texto aparece mesmo assim
+    window.addEventListener('load', function () {
+      setTimeout(function () { var h = document.getElementById('hg3'); if (h) h.classList.add('hg3-in'); }, 2500);
+    });
+  </script>
+</head>
+<body class="tone-green">
+
+  <!-- Menu fixo do topo (mesmo markup do site) -->
+  <header class="topnav">
+    <a class="topnav-logo" href="../index.html"><img src="../assets/img/igreen-logo.svg" alt="iGreen"></a>
+    <nav class="topnav-links" aria-label="Menu fixo">
+      <a href="../index.html">Início</a>
+      <a href="../index.html">Palestrantes</a>
+      <a href="../index.html#agenda">Agenda</a>
+      <a href="../index.html">FAQ</a>
+    </nav>
+    <div class="topnav-actions">
+      <a class="topnav-login" href="#">
+        <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><circle cx="12" cy="8" r="3.4" stroke="currentColor" stroke-width="1.5"/><path d="M5.2 19.4c.9-3.6 3.4-5.4 6.8-5.4s5.9 1.8 6.8 5.4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+        Entrar
+      </a>
+      <a class="topnav-cta" href="#">Cadastre-se</a>
+    </div>
+  </header>
+
+  <!-- ============================================================
+       Hero G3 — Mosaico de vidas, versão "a multidão"
+       Repouso igual ao G2: a frase "Renda recorrente que transforma
+       +2.000 vidas de verdade", com o número feito de pessoas.
+       Rolagem (palco preso): o número se desfaz e cada ponto corre para
+       o seu lugar numa multidão que ocupa a tela inteira — e mais gente
+       chega para completar. Então a multidão se abre ao meio como uma
+       cortina: quatro pessoas saem dela e viram vídeos de verdade, e
+       entre elas aparece a frase "Não é só um número. São mais de
+       2.000 vidas." A cena termina num sentido, não num corte.
+       ============================================================ -->
+  <section class="hg3" id="hg3" aria-label="Mais de 2.000 vidas transformadas">
+    <div class="hg3-stage">
+
+      <!-- Rich animated background (markup do site; estilos em portalv2.css) -->
+      <div class="rich-bg" aria-hidden="true">
+        <img class="aurora-base" src="../assets/img/aurora-base.webp" alt="">
+        <span class="wash"></span>
+        <span class="band band-l1"></span>
+        <span class="band band-l2"></span>
+        <span class="band band-d1"></span>
+        <span class="band band-d2"></span>
+        <span class="dots-base"></span>
+        <span class="dots"></span>
+      </div>
+
+      <canvas class="hg3-canvas" aria-hidden="true"></canvas>
+
+      <!-- as quatro pessoas que saem da multidão e viram vídeo (cartões 4:5) -->
+      <div class="hg3-vids" aria-hidden="true">
+        <div class="hg3-vid" data-cell="1"><video src="../assets/video/cards/gen-executiva2.mp4" poster="../assets/video/cards/gen-executiva2.jpg" muted loop playsinline preload="metadata"></video></div>
+        <div class="hg3-vid" data-cell="0"><video src="../assets/video/cards/sel-musgo2.mp4" poster="../assets/video/cards/sel-musgo2.jpg" muted loop playsinline preload="metadata"></video></div>
+        <div class="hg3-vid" data-cell="4"><video src="../assets/video/cards/sel-carro.mp4" poster="../assets/video/cards/sel-carro.jpg" muted loop playsinline preload="metadata"></video></div>
+        <div class="hg3-vid" data-cell="7"><video src="../assets/video/cards/sel-suv.mp4" poster="../assets/video/cards/sel-suv.jpg" muted loop playsinline preload="metadata"></video></div>
+      </div>
+
+      <!-- Texto: uma frase só, com o número no meio -->
+      <div class="hero-copy hg3-copy">
+        <a class="hg3-chip hg3-rise" href="#agenda">Próxima parada do tour: <b>Goiânia, 16 de agosto</b></a>
+
+        <h1 class="title hg3-title">
+          <span class="line hg3-l1"><span class="hg3-in-line">Renda recorrente que <span class="title-clip" aria-hidden="true"><video src="../assets/video/cards/sel-musgo3.mp4" poster="../assets/video/cards/sel-musgo3.jpg" muted loop autoplay playsinline></video></span> transforma</span></span>
+          <!-- o espaço do número (desenhado no canvas); o JS ajusta a altura -->
+          <span class="hg3-slot"><span class="hg3-plus" aria-hidden="true">+</span><span class="hg3-sr">mais de 2.000</span></span>
+          <span class="line line-muted hg3-l3"><span class="hg3-in-line">vidas de verdade</span></span>
+        </h1>
+
+        <p class="sub hg3-sub hg3-rise">Histórias reais de licenciados iGreen que constroem renda todo mês com energia, telecom e seguros.</p>
+
+        <div class="actions hg3-rise">
+          <a class="btn-primary" href="#">
+            Seja licenciado
+            <span class="chip chip-dark">
+              <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                <path d="M7 17L17 7M9 7h8v8" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+            </span>
+          </a>
+          <a class="btn-ghost" href="#">Ver histórias</a>
+        </div>
+      </div>
+
+      <!-- fecho: a frase que nasce no meio da multidão aberta -->
+      <p class="hg3-end" aria-hidden="true"><span class="hg3-end-a">Não é só um número.</span><span class="hg3-end-b">São mais de 2.000 vidas.</span></p>
+
+      <div class="hg3-fade" aria-hidden="true"></div>
+    </div>
+  </section>
+
+  <section class="hg3-next" id="agenda">
+    <p class="hg3-next-line">Conheça quem está nessa multidão.<br><span>As histórias começam aqui embaixo.</span></p>
+  </section>
+
+  <script src="hero-g3.js"></script>
+</body>
+</html>

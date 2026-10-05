@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Opção C — Órbita</title>
+  <link rel="icon" href="../assets/img/igreen-logo.svg">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Instrument+Sans:wdth,wght@75..100,400..700&display=swap">
+  <link rel="stylesheet" href="../css/portalv2.css">
+  <link rel="stylesheet" href="edicoes-c.css">
+</head>
+<body class="tone-green">
+
+  <!-- Menu fixo do topo (mesmo markup do site) -->
+  <header class="topnav">
+    <a class="topnav-logo" href="../index.html"><img src="../assets/img/igreen-logo.svg" alt="iGreen"></a>
+    <nav class="topnav-links" aria-label="Menu fixo">
+      <a href="../index.html">Início</a>
+      <a href="../index.html">Palestrantes</a>
+      <a href="../index.html#agenda">Agenda</a>
+      <a href="../index.html">FAQ</a>
+    </nav>
+    <div class="topnav-actions">
+      <a class="topnav-login" href="../index.html">
+        <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><circle cx="12" cy="8" r="3.4" stroke="currentColor" stroke-width="1.5"/><path d="M5.2 19.4c.9-3.6 3.4-5.4 6.8-5.4s5.9 1.8 6.8 5.4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+        Entrar
+      </a>
+      <a class="topnav-cta" href="../index.html">Cadastre-se</a>
+    </div>
+  </header>
+
+  <!-- Bloco de entrada (só para o protótipo) -->
+  <div class="oc-lead">
+    <p>Role para ver a seção</p>
+    <span class="oc-lead-line" aria-hidden="true"></span>
+  </div>
+
+  <!-- ============================================================
+       Opção C — Órbita
+       Palco fixo dentro de uma seção alta: duas pilhas de cards giram
+       como um fichário enquanto a frase se monta no centro; os cards
+       explodem em uma órbita ao redor do título, a órbita gira pelas
+       três edições e, no fim, se abre para o fechamento com o CTA.
+       ============================================================ -->
+  <section class="oc" aria-label="Edições que marcaram história">
+    <div class="oc-stage">
+      <div class="oc-frame">
+
+        <!-- campo verde do fechamento (aurora + matriz de pontos) -->
+        <div class="oc-bg" aria-hidden="true">
+          <img class="oc-bg-aurora" src="../assets/img/aurora-base.webp" alt="" decoding="async">
+          <span class="oc-bg-wash"></span>
+          <span class="oc-bg-dots-base"></span>
+          <span class="oc-bg-dots"></span>
+        </div>
+
+        <!-- cards (gerados pelo JS) -->
+        <div class="oc-cards" aria-hidden="true"><div class="oc-world"></div></div>
+
+        <!-- escurecimento suave sob o texto -->
+        <div class="oc-scrim" aria-hidden="true"></div>
+
+        <!-- 1. frase que se monta entre as pilhas -->
+        <p class="oc-sr">Cada parada virou história.</p>
+        <div class="oc-word oc-word--s" data-w="cada" aria-hidden="true">Cada</div>
+        <div class="oc-word oc-word--s" data-w="parada" aria-hidden="true">parada</div>
+        <div class="oc-word oc-word--s" data-w="virou" aria-hidden="true">virou</div>
+        <!-- a palavra-chave cresce, a órbita se forma ao redor dela e
+             ela desliza para dentro do título -->
+        <div class="oc-word oc-hw" data-w="historia" aria-hidden="true">história</div>
+
+        <!-- 2. título da seção -->
+        <div class="oc-t oc-head">
+          <p class="kicker">3 edições desde 2024</p>
+          <h2 class="oc-h2"><span class="oc-ln"><span class="oc-li">Edições que</span></span><br><span class="oc-ln oc-ln--mute"><span class="oc-li">marcaram <span class="oc-h-hist">história</span></span></span></h2>
+        </div>
+
+        <!-- 3. as três edições, em ordem cronológica -->
+        <div class="oc-eds">
+          <article class="oc-t oc-ed" aria-labelledby="oc-ed1">
+            <p class="oc-ed-top"><span class="oc-ed-n">01</span><i aria-hidden="true"></i><span>Recife, 2024</span></p>
+            <h3 class="oc-ed-title" id="oc-ed1"><span class="oc-ln"><span class="oc-li">A primeira caravana</span></span></h3>
+            <p class="oc-ed-desc">Onde o tour nasceu — uma van, seis palestrantes e um litoral de histórias que se transformou em um movimento.</p>
+          </article>
+          <article class="oc-t oc-ed" aria-labelledby="oc-ed2">
+            <p class="oc-ed-top"><span class="oc-ed-n">02</span><i aria-hidden="true"></i><span>Curitiba, 2024</span></p>
+            <h3 class="oc-ed-title" id="oc-ed2"><span class="oc-ln"><span class="oc-li">As turmas práticas</span></span></h3>
+            <p class="oc-ed-desc">A edição mão na massa: casos reais no telão, turmas menores e o método que hoje conduz o tour inteiro pelo país.</p>
+          </article>
+          <article class="oc-t oc-ed" aria-labelledby="oc-ed3">
+            <p class="oc-ed-top"><span class="oc-ed-n">03</span><i aria-hidden="true"></i><span>São Paulo, 2025</span></p>
+            <h3 class="oc-ed-title" id="oc-ed3"><span class="oc-ln"><span class="oc-li">A edição arena</span></span></h3>
+            <p class="oc-ed-desc">Doze mil pessoas sob o mesmo teto — nosso maior palco, o público mais vibrante e um encerramento que bateu recordes.</p>
+          </article>
+        </div>
+
+        <div class="oc-hud" aria-hidden="true">
+          <span class="oc-hud-label">Edição</span>
+          <span class="oc-hud-n"><span class="oc-hud-roll"><span>01</span><span>02</span><span>03</span></span></span>
+          <span class="oc-hud-of">/ 03</span>
+          <span class="oc-hud-bar"><i></i></span>
+        </div>
+
+        <!-- 4. palavras de efeito -->
+        <p class="oc-sr">Energia. Conexão. Renda que fica.</p>
+        <div class="oc-word oc-word--fx" data-w="energia" aria-hidden="true">Energia.</div>
+        <div class="oc-word oc-word--fx" data-w="conexao" aria-hidden="true">Conexão.</div>
+        <div class="oc-word oc-word--fx" data-w="renda" aria-hidden="true">Renda</div>
+        <div class="oc-word oc-word--fx oc-word--mute" data-w="quefica" aria-hidden="true">que fica.</div>
+
+        <!-- 5. fechamento -->
+        <div class="oc-t oc-final">
+          <p class="oc-final-title"><span class="oc-ln"><span class="oc-li">E a próxima história</span></span><br><span class="oc-ln oc-ln--mute"><span class="oc-li">pode ser a sua.</span></span></p>
+          <div class="oc-final-cta">
+            <a class="btn-primary" href="../index.html#agenda">Garantir meu lugar<span class="chip chip-dark"><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M7 17L17 7M9 7h8v8" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></span></a>
+          </div>
+        </div>
+
+        <!-- recuo na saída -->
+        <div class="oc-dark" aria-hidden="true"></div>
+      </div>
+    </div>
+
+    <!-- Versão estática: movimento reduzido (e sem JS) -->
+    <div class="oc-static">
+      <div class="oc-static-head">
+        <p class="kicker">3 edições desde 2024</p>
+        <h2>Edições que<br><span>marcaram história</span></h2>
+      </div>
+      <div class="oc-static-grid">
+        <article class="oc-scard">
+          <div class="oc-scard-photo"><img src="../assets/img/past-03.jpg" alt="Licenciados comemorando no palco em Recife" loading="lazy"></div>
+          <span class="oc-scard-tag">01 · Recife · 2024</span>
+          <h3>A primeira caravana</h3>
+          <p>Onde o tour nasceu — uma van, seis palestrantes e um litoral de histórias que se transformou em um movimento.</p>
+          <span class="oc-scard-date">Março de 2024</span>
+        </article>
+        <article class="oc-scard">
+          <div class="oc-scard-photo"><img src="../assets/img/past-02.jpg" alt="Sessão prática ao vivo com o público em Curitiba" loading="lazy"></div>
+          <span class="oc-scard-tag">02 · Curitiba · 2024</span>
+          <h3>As turmas práticas</h3>
+          <p>A edição mão na massa: casos reais no telão, turmas menores e o método que hoje conduz o tour inteiro pelo país.</p>
+          <span class="oc-scard-date">Setembro de 2024</span>
+        </article>
+        <article class="oc-scard">
+          <div class="oc-scard-photo"><img src="../assets/img/past-01.jpg" alt="Palestrante no palco principal em São Paulo" loading="lazy"></div>
+          <span class="oc-scard-tag">03 · São Paulo · 2025</span>
+          <h3>A edição arena</h3>
+          <p>Doze mil pessoas sob o mesmo teto — nosso maior palco, o público mais vibrante e um encerramento que bateu recordes.</p>
+          <span class="oc-scard-date">Agosto de 2025</span>
+        </article>
+      </div>
+      <div class="oc-static-strip" aria-hidden="true">
+        <img src="../assets/img/past/moment-19.jpg" alt="" loading="lazy">
+        <img src="../assets/img/past/moment-05.jpg" alt="" loading="lazy">
+        <img src="../assets/img/past/moment-02.jpg" alt="" loading="lazy">
+        <img src="../assets/img/past/moment-17.jpg" alt="" loading="lazy">
+        <img src="../assets/img/past/moment-13.jpg" alt="" loading="lazy">
+        <img src="../assets/img/past/moment-22.jpg" alt="" loading="lazy">
+      </div>
+      <div class="oc-static-cta">
+        <p class="oc-static-final">E a próxima história <span>pode ser a sua.</span></p>
+        <a class="btn-primary" href="../index.html#agenda">Garantir meu lugar<span class="chip chip-dark"><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M7 17L17 7M9 7h8v8" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></span></a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Bloco de saída (só para o protótipo) -->
+  <div class="oc-trail">
+    <p>Fim da seção (opção C)</p>
+  </div>
+
+  <script src="../assets/vendor/gsap.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.13.0/ScrollTrigger.min.js"></script>
+  <script src="edicoes-c.js"></script>
+</body>
+</html>

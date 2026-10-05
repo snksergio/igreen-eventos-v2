@@ -1,0 +1,600 @@
+/* ============================================================
+   Opção C — Carga
+   A parede de vídeos fica cinza e parada acima de uma frente de luz
+   lima; abaixo dela, colorida e viva. A frente sobe como uma bateria
+   carregando. Tudo o que se move a cada quadro usa só transform e
+   opacity; os filtros cinza são estáticos.
+   ============================================================ */
+
+:root {
+  --hc-lime: #A8FF35;
+  --hc-lime-soft: #D8FFA6;
+  --hc-ink: #010702;
+  --hc-card: #06110A;
+  --hc-ease: cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/* ---------- palco ---------- */
+
+.hc-hero {
+  position: relative;
+  height: 100vh;
+  min-height: 640px;
+  overflow: hidden;
+  background: linear-gradient(180deg, #010D03 0%, var(--hc-ink) 70%);
+  isolation: isolate;
+  -webkit-user-select: none;
+  user-select: none;
+}
+
+/* ---------- parede de histórias ---------- */
+
+.hc-wall {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+}
+/* o mesh continua visível, só mais baixo: a frente é a luz principal */
+.hc-wall::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: rgba(1, 7, 2, 0.36);
+  pointer-events: none;
+}
+.hc-layer {
+  position: absolute;
+  inset: 0;
+}
+/* janela da cor: o recorte (overflow) desce até a frente e o conteúdo
+   sobe o mesmo tanto — duas transformações que se anulam, então a cor
+   aparece exatamente abaixo da linha sem nada ser repintado */
+.hc-win,
+.hc-win-in {
+  position: absolute;
+  inset: 0;
+  will-change: transform;
+}
+.hc-win { overflow: hidden; }
+
+.hc-col {
+  position: absolute;
+  top: 0;
+  height: 100%;
+  will-change: transform;
+}
+.hc-col-in {
+  position: absolute;
+  inset: 0;
+  will-change: transform, opacity;
+}
+.hc-track {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 100%;
+  will-change: transform;
+}
+
+.hc-tile {
+  position: relative;
+  margin: 0 0 var(--hc-gap, 24px);
+  height: var(--hc-th, 280px);
+  border-radius: 15px;
+  overflow: hidden;
+}
+.hc-tile video,
+.hc-tile img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  pointer-events: none;
+}
+
+/* "antes": fotograma parado, cinza e apagado (filtro estático) */
+.hc-layer--gray .hc-tile { background: transparent; }
+.hc-g {
+  filter: grayscale(1) brightness(0.62) contrast(1.06);
+  opacity: 0.5;
+}
+.hc-layer--gray .hc-tile::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: 3;
+  border-radius: inherit;
+  box-shadow: inset 0 0 0 1px rgba(243, 246, 236, 0.06);
+  pointer-events: none;
+}
+
+/* "depois": cor, vida, aro de luz do sistema */
+.hc-layer--color .hc-tile {
+  background: var(--hc-card);
+  transition: transform 0.7s var(--hc-ease);
+}
+.hc-layer--color .hc-tile::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  border-radius: inherit;
+  background: linear-gradient(180deg, rgba(120, 200, 60, 0.06) 0%, rgba(6, 24, 13, 0) 42%, rgba(4, 16, 8, 0.34) 100%);
+  box-shadow: inset 0 0 0 1px rgba(243, 246, 236, 0.08);
+  pointer-events: none;
+}
+.hc-layer--color .hc-tile::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: 3;
+  border-radius: inherit;
+  padding: 1px;
+  pointer-events: none;
+  mix-blend-mode: overlay;
+  background: linear-gradient(to top, rgba(255, 255, 255, 0.7) 0%, rgba(255, 255, 255, 0.24) 22%, rgba(255, 255, 255, 0.08) 40%, rgba(255, 255, 255, 0.03) 100%);
+  -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor;
+  mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+  mask-composite: exclude;
+}
+/* energizado: um pouco de luz lima sobe pela base do card */
+.hc-live {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  border-radius: inherit;
+  background:
+    radial-gradient(80% 34% at 50% 100%, rgba(168, 255, 53, 0.26) 0%, rgba(168, 255, 53, 0.06) 55%, transparent 80%);
+  box-shadow: inset 0 0 0 1px rgba(216, 255, 166, 0.16);
+  opacity: 0;
+  transition: opacity 0.9s ease;
+  pointer-events: none;
+}
+.hc-tile.is-live .hc-live { opacity: 1; }
+.hc-layer--color .hc-tile.is-hv { transform: scale(1.035); }
+/* colunas atrás do texto: a mesma cor, um tom abaixo (estático) */
+.hc-layer--color .hc-col--mid .hc-tile::before {
+  background: linear-gradient(180deg, rgba(1, 7, 2, 0.34) 0%, rgba(1, 7, 2, 0.42) 100%);
+}
+
+/* passe o cursor num card cinza: uma carga local sobe por ele */
+.hc-hv,
+.hc-hv-in {
+  position: absolute;
+  inset: 0;
+  transition: transform 1.1s cubic-bezier(0.55, 0, 0.2, 1);
+}
+.hc-hv {
+  z-index: 2;
+  overflow: hidden;
+  transform: translate3d(0, 101%, 0);
+}
+.hc-hv-in { transform: translate3d(0, -101%, 0); }
+.hc-hv-edge {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+  z-index: 1;
+  height: 2px;
+  background: linear-gradient(90deg, rgba(216, 255, 166, 0.2), var(--hc-lime-soft) 25%, #fff 50%, var(--hc-lime-soft) 75%, rgba(216, 255, 166, 0.2));
+  box-shadow: 0 0 12px 2px rgba(168, 255, 53, 0.6);
+}
+.hc-tile.is-hv .hc-hv,
+.hc-tile.is-hv .hc-hv-in { transform: translate3d(0, 0, 0); }
+.hc-tile.is-hv .hc-hv-edge { opacity: 0; transition: opacity 0.4s ease 0.9s; }
+
+/* ---------- frente de carga ---------- */
+
+.hc-front {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+  height: 0;
+  z-index: 2;
+  pointer-events: none;
+  will-change: transform;
+  transform: translate3d(0, 110vh, 0);
+}
+.hc-front-fx,
+.hc-front-b {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+}
+/* respiração: a linha sobe e desce 3px e o brilho pulsa (um só laço) */
+.hc-front-b {
+  animation: hc-breathe 6.8s ease-in-out infinite;
+  will-change: transform, opacity;
+}
+.hc-front-b > span {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+}
+.hc-front-b > .hc-front-veil { top: auto; bottom: 0; }
+.hc-front-b > .hc-front-bloom { top: -80px; left: -8%; right: -8%; }
+.hc-front-b > .hc-front-flare { top: -130px; }
+.hc-front-b > .hc-front-hot { right: auto; top: -70px; }
+.hc-front-b > .hc-front-band { top: -10px; }
+.hc-front-b > .hc-front-line { top: -1px; }
+.hc-front-b > .hc-front-scan { top: -2px; right: auto; }
+
+/* atrás do texto a linha fica mais baixa: passa por trás do vidro */
+.hc-front-b > .hc-front-line,
+.hc-front-b > .hc-front-bloom {
+  -webkit-mask-image: linear-gradient(90deg, #000 0%, #000 calc(50% - 660px), rgba(0, 0, 0, 0.38) calc(50% - 400px), rgba(0, 0, 0, 0.38) calc(50% + 400px), #000 calc(50% + 660px), #000 100%);
+  mask-image: linear-gradient(90deg, #000 0%, #000 calc(50% - 660px), rgba(0, 0, 0, 0.38) calc(50% - 400px), rgba(0, 0, 0, 0.38) calc(50% + 400px), #000 calc(50% + 660px), #000 100%);
+}
+
+/* luz que escorre sobre a parede recém-carregada */
+.hc-front-spill {
+  height: 30vh;
+  background: linear-gradient(to bottom, rgba(168, 255, 53, 0.11) 0%, rgba(168, 255, 53, 0.035) 32%, rgba(168, 255, 53, 0) 100%);
+}
+/* leve sombra logo acima: a linha destaca do cinza */
+.hc-front-veil {
+  height: 16vh;
+  background: linear-gradient(to top, rgba(1, 7, 2, 0.42), rgba(1, 7, 2, 0));
+}
+.hc-front-bloom {
+  height: 160px;
+  background: radial-gradient(50% 50% at 50% 50%, rgba(168, 255, 53, 0.17) 0%, rgba(168, 255, 53, 0.06) 42%, rgba(168, 255, 53, 0) 72%);
+}
+.hc-front-flare {
+  height: 260px;
+  background: radial-gradient(40% 50% at 50% 50%, rgba(216, 255, 166, 0.34) 0%, rgba(168, 255, 53, 0.12) 40%, rgba(168, 255, 53, 0) 72%);
+  opacity: 0;
+}
+/* ponto quente que segue o cursor ao longo da linha */
+.hc-front-hot {
+  width: 560px;
+  height: 140px;
+  margin-left: -280px;
+  background: radial-gradient(50% 50% at 50% 50%, rgba(216, 255, 166, 0.22) 0%, rgba(168, 255, 53, 0.08) 45%, rgba(168, 255, 53, 0) 72%);
+  opacity: 0;
+  will-change: transform, opacity;
+}
+.hc-front-band {
+  height: 20px;
+  background: linear-gradient(to bottom, rgba(168, 255, 53, 0) 0%, rgba(168, 255, 53, 0.2) 50%, rgba(168, 255, 53, 0) 100%);
+  -webkit-mask-image: linear-gradient(90deg, transparent 0%, #000 18%, #000 82%, transparent 100%);
+  mask-image: linear-gradient(90deg, transparent 0%, #000 18%, #000 82%, transparent 100%);
+}
+.hc-front-line {
+  height: 2px;
+  background: linear-gradient(90deg,
+    rgba(168, 255, 53, 0) 0%,
+    rgba(168, 255, 53, 0.55) 9%,
+    #C8FF7A 28%,
+    #EEFFD6 50%,
+    #C8FF7A 72%,
+    rgba(168, 255, 53, 0.55) 91%,
+    rgba(168, 255, 53, 0) 100%);
+  box-shadow: 0 0 12px rgba(168, 255, 53, 0.55);
+  transform-origin: 50% 50%;
+}
+/* corrente que percorre a linha de tempos em tempos */
+.hc-front-scan {
+  width: 24vw;
+  height: 4px;
+  background: radial-gradient(50% 50% at 50% 50%, rgba(255, 255, 255, 0.95) 0%, rgba(216, 255, 166, 0.5) 40%, rgba(216, 255, 166, 0) 72%);
+  animation: hc-scan 9s cubic-bezier(0.6, 0, 0.4, 1) infinite;
+  animation-delay: -3s;
+}
+
+/* faíscas que se soltam da linha e sobem pelo cinza: três grupos, cada
+   um é um ponto com cópias em box-shadow (3 laços em vez de 9) */
+.hc-sparks {
+  height: 0;
+}
+.hc-sparks i {
+  position: absolute;
+  top: -2px;
+  width: 3px;
+  height: 3px;
+  border-radius: 50%;
+  opacity: 0;
+  animation: hc-spark-a 4.6s cubic-bezier(0.22, 0.7, 0.3, 1) infinite;
+}
+.hc-sparks i:nth-child(1) {
+  left: 7%;
+  animation-delay: -0.4s;
+  box-shadow:
+    0 0 0 0 #EFFFD9, 0 0 6px 1px rgba(168, 255, 53, 0.85),
+    34vw 10px 0 -0.5px #EFFFD9, 34vw 10px 6px 1px rgba(168, 255, 53, 0.7),
+    71vw -6px 0 0 #EFFFD9, 71vw -6px 6px 1px rgba(168, 255, 53, 0.85);
+}
+.hc-sparks i:nth-child(2) {
+  left: 16%;
+  animation-name: hc-spark-b;
+  animation-duration: 3.9s;
+  animation-delay: -2.2s;
+  box-shadow:
+    0 0 0 -0.5px #EFFFD9, 0 0 6px 1px rgba(168, 255, 53, 0.7),
+    44vw -8px 0 0 #EFFFD9, 44vw -8px 6px 1px rgba(168, 255, 53, 0.85),
+    70vw 6px 0 -0.5px #EFFFD9, 70vw 6px 6px 1px rgba(168, 255, 53, 0.7);
+}
+.hc-sparks i:nth-child(3) {
+  left: 26%;
+  animation-name: hc-spark-c;
+  animation-duration: 5.3s;
+  animation-delay: -1.3s;
+  box-shadow:
+    0 0 0 0 #EFFFD9, 0 0 6px 1px rgba(168, 255, 53, 0.85),
+    40vw 4px 0 -0.5px #EFFFD9, 40vw 4px 6px 1px rgba(168, 255, 53, 0.7),
+    66vw -10px 0 0 #EFFFD9, 66vw -10px 6px 1px rgba(168, 255, 53, 0.85);
+}
+
+/* medidor de carga, preso à linha na borda do conteúdo */
+.hc-readout {
+  position: absolute;
+  right: 5vw; /* alinhado à borda do menu, sempre fora do véu */
+  bottom: 14px;
+  display: inline-flex;
+  align-items: baseline;
+  gap: 7px;
+  height: 28px;
+  padding: 0 12px;
+  align-items: center;
+  border-radius: 999px;
+  background: rgba(1, 7, 2, 0.62);
+  box-shadow: inset 0 0 0 1px rgba(243, 246, 236, 0.1);
+  font-size: 13px;
+  line-height: 1;
+  letter-spacing: -0.005em;
+  color: rgba(243, 246, 236, 0.55);
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+  will-change: transform;
+}
+.hc-readout b {
+  min-width: 2.1ch;
+  text-align: right;
+  font-weight: 500;
+  color: var(--hc-lime-soft);
+}
+.hc-rd-u {
+  margin-left: -6px;
+  color: var(--hc-lime-soft);
+}
+
+/* ---------- luz e sombra para o texto ---------- */
+
+.hc-shade {
+  position: absolute;
+  inset: 0;
+  z-index: 3;
+  pointer-events: none;
+  background:
+    linear-gradient(to bottom, rgba(1, 7, 2, 0.88) 0%, rgba(1, 7, 2, 0.4) 10%, rgba(1, 7, 2, 0) 22%),
+    linear-gradient(to top, rgba(1, 7, 2, 0.9) 0%, rgba(1, 7, 2, 0) 11%);
+}
+.hc-scrim {
+  position: absolute;
+  left: 50%;
+  top: -3%;
+  z-index: 3;
+  width: clamp(1040px, 74vw, 2000px);
+  height: 112%;
+  transform: translateX(-50%);
+  pointer-events: none;
+  background: radial-gradient(closest-side, rgba(1, 7, 2, 0.92) 0%, rgba(1, 7, 2, 0.88) 46%, rgba(1, 7, 2, 0.62) 70%, rgba(1, 7, 2, 0.22) 88%, rgba(1, 7, 2, 0) 100%);
+}
+/* passagem: o escuro da próxima seção sobe pela base (só transform) */
+.hc-curtain {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 100%;
+  z-index: 3;
+  height: 140%;
+  pointer-events: none;
+  background: linear-gradient(to bottom, rgba(1, 7, 2, 0) 0%, rgba(1, 7, 2, 0.72) 18%, rgba(1, 7, 2, 0.96) 36%, #010702 50%);
+  will-change: transform;
+}
+/* carga completa: um sopro de luz no topo */
+.hc-flash {
+  position: absolute;
+  inset: 0;
+  z-index: 3;
+  pointer-events: none;
+  opacity: 0;
+  background: radial-gradient(90% 70% at 50% 0%, rgba(168, 255, 53, 0.2) 0%, rgba(168, 255, 53, 0.06) 45%, rgba(168, 255, 53, 0) 75%);
+}
+
+/* ---------- texto ---------- */
+
+.hc-stage {
+  position: absolute;
+  inset: 0;
+  z-index: 4;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 88px 0 9vh;
+  pointer-events: none;
+}
+.hc-hero .hero-copy {
+  width: 100%;
+  max-width: 1240px;
+  will-change: transform, opacity;
+}
+.hc-hero .title {
+  font-size: clamp(44px, 3.1vw + 31px, 112px);
+}
+.hc-hero .sub {
+  font-size: clamp(16px, 0.45vw + 11.5px, 22px);
+}
+/* respiro um pouco maior antes dos botões: é onde a frente repousa */
+.hc-hero .actions { margin-top: 46px; }
+
+/* "vidas de verdade" acende quando a frente passa por ela: uma cópia
+   lima numa janela que sobe junto com a linha (só transform) */
+.hc-charge {
+  position: relative;
+}
+.hc-lit {
+  position: absolute;
+  top: -0.22em;
+  bottom: -0.22em;
+  left: -0.4em;
+  right: -0.4em;
+  overflow: hidden;
+  pointer-events: none;
+  will-change: transform;
+}
+.hc-lit-in {
+  display: block;
+  padding: 0.22em 0.4em;
+  white-space: nowrap;
+  color: var(--hc-lime-soft);
+  text-shadow: 0 0 34px rgba(168, 255, 53, 0.42), 0 0 2px rgba(216, 255, 166, 0.35);
+  will-change: transform;
+}
+
+/* ---------- seção seguinte (demonstração) ---------- */
+
+.hc-next {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 28px;
+  min-height: 90vh;
+  padding: 0 24px;
+  background: var(--hc-ink);
+  text-align: center;
+}
+.hc-next-t {
+  max-width: 18ch;
+  font-weight: 500;
+  font-size: clamp(32px, 2.2vw + 14px, 72px);
+  line-height: 1.04;
+  letter-spacing: -0.035em;
+  color: var(--text-hi);
+  text-wrap: balance;
+}
+.hc-next-t span { display: block; }
+.hc-next-t .hc-next-m { color: var(--text-dim); }
+.hc-next-note {
+  font-size: 14px;
+  color: rgba(243, 246, 236, 0.34);
+}
+
+/* ---------- laços contínuos ---------- */
+
+@keyframes hc-breathe {
+  0%, 100% { transform: translate3d(0, -3px, 0); opacity: 0.82; }
+  50%      { transform: translate3d(0, 3px, 0); opacity: 1; }
+}
+@keyframes hc-scan {
+  0%   { transform: translate3d(-30vw, 0, 0); }
+  55%  { transform: translate3d(110vw, 0, 0); }
+  100% { transform: translate3d(110vw, 0, 0); }
+}
+@keyframes hc-spark-a {
+  0%   { transform: translate3d(0, 0, 0) scale(1); opacity: 0; }
+  10%  { opacity: 1; }
+  70%  { opacity: 0.55; }
+  100% { transform: translate3d(14px, -120px, 0) scale(0.3); opacity: 0; }
+}
+@keyframes hc-spark-b {
+  0%   { transform: translate3d(0, 0, 0) scale(1); opacity: 0; }
+  12%  { opacity: 0.9; }
+  70%  { opacity: 0.5; }
+  100% { transform: translate3d(-18px, -84px, 0) scale(0.3); opacity: 0; }
+}
+@keyframes hc-spark-c {
+  0%   { transform: translate3d(0, 0, 0) scale(1); opacity: 0; }
+  8%   { opacity: 1; }
+  70%  { opacity: 0.45; }
+  100% { transform: translate3d(6px, -168px, 0) scale(0.25); opacity: 0; }
+}
+
+/* fora da tela ou aba oculta: tudo que é laço em CSS para */
+.hc-off .hc-front-b,
+.hc-off .hc-front-scan,
+.hc-off .hc-sparks i,
+.hc-off .rich-bg .band,
+.hc-full .hc-front-b,
+.hc-full .hc-front-scan,
+.hc-full .hc-sparks i {
+  animation-play-state: paused;
+}
+
+/* ---------- estado inicial da entrada (só com JS e movimento) ---------- */
+
+.hc-js:not(.hc-static):not(.hc-go) .hc-hero .rich-bg,
+.hc-js:not(.hc-static):not(.hc-go) .hc-hero .hero-badge,
+.hc-js:not(.hc-static):not(.hc-go) .hc-hero .title .line,
+.hc-js:not(.hc-static):not(.hc-go) .hc-hero .sub,
+.hc-js:not(.hc-static):not(.hc-go) .hc-hero .actions,
+.hc-js:not(.hc-static):not(.hc-go) .hc-hero .next-stop {
+  opacity: 0;
+  /* rede de segurança: se o JS não rodar, o texto aparece sozinho */
+  animation: hc-failsafe 0.8s ease 3s forwards;
+}
+@keyframes hc-failsafe { to { opacity: 1; } }
+
+/* ---------- telas muito grandes ---------- */
+
+@media (min-width: 2200px) {
+  .hc-tile { border-radius: 16px; }
+  .hc-hero .hero-badge { height: 46px; font-size: 16.5px; padding-right: 19px; }
+  .hc-hero .avatars img { width: 35px; height: 35px; }
+  .hc-hero .title { margin-top: 32px; }
+  .hc-hero .sub { margin-top: 32px; }
+  .hc-hero .actions { margin-top: 58px; gap: 14px; }
+  .hc-hero .btn-primary,
+  .hc-hero .btn-ghost { height: 58px; font-size: 18px; }
+  .hc-hero .btn-ghost { padding: 0 32px; }
+  .hc-hero .btn-primary:has(.chip) { padding: 0 7px 0 30px; }
+  .hc-hero .chip { width: 44px; height: 44px; }
+  .hc-hero .next-stop { margin-top: 26px; font-size: 16px; }
+  .hc-readout { height: 32px; font-size: 14.5px; }
+}
+
+/* ---------- versão calma: sem movimento ou telas estreitas ---------- */
+
+.hc-static .hc-hero {
+  height: auto;
+  min-height: 100vh;
+  min-height: 100svh;
+}
+.hc-static .hc-layer--gray,
+.hc-static .hc-front,
+.hc-static .hc-flash,
+.hc-static .hc-lit,
+.hc-static .hc-curtain { display: none; }
+.hc-static .hc-win,
+.hc-static .hc-win-in { transform: none !important; will-change: auto; }
+.hc-static .hc-col,
+.hc-static .hc-col-in,
+.hc-static .hc-track { will-change: auto; }
+.hc-static .hc-stage {
+  position: relative;
+  min-height: 100vh;
+  min-height: 100svh;
+  padding: 120px 0 80px;
+}
+.hc-static .hc-scrim {
+  width: 100%;
+  background: radial-gradient(closest-side, rgba(1, 7, 2, 0.9) 0%, rgba(1, 7, 2, 0.82) 50%, rgba(1, 7, 2, 0.5) 80%, rgba(1, 7, 2, 0.25) 100%);
+}
+
+@media (max-width: 899px) {
+  .hc-tile { border-radius: 12px; }
+  .hc-hero .title { font-size: clamp(34px, 9.4vw, 58px); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hc-front-b,
+  .hc-front-scan,
+  .hc-sparks i { animation: none; }
+}
