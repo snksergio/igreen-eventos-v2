@@ -55,17 +55,19 @@
   const ED = (tag, title, src) => ({ k: 'ed', tag, title, src, ar: 4 / 5 });
   const ED_REC = ED('Recife · 2024', 'A primeira caravana', `${BASE}assets/img/past-03.jpg`);
   const ED_CWB = ED('Curitiba · 2024', 'As turmas práticas', `${BASE}assets/img/past-02.jpg`);
-  const ED_SP = ED('São Paulo · 2025', 'A edição arena', `${BASE}assets/img/past-01.jpg`);
+  // (past-01 é o mesmo quadro do vídeo do painel de Curitiba; a arena da 'Persistência' não se repete)
+  const ED_SP = ED('São Paulo · 2025', 'A edição arena', MOM(20));
 
   const BRAND = { k: 'brand', ar: 1 };
   const VAN = { k: 'type', ar: 1 };
   const ROUTE = { k: 'route', ar: 4 / 5 };
 
-  // seis colunas, tipos misturados para que vizinhas nunca se repitam
+  // seis colunas, tipos misturados para que vizinhas nunca se repitam; nenhuma
+  // foto repete o quadro dos painéis das edições (stage-speaker, arena-audience)
   const COLS = [
-    [photo(MOM(5)), clip(CARD('gen-walk')), photo(MOM(13), 4 / 5), photo(MOM(22)), photo(CARD('sel-jardim') + '.jpg', 4 / 5), photo(MOM(6))],
+    [photo(MOM(5)), clip(CARD('gen-walk')), photo(MOM(13), 4 / 5), photo(MOM(22)), photo(CARD('sel-jardim') + '.jpg', 4 / 5), photo(MOM(15))],
     [ED_REC, photo(MOM(2)), ST_12K, Q_MARINA, VAN, photo(MOM(19))],
-    [photo(MOM(8)), Q_IGOR, clip(CARD('sel-carro')), ST_98, photo(MOM(17)), BRAND, photo(MOM(10), 4 / 5)],
+    [photo(MOM(8)), Q_IGOR, clip(CARD('sel-carro')), ST_98, photo(MOM(18)), BRAND, photo(MOM(10), 4 / 5)],
     [ST_49, photo(MOM(21)), ED_CWB, clip(PAST('crowd-hands'), 16 / 10), Q_RAFA, photo(CARD('gen-podcast') + '.jpg', 4 / 5)],
     [photo(MOM(16), 4 / 5), ROUTE, photo(MOM(4)), ST_3X, Q_CAMILA, photo(MOM(11)), ED_SP],
     [clip(CARD('gen-executiva2')), photo(MOM(23)), photo(MOM(7), 1), photo(CARD('sel-musgo2') + '.jpg', 4 / 5), photo(MOM(3)), photo(MOM(12))]
@@ -73,7 +75,7 @@
   const SPEEDS = [1, -0.74, 1.22, -0.92, 0.84, -1.12];
 
   // fotos que entram no lugar de outras quando um tile "pisca" (m1)
-  const POP_POOL = [MOM(9), MOM(14), MOM(15), MOM(18), MOM(20), CARD('sel-musgo3') + '.jpg', CARD('sel-estudio') + '.jpg', CARD('gen-kart') + '.jpg', CARD('sel-suv') + '.jpg', CARD('gen-reuniao') + '.jpg', CARD('sel-escritorio') + '.jpg'];
+  const POP_POOL = [MOM(9), MOM(14), CARD('sel-musgo3') + '.jpg', CARD('sel-estudio') + '.jpg', CARD('gen-kart') + '.jpg', CARD('sel-suv') + '.jpg', CARD('gen-reuniao') + '.jpg', CARD('sel-escritorio') + '.jpg'];
 
   // o fluxo do warp: fotos, retratos, rótulos de cidade e dois números
   const sp = (src, w = 0.165) => ({ k: 'photo', src, w, ar: 16 / 10 });
