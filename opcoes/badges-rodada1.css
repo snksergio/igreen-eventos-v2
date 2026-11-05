@@ -1,0 +1,1151 @@
+/* ============================================================
+   Selos das seções — 10 propostas (página de comparação)
+   Prefix bd-. Tokens from the site: #010702 · #F3F6EC · lime #A8FF35
+   · lime-soft #D8FFA6. Loops run only while a row is on screen.
+   ============================================================ */
+
+/* ---------- page ---------- */
+
+.bd-main {
+  max-width: 1304px;
+  margin: 0 auto;
+  padding: 168px 32px 180px;
+}
+.bd-intro h1 {
+  font-family: var(--font-display);
+  font-weight: 500;
+  font-size: 64px;
+  line-height: 1.04;
+  letter-spacing: -0.03em;
+  color: #F5F9F0;
+}
+.bd-intro h1 span { color: var(--text-dim); }
+.bd-intro > p {
+  margin-top: 24px;
+  max-width: 58ch;
+  font-size: 17px;
+  line-height: 1.6;
+  color: var(--text-mid);
+}
+.bd-index {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 40px;
+}
+.bd-index a {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  height: 34px;
+  padding: 0 14px;
+  border-radius: 999px;
+  border: 1px solid rgba(243, 246, 236, 0.1);
+  font-size: 14px;
+  color: var(--text-soft);
+  text-decoration: none;
+  transition: border-color 0.3s, background-color 0.3s;
+}
+.bd-index a span {
+  font-size: 12.5px;
+  color: var(--lime);
+  font-variant-numeric: tabular-nums;
+}
+.bd-index a:hover {
+  border-color: rgba(168, 255, 53, 0.4);
+  background: rgba(168, 255, 53, 0.05);
+}
+
+.bd-rows { margin-top: 96px; }
+.bd-row {
+  display: grid;
+  grid-template-columns: 300px minmax(0, 1fr);
+  gap: 64px;
+  padding: 80px 0;
+  border-top: 1px solid rgba(243, 246, 236, 0.08);
+  scroll-margin-top: 80px;
+}
+.bd-num {
+  font-size: 14px;
+  color: var(--lime);
+  font-variant-numeric: tabular-nums;
+}
+.bd-row--now .bd-num { color: var(--text-dim); }
+.bd-name {
+  margin-top: 14px;
+  font-family: var(--font-display);
+  font-weight: 500;
+  font-size: 30px;
+  line-height: 1.1;
+  letter-spacing: -0.02em;
+  color: #F5F9F0;
+}
+.bd-desc {
+  margin-top: 14px;
+  font-size: 15px;
+  line-height: 1.6;
+  color: var(--text-mid);
+}
+.bd-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 64px 48px;
+}
+.bd-cell {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 22px;
+  min-width: 0;
+}
+.bd-slot {
+  display: flex;
+  align-items: flex-end;
+  min-height: 60px;
+}
+.bd-h {
+  font-family: var(--font-display);
+  font-weight: 500;
+  font-size: 36px;
+  line-height: 1.08;
+  letter-spacing: -0.025em;
+  color: #F5F9F0;
+}
+.bd-h span { color: var(--text-dim); }
+
+/* every badge arrives once, staggered across the four cells */
+.bd-row:not(.is-in) .bd-slot > * { opacity: 0; }
+.bd-row.is-in .bd-slot > * { animation: bd-in 0.9s cubic-bezier(0.16, 1, 0.3, 1) backwards; }
+.bd-cell:nth-child(2) .bd-slot > * { animation-delay: 0.08s; }
+.bd-cell:nth-child(3) .bd-slot > * { animation-delay: 0.16s; }
+.bd-cell:nth-child(4) .bd-slot > * { animation-delay: 0.24s; }
+@keyframes bd-in { from { opacity: 0; translate: 0 12px; } }
+
+/* loops hold still while their row is off screen */
+.bd-row:not(.is-on) *,
+.bd-row:not(.is-on) *::before,
+.bd-row:not(.is-on) *::after { animation-play-state: paused !important; }
+
+/* rolling text: old and new line share one grid cell */
+.bd-roll {
+  display: inline-grid;
+  overflow: hidden;
+  vertical-align: bottom;
+}
+.bd-roll > span {
+  grid-area: 1 / 1;
+  white-space: nowrap;
+}
+
+/* shared pill (01, 02, 03) */
+.bd1,
+.bd2,
+.bd3 {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  height: 36px;
+  padding: 0 16px 0 12px;
+  border-radius: 999px;
+  border: 1px solid rgba(243, 246, 236, 0.14);
+  background: rgba(243, 246, 236, 0.03);
+  font-size: 14px;
+  line-height: 1;
+  color: rgba(243, 246, 236, 0.78);
+  white-space: nowrap;
+  transition: border-color 0.4s, background-color 0.4s;
+}
+.bd1:hover,
+.bd2:hover,
+.bd3:hover {
+  border-color: rgba(168, 255, 53, 0.34);
+  background: rgba(168, 255, 53, 0.05);
+}
+.bd2 b,
+.bd3 b,
+.bd9 b {
+  font-weight: 600;
+  color: #F5F9F0;
+}
+
+/* ============================================================
+   01 — Glifo vivo
+   ============================================================ */
+
+.bd1 { padding-left: 10px; }
+.bd1-ico {
+  flex: none;
+  width: 22px;
+  height: 22px;
+  overflow: visible;
+  fill: none;
+  stroke: var(--lime);
+  stroke-width: 1.5;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+.bd1-ico--w { width: 26px; }
+.bd1-draw * {
+  stroke-dasharray: 1;
+  stroke-dashoffset: 1;
+}
+.bd-row.is-in .bd1-draw * { animation: bd1-draw 1.1s cubic-bezier(0.65, 0, 0.35, 1) forwards; }
+.bd-row.is-in .bd1-draw *:nth-child(2) { animation-delay: 0.18s; }
+.bd-row.is-in .bd1-draw *:nth-child(3) { animation-delay: 0.36s; }
+@keyframes bd1-draw { to { stroke-dashoffset: 0; } }
+
+/* microphone: sound arcs leave the capsule */
+.bd1-wave {
+  opacity: 0;
+  transform-box: view-box;
+  transform-origin: 14px 10px;
+}
+.bd-row.is-in .bd1-wave { animation: bd1-wave 2.8s ease-out 1.1s infinite; }
+.bd-row.is-in .bd1-w2 { animation-delay: 1.4s; }
+@keyframes bd1-wave {
+  0% { opacity: 0; transform: scale(0.8); }
+  25% { opacity: 1; }
+  60%, 100% { opacity: 0; transform: scale(1.14); }
+}
+.bd1:hover .bd1-wave { animation-duration: 1.4s; }
+
+/* pin: hops and lands with a ripple on the ground */
+.bd1-pin {
+  transform-box: view-box;
+  transform-origin: 12px 20px;
+}
+.bd-row.is-in .bd1-pin { animation: bd1-hop 3.2s cubic-bezier(0.45, 0, 0.2, 1) 1.2s infinite; }
+@keyframes bd1-hop {
+  0%, 55%, 100% { transform: translateY(0); }
+  68% { transform: translateY(-3.4px); }
+  80% { transform: translateY(0); }
+  87% { transform: translateY(-0.8px); }
+  93% { transform: translateY(0); }
+}
+.bd1-ripple {
+  fill: none;
+  stroke: var(--lime);
+  stroke-width: 1;
+  opacity: 0;
+  transform-box: view-box;
+  transform-origin: 12px 21.3px;
+}
+.bd-row.is-in .bd1-ripple { animation: bd1-ripple 3.2s ease-out 1.2s infinite; }
+@keyframes bd1-ripple {
+  0%, 78% { opacity: 0; transform: scale(0.3); }
+  80% { opacity: 0.9; transform: scale(0.4); }
+  100% { opacity: 0; transform: scale(1.3); }
+}
+
+/* star: outline draws, then lights up; a spark now and then */
+.bd1-starfill {
+  fill: var(--lime);
+  stroke: none;
+  opacity: 0;
+  transform-box: view-box;
+  transform-origin: 12px 12px;
+}
+.bd-row.is-in .bd1-starfill { animation: bd1-fill 0.7s ease-out 0.9s forwards; }
+@keyframes bd1-fill {
+  from { opacity: 0; transform: scale(0.6); }
+  to { opacity: 1; transform: scale(1); }
+}
+.bd1-spark {
+  fill: var(--lime-soft);
+  stroke: none;
+  opacity: 0;
+  transform-box: fill-box;
+  transform-origin: center;
+}
+.bd-row.is-in .bd1-spark { animation: bd1-spark 3.4s ease-in-out 1.6s infinite; }
+@keyframes bd1-spark {
+  0%, 70%, 100% { opacity: 0; transform: scale(0.2) rotate(0deg); }
+  82% { opacity: 1; transform: scale(1) rotate(45deg); }
+}
+
+/* editions: three layers breathe apart */
+.bd1-l2,
+.bd1-l3 { stroke: var(--lime-soft); }
+.bd1-l1,
+.bd1-l3 {
+  transform-box: view-box;
+  transform-origin: 12px 12px;
+}
+.bd-row.is-in .bd1-draw .bd1-l3 { animation: bd1-draw 1s cubic-bezier(0.65, 0, 0.35, 1) forwards, bd1-down 3.4s ease-in-out 1.4s infinite; }
+.bd-row.is-in .bd1-draw .bd1-l2 { animation: bd1-draw 1s cubic-bezier(0.65, 0, 0.35, 1) 0.15s forwards; }
+.bd-row.is-in .bd1-draw .bd1-l1 { animation: bd1-draw 1s cubic-bezier(0.65, 0, 0.35, 1) 0.3s forwards, bd1-up 3.4s ease-in-out 1.4s infinite; }
+@keyframes bd1-up { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-1.7px); } }
+@keyframes bd1-down { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(1.7px); } }
+
+/* ============================================================
+   02 — Contagem visível
+   ============================================================ */
+
+.bd2-dots {
+  display: inline-flex;
+  gap: 3px;
+}
+.bd2-dots i {
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: rgba(243, 246, 236, 0.16);
+}
+.bd-row.is-in .bd2-dots i {
+  animation:
+    bd2-lit 0.45s calc(var(--i) * 90ms + 0.25s) forwards,
+    bd2-wave 3.6s ease-in-out calc(var(--i) * 70ms + 1.9s) infinite;
+}
+@keyframes bd2-lit {
+  to { background: var(--lime); box-shadow: 0 0 6px rgba(168, 255, 53, 0.55); }
+}
+@keyframes bd2-wave {
+  0%, 30%, 100% { transform: scale(1); }
+  12% { transform: scale(1.6); }
+}
+
+/* map: the route travels the six cities in tour order */
+.bd2--map {
+  height: 48px;
+  padding-left: 6px;
+}
+.bd2-map {
+  flex: none;
+  width: 42px;
+  height: 42px;
+  overflow: visible;
+}
+.bd2-br {
+  fill: rgba(243, 246, 236, 0.05);
+  stroke: rgba(243, 246, 236, 0.32);
+  stroke-width: 2.6;
+  stroke-linejoin: round;
+}
+.bd2-route {
+  fill: none;
+  stroke: var(--lime);
+  stroke-width: 3;
+  stroke-linecap: round;
+  stroke-dasharray: 1;
+  stroke-dashoffset: 1;
+}
+.bd2-city {
+  fill: rgba(243, 246, 236, 0.4);
+  transition: fill 0.3s;
+}
+.bd2-city.on { fill: var(--lime); }
+
+/* stars: fill one by one, the last stops at 90% */
+.bd2-stars {
+  display: inline-flex;
+  gap: 2px;
+}
+.bd2-star {
+  position: relative;
+  width: 12px;
+  height: 12px;
+}
+.bd2-star svg {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+}
+.bd2-s-off { fill: rgba(243, 246, 236, 0.18); }
+.bd2-s-on {
+  fill: var(--lime);
+  clip-path: inset(0 100% 0 0);
+}
+.bd-row.is-in .bd2-s-on {
+  clip-path: inset(0 var(--r) 0 0);
+  transition: clip-path 0.5s cubic-bezier(0.65, 0, 0.35, 1) calc(var(--i) * 140ms + 0.3s);
+}
+
+/* editions: three segments complete in turn */
+.bd2-segs {
+  display: inline-flex;
+  gap: 3px;
+}
+.bd2-segs i {
+  position: relative;
+  width: 15px;
+  height: 5px;
+  border-radius: 3px;
+  overflow: hidden;
+  background: rgba(243, 246, 236, 0.14);
+}
+.bd2-segs i::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: var(--lime);
+  transform: scaleX(0);
+  transform-origin: left;
+}
+.bd-row.is-in .bd2-segs i::after { animation: bd2-seg 0.55s cubic-bezier(0.65, 0, 0.35, 1) calc(var(--i) * 420ms + 0.3s) forwards; }
+@keyframes bd2-seg { to { transform: scaleX(1); } }
+
+/* ============================================================
+   03 — Rostos e lugares
+   ============================================================ */
+
+.bd3 {
+  gap: 8px;
+  height: 40px;
+  padding-left: 4px;
+}
+.bd3-faces {
+  display: inline-flex;
+  align-items: center;
+  margin-right: 2px;
+}
+.bd3-face,
+.bd3-more {
+  flex: none;
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  overflow: hidden;
+  background: #0B1A10;
+  box-shadow: 0 0 0 2px #050B06;
+}
+.bd3-face + .bd3-face,
+.bd3-more { margin-left: -9px; }
+.bd3-face img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+.bd3-more {
+  display: grid;
+  place-items: center;
+  font-size: 11.5px;
+  font-weight: 600;
+  color: var(--lime-soft);
+  background: #0E2414;
+}
+.bd-row:not(.is-in) .bd3-face,
+.bd-row:not(.is-in) .bd3-more { opacity: 0; }
+.bd-row.is-in .bd3-face,
+.bd-row.is-in .bd3-more { animation: bd3-in 0.7s cubic-bezier(0.2, 0.8, 0.2, 1) calc(var(--i) * 80ms + 0.15s) backwards; }
+@keyframes bd3-in { from { opacity: 0; transform: translateX(-10px) scale(0.85); } }
+/* reviewers nod in turn */
+.bd-row.is-in [data-k="rate"] .bd3-face {
+  animation:
+    bd3-in 0.7s cubic-bezier(0.2, 0.8, 0.2, 1) calc(var(--i) * 80ms + 0.15s) backwards,
+    bd3-bob 3.6s ease-in-out calc(var(--i) * 0.15s + 1.4s) infinite;
+}
+@keyframes bd3-bob {
+  0%, 40%, 100% { transform: none; }
+  20% { transform: translateY(-2px); }
+}
+
+.bd3-win {
+  position: relative;
+  flex: none;
+  width: 48px;
+  height: 30px;
+  margin-right: 2px;
+  border-radius: 999px;
+  overflow: hidden;
+  background: #0B1A10;
+}
+.bd3-win img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+.bd3-city { color: #F5F9F0; }
+
+.bd3-stars {
+  display: inline-flex;
+  gap: 1px;
+}
+.bd3-st {
+  width: 11px;
+  height: 11px;
+  fill: var(--lime);
+}
+.bd3-muted { color: var(--text-dim); }
+
+/* editions as three polaroids that fan out on hover */
+.bd3--pol { padding-left: 8px; }
+.bd3-pols {
+  position: relative;
+  flex: none;
+  width: 46px;
+  height: 30px;
+}
+.bd3-pol {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 24px;
+  height: 23px;
+  margin: -12px 0 0 -12px;
+  padding: 2px 2px 5px;
+  border-radius: 2px;
+  background: #E7EDDF;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.5);
+  transform: translateX(var(--tx)) rotate(var(--rot));
+  transition: transform 0.6s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+.bd3-pol img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+.bd3-pol:nth-child(1) { --tx: -8px; --rot: -14deg; }
+.bd3-pol:nth-child(2) { --tx: 8px; --rot: 10deg; }
+.bd3-pol:nth-child(3) { --tx: 0px; --rot: -2deg; }
+.bd3--pol:hover .bd3-pol:nth-child(1) { --tx: -14px; --rot: -22deg; }
+.bd3--pol:hover .bd3-pol:nth-child(2) { --tx: 14px; --rot: 18deg; }
+.bd3--pol:hover .bd3-pol:nth-child(3) { --tx: 0px; --rot: 0deg; }
+.bd-row:not(.is-in) .bd3-pol { opacity: 0; }
+.bd-row.is-in .bd3-pol { animation: bd3-drop 0.8s cubic-bezier(0.16, 1, 0.3, 1) calc(var(--i) * 120ms + 0.2s) backwards; }
+@keyframes bd3-drop { from { opacity: 0; translate: 0 -12px; } }
+
+/* ============================================================
+   04 — Odômetro
+   ============================================================ */
+
+.bd4 {
+  display: inline-flex;
+  align-items: center;
+  gap: 16px;
+}
+.bd4-num {
+  display: inline-flex;
+  align-items: flex-end;
+  font-family: var(--font-display);
+  font-weight: 500;
+  font-size: 46px;
+  line-height: 1;
+  letter-spacing: -0.03em;
+  color: var(--lime-soft);
+  font-variant-numeric: tabular-nums;
+}
+.bd4-d {
+  display: inline-block;
+  height: 1em;
+  overflow: hidden;
+}
+.bd4-reel {
+  display: flex;
+  flex-direction: column;
+}
+.bd4-reel span {
+  display: block;
+  height: 1em;
+  text-align: center;
+}
+.bd4-sep {
+  width: 1px;
+  height: 36px;
+  background: rgba(243, 246, 236, 0.16);
+}
+.bd4-lab {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+.bd4-lab b {
+  font-size: 15px;
+  font-weight: 500;
+  color: #F5F9F0;
+}
+.bd4-lab span {
+  font-size: 13.5px;
+  color: var(--text-dim);
+}
+
+/* ============================================================
+   05 — Selo carimbado
+   ============================================================ */
+
+.bd5 {
+  display: inline-flex;
+  align-items: center;
+  gap: 14px;
+}
+.bd5-seal {
+  position: relative;
+  flex: none;
+  width: 60px;
+  height: 60px;
+}
+.bd5-seal svg {
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+}
+.bd5-edge {
+  fill: none;
+  stroke: rgba(168, 255, 53, 0.55);
+  stroke-width: 0.8;
+  stroke-dasharray: 1.4 1.6;
+}
+.bd5-core {
+  fill: rgba(168, 255, 53, 0.07);
+  stroke: rgba(168, 255, 53, 0.35);
+  stroke-width: 0.7;
+}
+.bd5-ring text {
+  font-family: var(--font-display);
+  font-size: 6.2px;
+  font-weight: 600;
+  fill: rgba(243, 246, 236, 0.64);
+}
+.bd5-ring,
+.bd5-hov {
+  transform-box: view-box;
+  transform-origin: 30px 30px;
+}
+.bd-row.is-in .bd5-ring { animation: bd5-rot 36s linear infinite; }
+@keyframes bd5-rot { to { transform: rotate(360deg); } }
+.bd5-hov { transition: transform 1.4s cubic-bezier(0.16, 1, 0.3, 1); }
+.bd5:hover .bd5-hov { transform: rotate(180deg); }
+.bd5-n {
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: 17px;
+  letter-spacing: -0.02em;
+  fill: var(--lime-soft);
+}
+.bd5-n--sm { font-size: 12.5px; }
+.bd5-txt {
+  max-width: 16ch;
+  font-size: 15px;
+  line-height: 1.3;
+  color: var(--text-soft);
+}
+/* the stamp lands once, leaving an ink ring */
+.bd-row:not(.is-in) .bd5-seal svg { opacity: 0; }
+.bd-row.is-in .bd5-seal svg { animation: bd5-stamp 0.9s cubic-bezier(0.16, 1, 0.3, 1) backwards; }
+.bd-cell:nth-child(2) .bd5-seal svg { animation-delay: 0.08s; }
+.bd-cell:nth-child(3) .bd5-seal svg { animation-delay: 0.16s; }
+.bd-cell:nth-child(4) .bd5-seal svg { animation-delay: 0.24s; }
+@keyframes bd5-stamp {
+  from { opacity: 0; transform: scale(1.6) rotate(-28deg); }
+  35% { opacity: 1; }
+}
+.bd5-ink {
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  border: 1px solid var(--lime);
+  opacity: 0;
+  pointer-events: none;
+}
+.bd-row.is-in .bd5-ink { animation: bd5-ink 1.1s ease-out 0.32s; }
+@keyframes bd5-ink {
+  from { opacity: 0.7; transform: scale(0.9); }
+  to { opacity: 0; transform: scale(1.55); }
+}
+
+/* ============================================================
+   06 — Ingresso
+   ============================================================ */
+
+.bd6 {
+  display: inline-flex;
+  height: 54px;
+  filter: drop-shadow(0 8px 16px rgba(0, 0, 0, 0.35));
+}
+.bd6-stub,
+.bd6-main {
+  position: relative;
+  display: flex;
+  background: linear-gradient(180deg, #0D2013, #07130B);
+}
+/* each half is notched on its side of the perforation */
+.bd6-stub {
+  width: 60px;
+  align-items: center;
+  justify-content: center;
+  border-radius: 10px 0 0 10px;
+  box-shadow: inset 1px 0 0 rgba(243, 246, 236, 0.09), inset 0 1px 0 rgba(243, 246, 236, 0.09), inset 0 -1px 0 rgba(243, 246, 236, 0.09);
+  -webkit-mask:
+    radial-gradient(circle at 100% 0, transparent 5px, #000 5.5px) top / 100% 51% no-repeat,
+    radial-gradient(circle at 100% 100%, transparent 5px, #000 5.5px) bottom / 100% 51% no-repeat;
+  mask:
+    radial-gradient(circle at 100% 0, transparent 5px, #000 5.5px) top / 100% 51% no-repeat,
+    radial-gradient(circle at 100% 100%, transparent 5px, #000 5.5px) bottom / 100% 51% no-repeat;
+  transform-origin: 100% 100%;
+  transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.bd6-stub b {
+  font-family: var(--font-display);
+  font-size: 22px;
+  font-weight: 600;
+  letter-spacing: -0.03em;
+  color: var(--lime);
+}
+.bd6-main {
+  flex-direction: column;
+  justify-content: center;
+  gap: 4px;
+  padding: 0 22px 0 17px;
+  border-radius: 0 10px 10px 0;
+  overflow: hidden;
+  box-shadow: inset -1px 0 0 rgba(243, 246, 236, 0.09), inset 0 1px 0 rgba(243, 246, 236, 0.09), inset 0 -1px 0 rgba(243, 246, 236, 0.09);
+  -webkit-mask:
+    radial-gradient(circle at 0 0, transparent 5px, #000 5.5px) top / 100% 51% no-repeat,
+    radial-gradient(circle at 0 100%, transparent 5px, #000 5.5px) bottom / 100% 51% no-repeat;
+  mask:
+    radial-gradient(circle at 0 0, transparent 5px, #000 5.5px) top / 100% 51% no-repeat,
+    radial-gradient(circle at 0 100%, transparent 5px, #000 5.5px) bottom / 100% 51% no-repeat;
+}
+.bd6-main::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 9px;
+  bottom: 9px;
+  border-left: 1.5px dashed rgba(243, 246, 236, 0.22);
+}
+.bd6-l1 {
+  font-size: 14.5px;
+  color: #F5F9F0;
+  white-space: nowrap;
+}
+.bd6-l2 {
+  font-size: 12.5px;
+  color: var(--text-dim);
+  white-space: nowrap;
+}
+.bd6-sheen {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(100deg, transparent 35%, rgba(216, 255, 166, 0.14) 47%, rgba(255, 255, 255, 0.05) 50%, transparent 62%);
+  transform: translateX(-100%);
+  pointer-events: none;
+}
+.bd-row.is-in .bd6-sheen { animation: bd6-sheen 5.5s cubic-bezier(0.45, 0, 0.2, 1) 1s infinite; }
+@keyframes bd6-sheen {
+  0% { transform: translateX(-100%); }
+  28%, 100% { transform: translateX(100%); }
+}
+.bd6:hover .bd6-stub { transform: rotate(-7deg) translate(-3px, 1px); }
+
+/* ============================================================
+   07 — Painel de pontos
+   ============================================================ */
+
+.bd7 {
+  display: inline-flex;
+  align-items: center;
+  gap: 14px;
+  padding: 6px 20px 6px 6px;
+  border-radius: 16px;
+  border: 1px solid rgba(243, 246, 236, 0.12);
+  background: rgba(243, 246, 236, 0.03);
+}
+.bd7-panel {
+  display: grid;
+  place-items: center;
+  flex: none;
+  width: 48px;
+  height: 48px;
+  border-radius: 11px;
+  background: #020904;
+  box-shadow: inset 0 0 0 1px rgba(168, 255, 53, 0.12), inset 0 0 14px rgba(168, 255, 53, 0.06);
+}
+.bd7-panel svg {
+  width: 36px;
+  height: 36px;
+  overflow: visible;
+}
+.bd7-panel--tour svg {
+  width: 42px;
+  height: 42px;
+}
+.bd7-panel circle {
+  fill: rgba(168, 255, 53, 0.1);
+  transition: fill 0.18s;
+}
+.bd7-panel circle.dim { fill: rgba(168, 255, 53, 0.24); }
+.bd7-panel circle.on { fill: var(--lime); }
+.bd7-panel circle.peak { fill: #F1FFDC; }
+.bd7-panel--tour circle { fill: rgba(168, 255, 53, 0.17); }
+.bd7-panel .bd7-city { fill: rgba(243, 246, 236, 0.4); }
+.bd7-panel .bd7-city.on { fill: var(--lime); }
+.bd7-panel .bd7-ring {
+  fill: none;
+  stroke: var(--lime);
+  stroke-width: 1.4;
+  opacity: 0;
+}
+.bd7-txt {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+.bd7-txt b {
+  font-size: 15px;
+  font-weight: 500;
+  color: #F5F9F0;
+}
+.bd7-txt span {
+  font-size: 13px;
+  color: var(--text-dim);
+}
+
+/* ============================================================
+   08 — Fita corrida
+   ============================================================ */
+
+.bd8 {
+  display: inline-flex;
+  align-items: center;
+  width: 380px;
+  max-width: 100%;
+  height: 36px;
+  border-radius: 999px;
+  border: 1px solid rgba(243, 246, 236, 0.14);
+  background: rgba(243, 246, 236, 0.03);
+  font-size: 14px;
+  line-height: 1;
+  overflow: hidden;
+}
+.bd8-lead {
+  display: inline-flex;
+  flex: none;
+  align-items: center;
+  gap: 9px;
+  height: 100%;
+  padding: 0 14px 0 13px;
+  border-right: 1px solid rgba(243, 246, 236, 0.12);
+  white-space: nowrap;
+}
+.bd8-lead::before {
+  content: '';
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--lime);
+  box-shadow: 0 0 8px rgba(168, 255, 53, 0.6);
+}
+.bd8-lead b {
+  font-weight: 500;
+  color: #F5F9F0;
+}
+.bd8-tape {
+  flex: 1;
+  min-width: 0;
+  overflow: hidden;
+  -webkit-mask: linear-gradient(90deg, transparent, #000 16px, #000 calc(100% - 28px), transparent);
+  mask: linear-gradient(90deg, transparent, #000 16px, #000 calc(100% - 28px), transparent);
+}
+.bd8-track {
+  display: flex;
+  width: max-content;
+}
+.bd-row.is-in .bd8-track { animation: bd8-run var(--dur, 20s) linear infinite; }
+.bd8:hover .bd8-track { animation-play-state: paused; }
+@keyframes bd8-run { to { transform: translateX(-50%); } }
+.bd8-run {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 0 12px 0 14px;
+  white-space: nowrap;
+  color: var(--text-mid);
+  transition: color 0.3s;
+}
+.bd8-run i {
+  flex: none;
+  width: 3px;
+  height: 3px;
+  border-radius: 50%;
+  background: var(--lime);
+  opacity: 0.7;
+}
+.bd8:hover .bd8-run { color: var(--text-soft); }
+
+/* ============================================================
+   09 — Borda de energia
+   ============================================================ */
+
+.bd9 {
+  position: relative;
+  display: inline-flex;
+  padding: 1px;
+  border-radius: 999px;
+  overflow: hidden;
+  isolation: isolate;
+  background: rgba(243, 246, 236, 0.12);
+  font-size: 14px;
+  line-height: 1;
+  white-space: nowrap;
+  transition: background-color 0.5s;
+}
+.bd9:hover { background: rgba(168, 255, 53, 0.34); }
+/* a conic light larger than the pill spins behind it; only the 1px rim shows */
+.bd9-light {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 140%;
+  aspect-ratio: 1;
+  translate: -50% -50%;
+  background: conic-gradient(from 0deg, transparent 0 66%, rgba(168, 255, 53, 0) 68%, rgba(168, 255, 53, 0.9) 87%, #ECFFD0 89%, transparent 90% 100%);
+}
+.bd-row.is-in .bd9-light { animation: bd9-spin 4.8s linear infinite; }
+@keyframes bd9-spin { to { rotate: 360deg; } }
+.bd9-in {
+  position: relative;
+  z-index: 1;
+  display: inline-flex;
+  align-items: center;
+  gap: 9px;
+  height: 34px;
+  padding: 0 16px 0 13px;
+  border-radius: 999px;
+  overflow: hidden;
+  background: #040B06;
+  color: rgba(243, 246, 236, 0.78);
+}
+.bd9-in > span:last-child { position: relative; }
+.bd9-dot {
+  position: relative;
+  flex: none;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--lime);
+  box-shadow: 0 0 8px rgba(168, 255, 53, 0.6);
+}
+.bd9-dot::after {
+  content: '';
+  position: absolute;
+  inset: -3px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(168, 255, 53, 0.5), transparent 70%);
+  opacity: 0;
+}
+.bd-row.is-in .bd9-dot::after { animation: bd9-pulse 2.4s ease-in-out 1.4s infinite; }
+@keyframes bd9-pulse {
+  0%, 100% { opacity: 0; transform: scale(0.6); }
+  50% { opacity: 1; transform: scale(1.5); }
+}
+.bd9-charge {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(90deg, rgba(168, 255, 53, 0) 0%, rgba(168, 255, 53, 0.16) 80%, rgba(216, 255, 166, 0.34) 100%);
+  transform: scaleX(0);
+  transform-origin: left;
+  opacity: 0;
+  pointer-events: none;
+}
+.bd-row.is-in .bd9-charge { animation: bd9-charge 1.6s cubic-bezier(0.65, 0, 0.35, 1) 0.3s; }
+.bd-row.is-in .bd9:hover .bd9-charge { animation: bd9-charge-again 1.2s cubic-bezier(0.65, 0, 0.35, 1); }
+@keyframes bd9-charge {
+  0% { opacity: 1; transform: scaleX(0); }
+  70% { opacity: 1; transform: scaleX(1); }
+  100% { opacity: 0; transform: scaleX(1); }
+}
+@keyframes bd9-charge-again {
+  0% { opacity: 1; transform: scaleX(0); }
+  70% { opacity: 1; transform: scaleX(1); }
+  100% { opacity: 0; transform: scaleX(1); }
+}
+
+/* ============================================================
+   10 — Mini widget
+   ============================================================ */
+
+.bd10 {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  padding: 7px 20px 7px 7px;
+  border-radius: 16px;
+  background: linear-gradient(180deg, #0B1A10, #06110A);
+  box-shadow: inset 0 0 0 1px rgba(243, 246, 236, 0.08), 0 10px 24px rgba(0, 0, 0, 0.35);
+  transition: transform 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.bd10::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  padding: 1px;
+  pointer-events: none;
+  mix-blend-mode: overlay;
+  background: linear-gradient(to top, rgba(255, 255, 255, 0.7) 0%, rgba(255, 255, 255, 0.24) 22%, rgba(255, 255, 255, 0.08) 40%, rgba(255, 255, 255, 0.03) 100%);
+  -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor;
+  mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+  mask-composite: exclude;
+}
+.bd10:hover { transform: translateY(-2px); }
+.bd10-media {
+  position: relative;
+  flex: none;
+  width: 42px;
+  height: 42px;
+  border-radius: 11px;
+  overflow: hidden;
+  background: #0E2013;
+}
+.bd10-media img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+.bd10-media--num {
+  display: grid;
+  place-items: center;
+  font-family: var(--font-display);
+  font-size: 16px;
+  font-weight: 600;
+  letter-spacing: -0.02em;
+  color: var(--lime);
+  background: rgba(168, 255, 53, 0.08);
+}
+.bd10-media--map {
+  display: grid;
+  place-items: center;
+  background: #050E07;
+}
+.bd10-media--map svg {
+  width: 36px;
+  height: 36px;
+  overflow: visible;
+}
+.bd10-br {
+  fill: rgba(243, 246, 236, 0.06);
+  stroke: rgba(243, 246, 236, 0.3);
+  stroke-width: 2.2;
+  stroke-linejoin: round;
+}
+.bd10-city {
+  fill: rgba(243, 246, 236, 0.35);
+  stroke: rgba(168, 255, 53, 0.6);
+  stroke-width: 0;
+  transition: fill 0.4s;
+}
+.bd10-city.on { fill: var(--lime); }
+.bd-row.is-in .bd10-city.on { animation: bd10-ping 1.5s ease-out infinite; }
+@keyframes bd10-ping {
+  from { stroke-width: 0; stroke-opacity: 0.9; }
+  to { stroke-width: 16; stroke-opacity: 0; }
+}
+.bd10-body {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+.bd10-top {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  font-size: 12.5px;
+  color: var(--text-dim);
+  white-space: nowrap;
+}
+.bd10-live {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--lime);
+  box-shadow: 0 0 8px rgba(168, 255, 53, 0.6);
+}
+.bd10-main {
+  font-size: 15px;
+  font-weight: 500;
+  color: #F5F9F0;
+}
+.bd10-eq {
+  display: inline-flex;
+  align-items: flex-end;
+  gap: 1.5px;
+  height: 9px;
+}
+.bd10-eq b {
+  width: 2px;
+  height: 100%;
+  border-radius: 1px;
+  background: var(--lime);
+  transform-origin: bottom;
+  transform: scaleY(0.4);
+}
+.bd-row.is-in .bd10-eq b { animation: bd10-eq 0.9s ease-in-out infinite alternate; }
+.bd-row.is-in .bd10-eq b:nth-child(2) { animation-duration: 0.7s; animation-delay: -0.3s; }
+.bd-row.is-in .bd10-eq b:nth-child(3) { animation-duration: 1.1s; animation-delay: -0.6s; }
+@keyframes bd10-eq {
+  from { transform: scaleY(0.25); }
+  to { transform: scaleY(1); }
+}
+.bd10-hist {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  width: 150px;
+  padding: 1px 0;
+}
+.bd10-hist i {
+  position: relative;
+  height: 2.5px;
+  border-radius: 2px;
+  overflow: hidden;
+  background: rgba(243, 246, 236, 0.1);
+}
+.bd10-hist i::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  width: var(--w);
+  border-radius: inherit;
+  background: var(--lime);
+  transform: scaleX(0);
+  transform-origin: left;
+}
+.bd-row.is-in .bd10-hist i::after {
+  transform: scaleX(1);
+  transition: transform 1s cubic-bezier(0.16, 1, 0.3, 1) calc(var(--i) * 90ms + 0.35s);
+}
+
+/* ============================================================
+   Reduced motion: final, calm states
+   ============================================================ */
+
+.bd-reduced *,
+.bd-reduced *::before,
+.bd-reduced *::after {
+  animation: none !important;
+  transition: none !important;
+}
+.bd-reduced .bd1-draw * { stroke-dashoffset: 0; }
+.bd-reduced .bd1-starfill { opacity: 1; }
+.bd-reduced .bd2-dots i { background: var(--lime); }
+.bd-reduced .bd2-route { stroke-dashoffset: 0; }
+.bd-reduced .bd2-city { fill: var(--lime); }
+.bd-reduced .bd2-segs i::after { transform: scaleX(1); }
+
+/* ============================================================
+   Narrower screens: a calm, stacked fallback
+   ============================================================ */
+
+@media (max-width: 1100px) {
+  .bd-row {
+    grid-template-columns: 1fr;
+    gap: 40px;
+  }
+}
+@media (max-width: 760px) {
+  .bd-main { padding: 120px 20px 120px; }
+  .bd-intro h1 { font-size: 42px; }
+  .bd-grid { grid-template-columns: 1fr; }
+  .bd-h { font-size: 30px; }
+}

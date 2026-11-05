@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Opções — Edições que marcaram história</title>
+  <title>iGreen Live — opções de design</title>
   <link rel="icon" href="../assets/img/igreen-logo.svg">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -70,6 +70,29 @@
       letter-spacing: -0.015em;
     }
     .hub-next { margin-top: 120px; }
+    [id] { scroll-margin-top: 48px; }
+    .hub-nav {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-top: 32px;
+    }
+    .hub-nav a {
+      display: inline-flex;
+      align-items: center;
+      height: 38px;
+      padding: 0 18px;
+      border-radius: 999px;
+      border: 1px solid rgba(243, 246, 236, 0.14);
+      font-size: 15px;
+      color: rgba(243, 246, 236, 0.86);
+      text-decoration: none;
+      transition: border-color 0.3s, background-color 0.3s;
+    }
+    .hub-nav a:hover {
+      border-color: rgba(168, 255, 53, 0.45);
+      background: rgba(168, 255, 53, 0.06);
+    }
     .hub-h2 {
       margin-top: 20px;
       font-weight: 500;
@@ -88,8 +111,18 @@
 </head>
 <body>
   <main class="hub">
-    <p class="kicker">4 propostas para a seção de edições</p>
-    <h1>Edições que<br><span>marcaram história</span></h1>
+    <p class="kicker">iGreen Live · opções de design</p>
+    <h1>Cada seção do site<br><span>e os caminhos até ela</span></h1>
+    <p class="hub-sub">Todas as propostas estudadas para o site, cada uma numa página navegável. As marcadas com "no site" são as que foram para a versão final. Role devagar dentro de cada página: quase tudo acompanha a rolagem.</p>
+    <nav class="hub-nav" aria-label="Seções">
+      <a href="#hero">Hero</a>
+      <a href="#edicoes">Edições</a>
+      <a href="#selos">Selos</a>
+      <a href="#footer">Footer</a>
+    </nav>
+
+    <p class="kicker hub-next" id="edicoes">4 propostas para a seção de edições</p>
+    <h2 class="hub-h2">Edições que<br><span>marcaram história</span></h2>
     <p class="hub-sub">Cada opção é uma página com a seção completa. Role devagar dentro dela: toda a animação acompanha a rolagem, para frente e para trás.</p>
 
     <div class="hub-grid">
@@ -113,13 +146,13 @@
       </a>
       <a class="hub-card" href="edicoes-d.html">
         <img src="../assets/img/past/moment-22.jpg" alt="">
-        <p class="hub-tag">Opção D</p>
+        <p class="hub-tag">Opção D · no site</p>
         <h2>Mural vivo</h2>
         <p class="hub-desc">Momentos do evento voam do fundo em volta do título e pousam num mural 3D em diagonal, com fotos, números e depoimentos em movimento. Cada edição sobe do mural em perspectiva, e no fim tudo implode na frase de impacto.</p>
       </a>
     </div>
 
-    <p class="kicker hub-next">Footer · variações do crachá</p>
+    <p class="kicker hub-next" id="footer">Footer · variações do crachá</p>
     <h2 class="hub-h2">O crachá, sem caixa<br><span>a G4 está no site</span></h2>
     <p class="hub-sub">Variações da G pedidas no retorno: abertas e de ponta a ponta, como a A e a D. A G4 foi a escolhida e já está no index, com a textura de pontinhos da hero no fundo.</p>
 
@@ -156,7 +189,7 @@
       </a>
     </div>
 
-    <p class="kicker hub-next">Footer · 8 propostas</p>
+    <p class="kicker hub-next" id="footer-8">Footer · 8 propostas</p>
     <h2 class="hub-h2">Oito footers<br><span>para fechar o site</span></h2>
     <p class="hub-sub">Cada página começa no FAQ, como no site, para dar para sentir a passagem. Role devagar até o fim: quase tudo acompanha a rolagem.</p>
 
@@ -211,27 +244,39 @@
       </a>
     </div>
 
-    <p class="kicker hub-next">Selos das seções</p>
-    <h2 class="hub-h2">Selos, rodada 3<br><span>a partir da 09</span></h2>
-    <p class="hub-sub">A 09 (borda de energia), quatro variações com o ícone saindo do selo e quatro ideias fora da caixa. A rodada 2 continua em <a href="badges-rodada2.html">badges-rodada2.html</a>.</p>
+    <p class="kicker hub-next" id="selos">Selos das seções</p>
+    <h2 class="hub-h2">Três rodadas de selos<br><span>a 09·C está no site</span></h2>
+    <p class="hub-sub">Os quatro selos do site (palestrantes, tour, depoimentos e edições) em cada proposta, acima do título real da seção. A rodada 3 parte da 09 e tem a 09·C, que foi para o site.</p>
 
     <div class="hub-grid">
       <a class="hub-card" href="badges.html">
         <img src="thumbs/badges.jpg" alt="" loading="lazy">
-        <p class="hub-tag">09 + 8 propostas</p>
-        <h2>Selos das seções</h2>
+        <p class="hub-tag">Rodada 3 · 09·C no site</p>
+        <h2>A partir da 09</h2>
         <p class="hub-desc">Ícone emergindo, relevo, objeto 3D em vidro e holofote — o ícone sai da pílula com a base cortada. E fora da caixa: plugado, neon, trilha até o título e enxame.</p>
+      </a>
+      <a class="hub-card" href="badges-rodada2.html">
+        <img src="thumbs/badges-rodada2.jpg" alt="" loading="lazy">
+        <p class="hub-tag">Rodada 2 · 15 propostas</p>
+        <h2>No tamanho de hoje</h2>
+        <p class="hub-desc">Glifo vivo, rostos padronizados, LED compacto, borda de energia e ícone em bloco ajustados, e dez novas: do ponto ao ícone, carga, anel, foco, aura, número, isométrico, pontilhado, sublinhado e micro-interação.</p>
+      </a>
+      <a class="hub-card" href="badges-rodada1.html">
+        <img src="thumbs/badges-rodada1.jpg" alt="" loading="lazy">
+        <p class="hub-tag">Rodada 1 · 10 propostas</p>
+        <h2>Dez caminhos</h2>
+        <p class="hub-desc">A primeira rodada: glifo vivo, contagem visível com o mapa do Brasil, rostos e lugares, odômetro, carimbo, ingresso, painel de LED, letreiro, borda de energia e mini widget.</p>
       </a>
     </div>
 
-    <p class="kicker hub-next">Rodada mais recente</p>
+    <p class="kicker hub-next" id="hero">Hero · rodada mais recente</p>
     <h2 class="hub-h2">As escolhidas,<br><span>em novas versões</span></h2>
     <p class="hub-sub">Cópias das propostas que você destacou, com os ajustes pedidos. As originais continuam intactas mais abaixo.</p>
 
     <div class="hub-grid">
       <a class="hub-card" href="section-hero-c-radial.html">
         <img src="thumbs/section-hero-c-radial.jpg" alt="" loading="lazy">
-        <p class="hub-tag">C + C2</p>
+        <p class="hub-tag">C + C2 · no site</p>
         <h2>Carga radial</h2>
         <p class="hub-desc">O meio-termo entre a C e a C2: cards da C2, texto entre os dois tamanhos e véu escuro maior. A transformação é um círculo que nasce no vídeo do título e cresce pela parede.</p>
       </a>
@@ -261,7 +306,7 @@
       </a>
     </div>
 
-    <p class="kicker hub-next">17 propostas para a hero</p>
+    <p class="kicker hub-next" id="hero-17">17 propostas para a hero</p>
     <h2 class="hub-h2">O antes e depois<br><span>de cada história</span></h2>
     <p class="hub-sub">Jeitos diferentes de contar a transformação: as histórias começam paradas e apagadas, e ganham cor e movimento quando a energia chega até elas.</p>
 
